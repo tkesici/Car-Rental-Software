@@ -72,175 +72,291 @@
 
     <main>
 
+      <script>
+        function relocate(link) {
+        location.href =link;
+      }
+      </script>
+
       <section class="py-5 text-center container">
         <div class="row py-lg-5">
           <div class="col-lg-6 col-md-8 mx-auto">
             <h1 class="fw-light">Choose the best one for you.</h1>
             <p class="lead text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse temporibus possimus, pariatur quaerat natus voluptatibus nam eum adipisci dolorum deleniti?</p>
             <p>
-              <input type="button" class="btn btn-warning" value="Get Help" onclick=" relocate()">
-              <a href="#div1" class="btn btn-secondary my-2">Continue</a>
+              <input type="button" class="btn btn-warning" value="Get Help" onclick=" relocate('../html/index.html')">
+              <a href="#cars" class="btn btn-secondary my-2">Continue</a>
             </p>
           </div>
         </div>
       </section>
     
-    <script>
-      function relocate() {
-      location.href ="../html/contact.html";
-    }
-    </script>
-    
       <div class="album py-5 bg-light">
-        <div class="container">
-    
-          <div id= "div1" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="col">
-              <div class="card shadow-lg">
-                <img src="../img/cars/bmwm2.png" class="bd-placeholder-img card-img-top" width="60%" height="60%" role="img">
+        <div id="cars" class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+            <div id= "5008" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/5008.png" class="bd-placeholder-img card-img-top" role="img">
     
                 <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text text-dark">Peugeot 5008</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
                     </div>
-                    <small class="text-muted">9 mins</small>
+                    <small class="text-dark">€39.99 / day</small>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
     
                 <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text text-dark">Audi A7</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
                     </div>
-                    <small class="text-muted">9 mins</small>
+                    <small class="text-dark">€49.99 / day</small>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+            <div id= "CLS400D" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/CLS400D.png" class="bd-placeholder-img card-img-top" role="img">
     
                 <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text text-dark">Mercedes CLS400D</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
                     </div>
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-    
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-    
-                <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                    </div>
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-    
-                <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                    </div>
-                    <small class="text-muted">9 mins</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-    
-                <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                    </div>
-                    <small class="text-muted">9 mins</small>
+                    <small class="text-dark">€69.99 / day</small>
                   </div>
                 </div>
               </div>
             </div>
     
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
     
                 <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text text-dark">Audi A7</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
                     </div>
-                    <small class="text-muted">9 mins</small>
+                    <small class="text-dark">€49.99 / day</small>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
     
                 <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text text-dark">Audi A7</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
                     </div>
-                    <small class="text-muted">9 mins</small>
+                    <small class="text-dark">€49.99 / day</small>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col">
-              <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+              <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
     
                 <div class="card-body">
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text text-dark">Audi A7</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
                     </div>
-                    <small class="text-muted">9 mins</small>
+                    <small class="text-dark">€49.99 / day</small>
                   </div>
                 </div>
               </div>
             </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id= "A7" class="col">
+              <div class="card justify-content-md-center">
+                <img src="../img/cars/A7.png" class="bd-placeholder-img card-img-top" role="img">
+    
+                <div class="card-body">
+                  <p class="card-text text-dark">Audi A7</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-outline-secondary" value="Specifications" onclick=" relocate('../html/index.html')">
+                      <input type="button" class="btn btn-sm btn-outline-warning" value="Hire" onclick=" relocate()">
+                    </div>
+                    <small class="text-dark">€49.99 / day</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
           </div>
         </div>
       </div>
