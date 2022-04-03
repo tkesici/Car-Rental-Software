@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +28,6 @@
       
     </style>
 
-    
     <!-- Internal CSS -->
     <link href="../css/style.css" rel="stylesheet">
   </head>
@@ -39,6 +39,7 @@
         <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/></symbol>
     </svg>
 
+    <!-- Header -->
 <main>
   <header class="p-3 bg-dark text-white">
     <div class="container">
@@ -49,7 +50,6 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="index.html" class="nav-link px-2 text-warning">Home</a></li>
           <li><a href="hire.html" class="nav-link px-2 text-white">Hire</a></li>
-          <li><a href="explore.html" class="nav-link px-2 text-white">Explore</a></li>
           <li><a href="dealers.html" class="nav-link px-2 text-white">Dealers</a></li>
           <li><a href="about.html" class="nav-link px-2 text-white">About</a></li>
           <li><a href="contact.html" class="nav-link px-2 text-white">Contact</a></li>
@@ -67,20 +67,27 @@
         </div>
       </div>
     </div>    
-  </header>
-</main>
-</div>
+    <script>
 
-
-<script>
-  function over(id) {
+      function relocate() {
+        location.href ="../html/hire.html";
+      }
+      function over(id) {
     id.class = "nav-link px-2 text-secondary";
-  }
-  function out(id) {
+      }
+     function out(id) {
     if (!(id.class = "nav-link px-2 text-warning")) {
       id.class = "nav-link px-2 text-white";
     }
   }
+        </script>
+
+  </header>
+</main>
+</div>
+
+<script>
+
 </script>
 
 <div>
@@ -92,10 +99,8 @@
 function relocate() {
   location.href ="../html/hire.html";
 }
+  </script>
 
-     
-
-</script>
 </div>
 </div>
 
