@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,7 +40,8 @@
             <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
             <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/></symbol>
         </svg>
-    
+
+    <!-- Header -->
     <main>
       <header class="p-3 bg-dark text-white">
         <div class="container">
@@ -50,7 +52,6 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <li><a href="index.html" class="nav-link px-2 text-white">Home</a></li>
               <li><a href="hire.html" class="nav-link px-2 text-warning">Hire</a></li>
-              <li><a href="explore.html" class="nav-link px-2 text-white">Explore</a></li>
               <li><a href="dealers.html" class="nav-link px-2 text-white">Dealers</a></li>
               <li><a href="about.html" class="nav-link px-2 text-white">About</a></li>
               <li><a href="contact.html" class="nav-link px-2 text-white">Contact</a></li>
@@ -63,23 +64,32 @@
             </form>
             
             <div class="text-end">
-              <button type="button" class="btn btn-outline-light me-2">Login</button>
-              <button type="button" class="btn btn-outline-warning">Create Account</button>
+              <button type="button" class="btn btn-outline-light me-2" onclick=" relocate('../html/index.html')">Login</button>
+              <button type="button" class="btn btn-outline-warning" onclick=" relocate('../html/index.html')">Create Account</button>
             </div>
           </div>
         </div>    
+        
+        <script>
+
+          function relocate(text) {
+            location.href =text;
+          }
+          function over(id) {
+        id.class = "nav-link px-2 text-secondary";
+          }
+         function out(id) {
+        if (!(id.class = "nav-link px-2 text-warning")) {
+          id.class = "nav-link px-2 text-white";
+        }
+      }
+            </script>
+
       </header>
     </main>
     </div>
 
     <main>
-
-      <script>
-        function relocate(link) {
-        location.href =link;
-      }
-      </script>
-
       <section class="py-5 text-center container">
         <div class="row py-lg-5">
           <div class="col-lg-6 col-md-8 mx-auto">
@@ -301,19 +311,11 @@
               </div>
             </div>
 
-
           </div>
         </div>
       </div>
     
     </main>
-
-
-    
-
-
-
-
 <!-- Footer -->
 <footer class="text-center text-lg-start" style="background-color:#ffc107">
   <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
