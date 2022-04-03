@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/favicon.jpg">
-    <title>tkCRS</title>
+    <title>tkCRS - Homepage</title>
 
     <!--Bootstrap CSS -->
 <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,7 +47,7 @@
           <svg class="bi me-2" width="44" height="35.2" role="img" aria-label="tkCRS"><use xlink:href="#speedometer2"/></svg>
         </a>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="index.html" class="nav-link px-2 text-secondary">Home</a></li>
+          <li><a href="index.html" class="nav-link px-2 text-warning">Home</a></li>
           <li><a href="hire.html" class="nav-link px-2 text-white">Hire</a></li>
           <li><a href="explore.html" class="nav-link px-2 text-white">Explore</a></li>
           <li><a href="about.html" class="nav-link px-2 text-white">About</a></li>
@@ -60,7 +60,7 @@
 
         <div class="text-end">
           <button type="button" class="btn btn-outline-light me-2">Login</button>
-          <button type="button" class="btn btn-warning">Sign-up</button>
+          <button type="button" class="btn btn-outline-warning">Create Account</button>
         </div>
       </div>
     </div>    
@@ -68,37 +68,42 @@
 </main>
 </div>
 
+<script>
+  function over(id) {
+    id.class = "nav-link px-2 text-secondary";
+  }
+  function out(id) {
+    if (!(id.class = "nav-link px-2 text-warning")) {
+      id.class = "nav-link px-2 text-white";
+    }
+  }
+</script>
+
 <div>
   <img class="img-fluid" src="../img/cars1.jpg" alt="Cars1" style="opacity: 0.15;">
   <div class="centered">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque dolor fugit quaerat labore et est sint tempore consectetur, soluta, saepe inventore libero modi aut dolores corporis distinctio laborum nobis suscipit itaque dolorum nostrum doloribus vel asperiores laboriosam. Accusamus similique tempore deserunt reprehenderit ipsam qui quis mollitia perspiciatis expedita aut optio excepturi aliquid quod pariatur consequatur a placeat, labore fuga voluptatem voluptatibus, aperiam facilis. Aliquam officiis molestiae sit explicabo nihil nostrum nemo culpa voluptates rerum? Harum!
-    <h1><input type="button" class="btn btn-warning" value="Explore" onclick=" relocate_home()"></h1>
+    <h1><input type="button" class="btn btn-warning" value="Explore" onclick=" relocate()"></h1>
 
 <script>
-function relocate_home()
-{
-     location.href ="../html/index.html";
-} 
+function relocate() {
+  location.href ="../html/hire.html";
+}
+
+     
+
 </script>
 </div>
 </div>
 
-
-
-    <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
-
-
-
-  <footer class="text-center text-lg-start" style="background-color:#302f2c">
-
-    <!-- Copyright -->
+<!-- Footer -->
+  <footer class="text-center text-lg-start" style="background-color:#ffc107">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
       © 2020 Copyright:
       <a class="text-white" href="index.html">tkCRS.com</a>
     </div>
-    <!-- Copyright -->
   </footer>
 
+  <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
 
-
+  </body>
 </html>
