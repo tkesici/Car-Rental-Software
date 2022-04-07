@@ -15,23 +15,12 @@
   fill: currentColor;
 }
 
-/*
- * Globals
- */
-
-
-/* Custom default button */
 .btn-secondary,
 .btn-secondary:hover,
 .btn-secondary:focus {
   color: #333;
-  text-shadow: none; /* Prevent inheritance from `body` */
+  text-shadow: none; 
 }
-
-
-/*
- * Base structure
- */
 
 body {
   text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
@@ -41,11 +30,6 @@ body {
 .cover-container {
   max-width: 42em;
 }
-
-
-/*
- * Header
- */
 
 .nav-masthead .nav-link {
   padding: .25rem 0;
@@ -69,39 +53,30 @@ body {
   border-bottom-color: #fff;
 }
 
-/*
- * Text in images
- */
-
-/* Bottom left text */
 .bottom-left {
   position: absolute;
   bottom: 8px;
   left: 16px;
 }
 
-/* Top left text */
 .top-left {
   position: absolute;
   top: 8px;
   left: 16px;
 }
 
-/* Top right text */
 .top-right {
   position: absolute;
   top: 8px;
   right: 16px;
 }
 
-/* Bottom right text */
 .bottom-right {
   position: absolute;
   bottom: 8px;
   right: 16px;
 }
 
-/* Centered text */
 .centered {
   position: absolute;
   top: 50%;
@@ -117,14 +92,6 @@ body {
 html,
 body {
   height: 100%;
-}
-
-body2 {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
 }
 
 .form-signin {
@@ -154,3 +121,16 @@ body2 {
   border-top-right-radius: 0;
 }
 
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}

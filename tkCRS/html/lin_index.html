@@ -66,9 +66,18 @@
              </div>
           </form>
         <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2" data-toggle="modal" data-target="#loginmodal">Login</button>
-          <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#createaccmodal">Create Account</button>
+          <div class="navbar-form navbar-brand">
+            <button class="btn btn-light dropdown-toggle" type="button" id="memberdropdown" data-toggle="dropdown">
+              Welcome, tkesici13
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">My Transactions</a>
+              <a class="dropdown-item" href="#">Settings</a>
+            </div>
+          </div>
         </div>
+        <button type="button" class="btn btn-danger me-2" onclick=" relocate('../html/index.html')">Log out</button>
 
     <!--Login Modal-->
 <div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
@@ -96,11 +105,11 @@
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
             </div>
-            <a class="btn btn-primary w-100 btn btn-lg btn-warning" href="../html/lin_index.html" role="button">Login</a>
+            <button class="w-100 btn btn-lg btn-warning" type="submit">Login</button>
             <br>
             <div class="text-center">
               <br>
-            <a href="../html/e_index.html" class="text-justify">Are you an employee?</a>
+            <a href="../../html/employeelogin.html" class="text-justify">Are you an employee?</a>
           </div>
           </form>
         </main>
@@ -136,7 +145,7 @@
                 </div>
                 <div class="checkbox mb-3 text-dark">
                   <label>
-                    <input type="checkbox" value="terms"> I have read and accept the <a href="../html/termsconditions.html" target="_blank">terms and conditions</a>
+                    <input type="checkbox" value="terms"> I have read and accept the <a href="../../html/termsconditions.html" target="_blank">terms and conditions</a>
                   </label>
                 </div>
                 <button class="w-100 btn btn-lg btn-warning" type="submit">Create Account</button>
@@ -174,7 +183,7 @@
     <!--/Footer-->
   
 <!--External Javascript-->
-  <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="//assets/dist/js/bootstrap.bundle.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
   </body>
