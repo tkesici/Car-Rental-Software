@@ -5,90 +5,163 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
-     <link rel="icon" type="image/x-icon" href="../img/favicon.jpg">
-    <title>tkCRS - Hire</title>
+     <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
+    <title>tkCRS - Home</title>
 
-    <!--Bootstrap CSS -->
-<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
+    <!--Bootstrap JS-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-      
-    </style>
-    
-  </head>
-  <body>
-       <!-- Internal CSS -->
-       <link href="../css/style.css" rel="stylesheet">
-      </head>
-      <body class="h-100 text-center text-white bg-dark">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
-          <symbol id="speedometer2" viewBox="0 0 16 16">
-            <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z"/>
-            <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z"/></symbol>
-        </svg>
+    <!--Internal CSS-->
+    <link href="../css/style.css" rel="stylesheet">
 
-    <!-- Header -->
-    <main>
-      <header class="p-3 bg-dark text-white">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-              <svg class="bi me-2" width="44" height="35.2" role="img" aria-label="tkCRS"><use xlink:href="#speedometer2"/></svg>
-            </a>
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="index.html" class="nav-link px-2 text-white">Home</a></li>
-              <li><a href="hire.html" class="nav-link px-2 text-warning">Hire</a></li>
-              <li><a href="dealers.html" class="nav-link px-2 text-white">Dealers</a></li>
-              <li><a href="about.html" class="nav-link px-2 text-white">About</a></li>
-              <li><a href="contact.html" class="nav-link px-2 text-white">Contact</a></li>
-            </ul>
-    
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="https://google.com/search" target="_blank" type="GET">
+    <!--Internal JS-->
+    <script>
+      function relocate(text) {
+       location.href =text;
+    }
+
+      function over(id) {
+       id.class = "nav-link px-2 text-secondary";
+    }
+
+      function out(id) {
+        if (!(id.class = "nav-link px-2 text-warning")) {
+           id.class = "nav-link px-2 text-white";
+         }
+    }
+      function search(word) {
+        word.q.value = "http://www.google.com/search/"+word;
+    }
+      </script>
+
+</head>
+
+<body class="h-100 text-center text-white bg-dark">
+
+    <!--Header-->
+<main>
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <img style="display: inline;" src="../img/logo/banner.png" alt="logo" width="120" height="60"/>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="index.html" class="nav-link px-2 text-white">Home</a></li>
+          <li><a href="hire.html" class="nav-link px-2 text-warning">Hire</a></li>
+          <li><a href="dealers.html" class="nav-link px-2 text-white">Dealers</a></li>
+          <li><a href="about.html" class="nav-link px-2 text-white">About</a></li>
+          <li><a href="contact.html" class="nav-link px-2 text-white">Contact</a></li>
+        </ul>
+
+        <form class="navbar-form navbar-brand" action="http://www.google.com" target="_blank" type="GET">
+          <div class="input-group"> 
+          <input type="text" class="form-control form-control-dark" placeholder="Search...">
+          <span class="input-group-btn">
+             </div>
+          </form>
+        <div class="text-end">
+          <button type="button" class="btn btn-outline-light me-2" data-toggle="modal" data-target="#loginmodal">Login</button>
+          <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#createaccmodal">Create Account</button>
+        </div>
+
+    <!--Login Modal-->
+<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="logintitle">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <main class="form-signin">
+          <form>
+            <div class="form-floating text-black-50">
+              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+              <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating text-black-50">
+              <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+              <label for="floatingPassword">Password</label>
+            </div>
+            <div class="checkbox mb-3 text-black-50">
               <label>
-                 <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-               </label>
-            </form>
-            
-            <div class="text-end">
-              <button type="button" class="btn btn-outline-light me-2" onclick=" relocate('../html/index.html')">Login</button>
-              <button type="button" class="btn btn-outline-warning" onclick=" relocate('../html/index.html')">Create Account</button>
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+            <a class="btn btn-primary w-100 btn btn-lg btn-dark" href="../html/lin_hire.html" role="button">Login</a>
+            <br>
+            <div class="text-center">
+              <br>
+            <a href="../html/e_login.html" class="text-justify">Are you an employee?</a>
+          </div>
+          </form>
+        </main>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+     <!--/Login Modal-->
+
+     <!--Create Account Modal-->
+     <div class="modal fade" id="createaccmodal" tabindex="-1" role="dialog" aria-labelledby="createaccmodal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-black-50" id="createacctitle">Create Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <main class="form-signin">
+              <form>
+                <div class="form-floating text-black-50">
+                  <input type="name" class="form-control" placeholder="Username"><label>Username</label>
+                </div>
+                <div class="form-floating text-black-50">
+                  <input type="email" class="form-control" placeholder="email"><label>Email adress</label>
+                </div>
+                <div class="form-floating text-black-50">
+                  <input type="password" class="form-control" placeholder="Password"><label>Password</label>
+                </div>
+                <br>
+                <div class="form-floating text-black-50">
+                  <input type="password" class="form-control" placeholder="Password"><label>Confirm Password</label>
+                </div>
+                <div class="checkbox mb-3 text-black-50">
+                  <label>
+                    <input type="checkbox" value="terms"><a class="text-sm-start"> I have read and accept the <a href="../html/termsconditions.html" target="_blank">terms and conditions</a></a>
+                  </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-dark" type="submit">Create Account</button>
+                <br>
+              </form>
+            </main>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
-        </div>    
-        
-        <script>
+        </div>
+        <!--/Create Account Modal-->
+       
+  </header>
+</main>
+    <!--/Header-->
 
-          function relocate(text) {
-            location.href =text;
-          }
-          function over(id) {
-        id.class = "nav-link px-2 text-secondary";
-          }
-         function out(id) {
-        if (!(id.class = "nav-link px-2 text-warning")) {
-          id.class = "nav-link px-2 text-white";
-        }
-      }
-            </script>
-
-      </header>
-    </main>
-    </div>
-
+    <!--Content-->
     <main>
       <section class="py-5 text-center container">
         <div class="row py-lg-5">
@@ -314,19 +387,22 @@
           </div>
         </div>
       </div>
-    
     </main>
-<!-- Footer -->
-<footer class="text-center text-lg-start" style="background-color:#ffc107">
-  <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    © 2020 Copyright:
-    <a class="text-white" href="index.html">tkCRS.com</a>
-  </div>
-</footer>
+    <!--/Content-->
 
 
-    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+    <!--Footer-->
+    <footer class="text-center text-lg-start" style="background-color:#ffc404">
+      <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright:
+        <a class="text-primary" href="index.html">tkCRS.com</a>
+      </div>
+    </footer>
+      <!--/Footer-->
 
+    <!--External Javascript-->
+  <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
       
   </body>
 </html>
