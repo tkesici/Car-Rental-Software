@@ -1,7 +1,7 @@
 # tkCRS Car Rental
-
-### @author Tevfik Kesici
-### @since 03.04.2022
+#### author ----> Tevfik Kesici
+#### since ----> 03.04.2022
+<hr>
 
 This project is a HTML/CSS/JS based car rental software for managers and customers for my Web Programming course.
 
