@@ -128,24 +128,31 @@
             <main class="form-signin">
               <form>
                 <div class="form-floating text-black-50">
-                  <input type="name" class="form-control" placeholder="Username"><label>Username</label>
+                  <input type="text" class="form-control" placeholder="text" id="firstname" required><label>First Name</label>
                 </div>
                 <div class="form-floating text-black-50">
-                  <input type="email" class="form-control" placeholder="email"><label>Email adress</label>
+                  <input type="text" class="form-control" placeholder="text" id="lastname" required><label>Last Name</label>
                 </div>
                 <div class="form-floating text-black-50">
-                  <input type="password" class="form-control" placeholder="Password"><label>Password</label>
+                  <input type="email" class="form-control" placeholder="email" id="email" required><label>Email address</label>
+                </div>
+                <div class="form-floating text-black-50">
+                  <input type="text" class="form-control" placeholder="text" id="phonenumber" required><label>Phone number</label>
+                </div>
+                <div class="form-floating text-black-50">
+                  <input type="password" class="form-control" placeholder="Password" id="password" required><label>Password</label>
                 </div>
                 <br>
                 <div class="form-floating text-black-50">
-                  <input type="password" class="form-control" placeholder="Password"><label>Confirm Password</label>
+                  <input type="password" class="form-control" placeholder="Password" id="confirmpassword" required><label>Confirm Password</label>
                 </div>
                 <div class="checkbox mb-3 text-black-50">
                   <label>
-                    <input type="checkbox" value="terms"><a class="text-sm-start"> I have read and accept the <a href="../html/termsconditions.html" target="_blank">terms and conditions</a></a>
+                    <input type="checkbox" value="terms"><a class="text-sm-start"> I have read and accept the 
+                      <a href="../html/termsconditions.html" target="_blank">terms and conditions</a></a>
                   </label>
                 </div>
-                <button class="w-100 btn btn-lg btn-dark" type="submit">Create Account</button>
+                <input class="w-100 btn btn-lg btn-dark"  type="submit" id="register" name="create" value="Create Account"> 
                 <br>
               </form>
             </main>
@@ -180,8 +187,72 @@
     <!--/Footer-->
   
 <!--External Javascript-->
-  <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script type="text/javascript">
+	$(function(){
+		$('#register').click(function(e){
+
+			var valid = this.form.checkValidity();
+			var passwordmatch = false;
+
+			if ($('#password').val() == $('#confirmpassword').val()) {
+				passwordmatch = true;
+			}
+
+			if(valid && passwordmatch){
+
+			var firstname 	  	= $('#firstname').val();
+			var lastname		    = $('#lastname').val();
+			var email 			    = $('#email').val();
+			var phonenumber   	= $('#phonenumber').val();
+			var password 	    	= $('#password').val();
+			var confirmpassword = $('#confirmpassword').val();
+
+				e.preventDefault();	
+
+				$.ajax({
+					type: 'POST',
+					url: 'process.php',
+					data: {firstname: firstname,lastname: lastname,email: email,phonenumber: phonenumber,password: password, confirmpassword: confirmpassword},
+					success: function(data){
+
+						Swal.fire({'title': 'Successful','text': 'You are successfully registered.','type': 'success'})
+						
+					},
+					error: function(data){
+					
+						Swal.fire({'icon': 'error', 'text': 'The form must be filled up correctly.', 'type': 'error'})
+
+					}
+				});
+
+			} else {
+
+				e.preventDefault();	
+
+				Swal.fire({'icon': 'error', 'text': 'The form must be filled up correctly.', 'type': 'error'})
+
+			}
+		});		
+
+	});
+	
+</script>
+<script>
+	var check = function() {
+  if (document.getElementById('password').value ==
+    document.getElementById('confirmpassword').value) {
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').innerHTML = 'Passwords match';
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'Passwords do not match';
+  }
+}
+</script>
 
   </body>
 </html>
