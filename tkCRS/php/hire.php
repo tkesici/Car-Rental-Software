@@ -15,7 +15,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Tevfik Kesici">
   <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-  <title>Home / tkCRS</title>
+  <title>Hire / tkCRS</title>
 
   <!--Bootstrap-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
@@ -35,8 +35,8 @@ session_start();
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <img style="display: inline;" src="../img/logo/banner.png" alt="logo" width="120" height="60"/>
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="index.php" class="nav-link px-2 text-warning">Home</a></li>
-            <li><a href="hire.php" class="nav-link px-2 text-white">Hire</a></li>
+            <li><a href="index.php" class="nav-link px-2 text-white">Home</a></li>
+            <li><a href="hire.php" class="nav-link px-2 text-warning">Hire</a></li>
             <li><a href="dealers.php" class="nav-link px-2 text-white">Dealers</a></li>
             <li><a href="about.php" class="nav-link px-2 text-white">About</a></li>
             <li><a href="contact.php" class="nav-link px-2 text-white">Contact</a></li>
@@ -168,11 +168,14 @@ session_start();
    </div>
 </header>
 
-    <!--Content-->
-<div>
-  <img class="img-fluid" src="../img/wallpapers/wallpaper6.jpg" alt="Cars1" style="opacity: 0.6;">
-  <div class="centered">  
-</div>
+<?php
+	  if(!isset($_SESSION['userlogin'])) {
+        echo 'In order to hire a car, you need to log in.';
+        }
+      else {
+          echo 'Choose a car:';
+      }  
+?>
 
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
