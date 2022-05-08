@@ -1,5 +1,6 @@
 <?php 
 session_start();
+require_once('config.php');
 
 	if(isset($_GET['logout'])){
 		session_destroy();
@@ -170,7 +171,7 @@ session_start();
 
     <!--Content-->
 <div>
-  <img class="img-fluid" src="../img/wallpapers/wallpaper6.jpg" alt="Cars1" style="opacity: 0.6;">
+  <img class="img-fluid" src="../img/wallpapers/wallpaper4.jpg" alt="Cars1" style="opacity: 0.6;">
   <div class="centered">  
 </div>
 
@@ -178,7 +179,7 @@ session_start();
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
       © 2022 Copyright:
-      <a class="text-primary" href="index.html">tkCRS.com</a>
+      <a class="text-primary" href="index.php">tkCRS.com</a>
     </div>
   </footer>
   

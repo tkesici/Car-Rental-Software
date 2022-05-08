@@ -1,15 +1,27 @@
 <?php 
 session_start();
+require_once('config.php');
 
 	if(isset($_GET['logout'])){
 		session_destroy();
-		header("Location: index.php");
+		header("Location: hire.php");
 	}
+
+  $sql1 = "SELECT * from vehicle";
+    $handle1 = $db->prepare($sql1);
+    $handle1->execute();
+    $getAllVehicles = $handle1->fetchAll(PDO::FETCH_ASSOC);
+
+  $sql2 = "SELECT * from agency";
+  $handle2 = $db->prepare($sql2);
+  $handle2->execute();
+  $getAllAgencies = $handle2->fetchAll(PDO::FETCH_ASSOC);
+ 
 ?>
+
 
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -68,7 +80,7 @@ session_start();
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-danger me-2" onclick=" relocate('index.php?logout=true')">Log out</button>
+        <button type="button" class="btn btn-danger me-2" onclick=" relocate('hire.php?logout=true')">Log out</button>
 <?php
 	}
 ?>
@@ -168,23 +180,160 @@ session_start();
    </div>
 </header>
 
+
+<!--Content-->
+
+<section class="py-5 text-center container">
+        <div class="row py-lg-5">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Choose the best one for you.</h1>
+            <p class="lead text-muted">The subscription fee is based on your fleet size, number of locations, advanced functionality, and includes support and updates.</p>
+            <p>
+              <input type="button" class="btn btn-warning" value="Get Help" onclick=" relocate('../html/contact.php')">
+              <a href="#cars" class="btn btn-secondary my-2">Continue</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
 <?php
 	  if(!isset($_SESSION['userlogin'])) {
-        echo 'In order to hire a car, you need to log in.';
+      ?>
+      <div class="row">
+        <?php
+        foreach($getAllVehicles as $vehicle)
+        {
+        ?>
+            <div class="col-md-3 mt-2" id="cars">
+                <div class="card">
+                        <img class="card-img-top img-fluid" src="<?php echo $vehicle['image'] ?>">
+                    <div class="card-body">
+                        <h3 class="card-title text-dark">
+                                <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ' . $vehicle['model']; ?>
+                                </h3>
+                                <h5 class="text-dark">€<?php echo $vehicle['price']?>/day</h5>
+                                <br>
+
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">
+                      <input type="button" class="btn btn-sm btn-warning" value="Hire" disabled>
+                    </div>
+                    </div>
+                    
+                </div>
+            </div>
+        <?php 
         }
+        ?>
+    </div>
+        <?php
+      }  
       else {
-          echo 'Choose a car:';
+        ?>
+<div class="row">
+  
+        <?php
+        foreach($getAllVehicles as $vehicle)
+        {
+        ?>
+            <div class="col-md-3 mt-2" id="cars">
+                <div class="card">
+                        <img class="card-img-top img-fluid" src="<?php echo $vehicle['image'] ?>">
+                    <div class="card-body">
+                        <h3 class="card-title text-dark">
+                                <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ' . $vehicle['model']; ?>
+                                </h3>
+                                <h5 class="text-dark">€<?php echo $vehicle['price']?>/day</h5>
+                                <br>
+
+                    <div class="btn-group">
+                      <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">
+                      <input type="button" class="btn btn-sm btn-warning" value="Hire" data-toggle="modal" data-target="#hiremodal">
+                    </div>
+                    </div>
+                </div>
+            </div>
+        <?php 
+        }
+        ?>
+    </div>
+        <?php
       }  
 ?>
+<div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-black-50" id="specs">Specifications</h5>
+      </div>
+      <div class="modal-body">
+        <img class="img-fluid" src="../img/specs.png" alt="Specifications">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Datepicker Modal-->
+<div class="modal fade" id="hiremodal" tabindex="-1" role="dialog" aria-labelledby="hire" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-black-50" id="hire">Hire</h5>
+      </div>
+        <div class="modal-body">
+            <form class="col">
+              </form>
+              <form class="container-fluid">
+                <label class="text-black-50">Pick-up location</label>
+              <select class="custom-select">
+                <?php
+                foreach($getAllAgencies as $agency)
+                      {
+                  ?>
+                    <option><?php echo $agency['city'];?></option>
+                    <?php
+                      }
+                      ?>
+              </select>
+            </form>
 
+            <form class="container-fluid">
+                <label class="text-black-50">Drop-off location</label>
+              <select class="custom-select">
+                <?php
+                foreach($getAllAgencies as $agency)
+                      {
+                  ?>
+                    <option><?php echo $agency['city'];?></option>
+                    <?php
+                      }
+                      ?>
+              </select>
+            </form>
+
+            <form class="container-fluid">
+                <label class="text-black-50">Date</label>
+            </form>
+          
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" onclick=" relocate('../html/payment.html')">Payment</button>
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/Datepicker Modal-->
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
       © 2022 Copyright:
-      <a class="text-primary" href="index.html">tkCRS.com</a>
+      <a class="text-primary" href="index.php">tkCRS.com</a>
     </div>
   </footer>
-  
 <!--Javascript-->
 <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -256,7 +405,7 @@ session_start();
 				success: function(data){
 					alert(data);
 					if($.trim(data) === "1"){
-						setTimeout(' window.location.href =  "index.php"', 1000);
+						setTimeout(' window.location.href =  "hire.php"', 1000);
 					}
 				},
 				error: function(data){
@@ -293,9 +442,6 @@ session_start();
            id.class = "nav-link px-2 text-white";
          }
     }
-      function search(word) {
-        word.q.value = "http://www.google.com/search/"+word;
-    }
-      </script>
+</script>
   </body>
 </html>
