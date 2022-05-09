@@ -1,7 +1,7 @@
 <?php
 $db_user = "root";
-$db_pass = '';
-$db_name = "project";
+$db_pass = "1234";
+$db_name = "tkcrs";
 
 $db = new PDO('mysql:host=localhost;dbname='. $db_name . ';charset=utf8', $db_user, $db_pass);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -15,10 +15,11 @@ if(isset($_POST)){
 	$email 			= $_POST['email'];
 	$phonenumber	= $_POST['phonenumber'];
 	$password 		= sha1($_POST['password']);
+	$active = 1;
 
-	$sql = "INSERT INTO users (firstname, lastname, email, phonenumber, password ) VALUES(?,?,?,?,?)";
+	$sql = "INSERT INTO customer (firstname, lastname, email, phonenumber, password, active) VALUES(?,?,?,?,?,?)";
 	$stmtinsert = $db->prepare($sql);
-	$result = $stmtinsert->execute([$firstname, $lastname, $email, $phonenumber, $password]);
+	$result = $stmtinsert->execute([$firstname, $lastname, $email, $phonenumber, $password, $active]);
 	if($result){
 		echo 'Successfully saved.';
 	}else{
