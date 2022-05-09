@@ -6,6 +6,7 @@ require_once('config.php');
 		session_destroy();
 		header("Location: index.php");
 	}
+
 ?>
 
 <!doctype html>
@@ -138,7 +139,7 @@ require_once('config.php');
              <input type="text" class="form-control" placeholder="text" id="lastname" required><label>Last Name</label>
            </div>
            <div class="form-floating text-black-50">
-             <input type="email" class="form-control" placeholder="email" id="email" required><label>Email address</label>
+             <input type="text" class="form-control" placeholder="email" id="email" required><label>Email address</label>
            </div>
            <div class="form-floating text-black-50">
              <input type="text" class="form-control" placeholder="text" id="phonenumber" required><label>Phone number</label>
@@ -193,7 +194,6 @@ require_once('config.php');
 		$('#register').click(function(e){
 
 			var valid = this.form.checkValidity();
-			var passwordmatch = false;
 
 			if(valid){
 
@@ -209,7 +209,7 @@ require_once('config.php');
 				$.ajax({
 					type: 'POST',
 					url: 'process.php',
-					data: {firstname: firstname,lastname: lastname,email: email,phonenumber: phonenumber,password: password, confirmpassword: confirmpassword},
+					data: {firstname: firstname,lastname: lastname, email: email,phonenumber: phonenumber,password: password, confirmpassword: confirmpassword},
 					success: function(data){
 
 						Swal.fire({'title': 'Successful','text': 'You are successfully registered.','type': 'success'})
@@ -217,7 +217,7 @@ require_once('config.php');
 					},
 					error: function(data){
 					
-						Swal.fire({'icon': 'error', 'text': 'hata 1The form must be filled up correctly.', 'type': 'error'})
+						Swal.fire({'icon': 'error', 'text': 'The form must be filled up correctly.', 'type': 'error'})
 
 					}
 				});
@@ -226,7 +226,7 @@ require_once('config.php');
 
 				e.preventDefault();	
 
-				Swal.fire({'icon': 'error', 'text': 'hata 2 The form must be filled up correctly.', 'type': 'error'})
+				Swal.fire({'icon': 'error', 'text': 'The form must be filled up correctly.', 'type': 'error'})
 
 			}
 		});		
@@ -290,9 +290,6 @@ require_once('config.php');
         if (!(id.class = "nav-link px-2 text-warning")) {
            id.class = "nav-link px-2 text-white";
          }
-    }
-      function search(word) {
-        word.q.value = "http://www.google.com/search/"+word;
     }
       </script>
   </body>

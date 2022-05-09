@@ -15,11 +15,10 @@ if(isset($_POST)){
 	$email 			= $_POST['email'];
 	$phonenumber	= $_POST['phonenumber'];
 	$password 		= sha1($_POST['password']);
-	$active = 1;
 
 	$sql = "INSERT INTO customer (firstname, lastname, email, phonenumber, password, active) VALUES(?,?,?,?,?,?)";
 	$stmtinsert = $db->prepare($sql);
-	$result = $stmtinsert->execute([$firstname, $lastname, $email, $phonenumber, $password, $active]);
+	$result = $stmtinsert->execute([$firstname, $lastname, $email, $phonenumber, $password, 1]);
 	if($result){
 		echo 'Successfully saved.';
 	}else{
