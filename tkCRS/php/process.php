@@ -18,7 +18,7 @@ if(isset($_POST)){
 
 	$sql = "INSERT INTO customer (firstname, lastname, email, phonenumber, password, active) VALUES(?,?,?,?,?,?)";
 	$stmtinsert = $db->prepare($sql);
-	$result = $stmtinsert->execute([$firstname, $lastname, $email, $phonenumber, $password, 1]);
+	$result = $stmtinsert->execute([$firstname, $lastname, $email , $phonenumber, $password, 1]);
 	if($result){
 		echo 'Successfully saved.';
 	}else{

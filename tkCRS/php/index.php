@@ -139,7 +139,7 @@ require_once('config.php');
              <input type="text" class="form-control" placeholder="text" id="lastname" required><label>Last Name</label>
            </div>
            <div class="form-floating text-black-50">
-             <input type="text" class="form-control" placeholder="email" id="email" required><label>Email address</label>
+             <input type="email" class="form-control" placeholder="email" id="email" required><label>Email address</label>
            </div>
            <div class="form-floating text-black-50">
              <input type="text" class="form-control" placeholder="text" id="phonenumber" required><label>Phone number</label>
@@ -199,7 +199,7 @@ require_once('config.php');
 
 			var firstname 	  	= $('#firstname').val();
 			var lastname		    = $('#lastname').val();
-			var email 			    = $('#email').val();
+      var email 			    = $('#email').val();
 			var phonenumber   	= $('#phonenumber').val();
 			var password 	    	= $('#password').val();
 			var confirmpassword = $('#confirmpassword').val();
