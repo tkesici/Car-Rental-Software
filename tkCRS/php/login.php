@@ -10,18 +10,15 @@ $email = $password = "";
 $email_err = $password_err = $login_err = "";
 
 
-// Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   $link = new mysqli("localhost", "root", "1234", "tkcrs");
 
-    // Check if username is empty
     if(empty(trim($_POST["email"]))){
         $email_err = "Please enter your email.";
     } else{
         $email = trim($_POST["email"]);
     }
 
-    // Check if password is empty
     if(empty(trim($_POST["password"]))){
         $password_err = "Please enter your password.";
     } else{
@@ -42,25 +39,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $_SESSION["email"] = $row['email'];
                         $_SESSION["loggedin"] = true;
                     } else {
-                        $err = "Password is wrong";
+                        $password_err = "Password is wrong.";
                         $link->close();
-                        return;
+                        header("Location:login.php");
                     }
                 } else {
-                    $err = "Your status is false";
+                    $login_err = "Inactive account.";
                     $link->close();
                     return;
                 }
             }
             $link->close();
             header("Location:index.php");
+            echo $login_err;
         } else {
-            $err = "Invalid Account";
+            $login_err = "No such user.";
             $link->close();
         }
     }
-    $link->close();
-  
 }
 ?>
 <!doctype html>
