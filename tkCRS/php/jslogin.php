@@ -5,6 +5,8 @@ require_once('config.php');
 $email = $_POST['email'];
 $password = $_POST['password'];
 
+echo 'email: ' . $email . ' password: ' . $password;
+
 $sql = "SELECT * FROM customer WHERE email = ? AND password = ? LIMIT 1";
 $stmtselect  = $db->prepare($sql);
 $result = $stmtselect->execute([$email, sha1($password)]);

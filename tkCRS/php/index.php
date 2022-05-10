@@ -2,13 +2,113 @@
 session_start();
 require_once('config.php');
 
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+  header("location: index.php");
+  exit;
+}
+
+$firstnameErr = $lastnameErr = $emailErr = $passwordErr = $dateErr = $phonenumberErr = $matchErr = "";
+$firstname = $lastname = $email = $phonenumber = $password = $repassword = "";
+$registrationDate = date("d-m-y h:i:s");
+$valid = true;
+$accountActivity = 1;
+
 	if(isset($_GET['logout'])){
 		session_destroy();
 		header("Location: index.php");
 	}
 
-?>
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+
+
+  if (empty($_POST["firstname"])) {
+      $firstnameErr = "First name is required";
+      $valid = false;
+  } else {
+      $firstname = test_input($_POST["firstname"]);
+      if (!preg_match("/^[a-zA-Z-' ]*$/", $firstname)) {
+          $firstnameErr = "Invalid name format";
+          $valid = false;
+      }
+  }
+
+  if (empty($_POST["lastname"])) {
+    $lastnameErr = "Last name is required";
+    $valid = false;
+} else {
+    $lastname = test_input($_POST["lastname"]);
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $lastname)) {
+        $lastnameErr = "Invalid name format";
+        $valid = false;
+    }
+}
+
+  if (empty($_POST["email"])) {
+      $emailErr = "Email is required";
+      $valid = false;
+  } else {
+      $email = test_input($_POST["email"]);
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          $emailErr = "Invalid email format";
+          $valid = false;
+      }
+  }
+
+  if (empty($_POST["phonenumber"])) {
+    $phonenumberErr = "Phone number is required";
+    $valid = false;
+} else {
+    $phonenumber = test_input($_POST["phonenumber"]);
+}
+
+  if (empty($_POST["password"])) {
+      $passwordErr = "Password is Required";
+      $valid = false;
+  } else {
+      $password = test_input($_POST["password"]);
+      if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/", $password)) {
+          $passwordErr = "Must contain at least one number and one uppercase and lowercase letter, and at
+           least 8 or more characters";
+          $valid = false;
+      }
+  }
+
+  if (!($_POST["password"] === $_POST["repassword"])) {
+
+    $valid = false;
+    $matchErr = "Passwords must match";
+ }
+
+
+  if ($valid) {
+    $servername = "localhost";
+    $serverusername = "root";
+    $serverpassword = "1234";
+    $databasename = "tkcrs";
+
+    $conn = new mysqli($servername, $serverusername, $serverpassword, $databasename);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    
+    $stmt = $conn->prepare("INSERT INTO customer (`firstname`,`lastname`,`email`,`phonenumber`,`password`,`active`) VALUES(?,?,?,?,?,?)");
+    $stmt->bind_param("ssssss", $firstname, $lastname, $email, $phonenumber, sha1($password), $accountActivity);
+
+    $stmt->execute();
+    $stmt->close();
+    $conn->close();
+    header('Location: index.php');
+}
+}
+function test_input($data)  {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -17,6 +117,7 @@ require_once('config.php');
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Tevfik Kesici">
   <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
+  <style> .error {color: #FF0000;} </style>
   <title>Home / tkCRS</title>
 
   <!--Bootstrap-->
@@ -30,6 +131,7 @@ require_once('config.php');
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" 
   integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
+
 
 <body class="h-100 text-center text-white bg-dark">
   <header class="p-3 bg-dark text-white">
@@ -91,11 +193,11 @@ require_once('config.php');
         <main class="form-signin">
           <form>
             <div class="form-floating text-black-50">
-              <input type="email" class="form-control" id="email" placeholder="name@example.com">
+              <input type="email" class="form-control" id="email2" placeholder="firstname$firstname@example.com">
               <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating text-black-50">
-              <input type="password" class="form-control" id="password" placeholder="Password">
+              <input type="password" class="form-control" id="pass" placeholder="Password">
               <label for="floatingPassword">Password</label>
             </div>
             <div class="checkbox mb-3 text-black-50">
@@ -103,7 +205,7 @@ require_once('config.php');
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
             </div>
-            <button class="btn btn-primary w-100 btn btn-lg btn-dark" type="button" name="button" id="login">Login</button> 
+            <button class="btn btn-primary w-100 btn btn-lg btn-dark" type="button" firstname$firstname="button" id="login">Login</button> 
             <br>
             <div class="text-center">
               <br>
@@ -131,33 +233,46 @@ require_once('config.php');
      </div>
      <div class="modal-body">
        <main class="form-signin">
-         <form>
+       <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <p><span class="error">* required field</span></p>
            <div class="form-floating text-black-50">
-             <input type="text" class="form-control" placeholder="text" id="firstname" required><label>First Name</label>
+             <input class="form-control" type="text" name="firstname" value="<?php echo $firstname;?>"><label>First Name</label>
+             <span class="error">* <?php echo $firstnameErr; ?></span>
            </div>
+
+           <br>
            <div class="form-floating text-black-50">
-             <input type="text" class="form-control" placeholder="text" id="lastname" required><label>Last Name</label>
-           </div>
-           <div class="form-floating text-black-50">
-             <input type="email" class="form-control" placeholder="email" id="email" required><label>Email address</label>
-           </div>
-           <div class="form-floating text-black-50">
-             <input type="text" class="form-control" placeholder="text" id="phonenumber" required><label>Phone number</label>
-           </div>
-           <div class="form-floating text-black-50">
-             <input type="password" class="form-control" placeholder="Password" id="password" required><label>Password</label>
+             <input class="form-control" type="text" name="lastname" value="<?php echo $lastname;?>"><label>Last Name</label>
+             <span class="error">* <?php echo $lastnameErr; ?></span>
            </div>
            <br>
            <div class="form-floating text-black-50">
-             <input type="password" class="form-control" placeholder="Password" id="confirmpassword" required><label>Confirm Password</label>
+             <input class="form-control" type="text" name="email" value="<?php echo $email;?>"><label>Email address</label>
+             <span class="error">* <?php echo $emailErr; ?></span>
            </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="phonenumber" value="<?php echo $phonenumber;?>"><label>Phone number</label>
+             <span class="error">* <?php echo $phonenumberErr; ?></span>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="password" value="<?php echo $password;?>"><label>Password</label>
+             <span class="error">* <?php echo $passwordErr; ?></span>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="repassword" value="<?php echo $repassword;?>"><label>Confirm Password</label>
+             <span class="error">* <?php echo $matchErr; ?></span>
+           </div>
+           <br>
            <div class="checkbox mb-3 text-black-50">
              <label>
                <input type="checkbox" value="terms" required><a class="text-sm-start"> I have read and accept the 
                  <a href="#" target="_blank">terms and conditions</a></a>
              </label>
            </div>
-           <input class="w-100 btn btn-lg btn-dark"  type="submit" id="register" name="create" value="Create Account"> 
+           <input class="w-100 btn btn-lg btn-dark"  type="submit" name="submit" value="Create Account"> 
            <br>
          </form>
        </main>
@@ -188,109 +303,10 @@ require_once('config.php');
 <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script type="text/javascript">
-	$(function(){
-		$('#register').click(function(e){
-
-			var valid = this.form.checkValidity();
-
-			if(valid){
-
-			var firstname 	  	= $('#firstname').val();
-			var lastname		    = $('#lastname').val();
-      var email 			    = $('#email').val();
-			var phonenumber   	= $('#phonenumber').val();
-			var password 	    	= $('#password').val();
-			var confirmpassword = $('#confirmpassword').val();
-
-				e.preventDefault();	
-
-				$.ajax({
-					type: 'POST',
-					url: 'process.php',
-					data: {firstname: firstname,lastname: lastname, email: email,phonenumber: phonenumber,password: password, confirmpassword: confirmpassword},
-					success: function(data){
-
-						Swal.fire({'title': 'Successful','text': 'You are successfully registered.','type': 'success'})
-						
-					},
-					error: function(data){
-					
-						Swal.fire({'icon': 'error', 'text': 'The form must be filled up correctly.', 'type': 'error'})
-
-					}
-				});
-
-			} else {
-
-				e.preventDefault();	
-
-				Swal.fire({'icon': 'error', 'text': 'The form must be filled up correctly.', 'type': 'error'})
-
-			}
-		});		
-
-	});
-	
-</script>
-<script>
-	$(function(){
-		$('#login').click(function(e){
-
-			var valid = this.form.checkValidity();
-
-			if(valid){
-				var email = $('#email').val();
-				var password = $('#password').val();
-			}
-
-			e.preventDefault();
-
-			$.ajax({
-				type: 'POST',
-				url: 'jslogin.php',
-				data:  {email: email, password: password},
-				success: function(data){
-					alert(data);
-					if($.trim(data) === "1"){
-						setTimeout(' window.location.href =  "index.php"', 1000);
-					}
-				},
-				error: function(data){
-					alert('There were errors while doing the operation.');
-				}
-			});
-
-		});
-	});
-</script>
-<script>
-	var check = function() {
-  if (document.getElementById('password').value ==
-    document.getElementById('confirmpassword').value) {
-    document.getElementById('message').style.color = 'green';
-    document.getElementById('message').innerHTML = 'Passwords match';
-  } else {
-    document.getElementById('message').style.color = 'red';
-    document.getElementById('message').innerHTML = 'Passwords do not match';
-  }
-}
-</script>
 <script>
       function relocate(text) {
-       location.href =text;
+       location.href = text;
     }
-
-      function over(id) {
-       id.class = "nav-link px-2 text-secondary";
-    }
-
-      function out(id) {
-        if (!(id.class = "nav-link px-2 text-warning")) {
-           id.class = "nav-link px-2 text-white";
-         }
-    }
-      </script>
+</script>
   </body>
 </html>

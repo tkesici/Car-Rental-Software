@@ -13,9 +13,9 @@ require_once('config.php');
     $getAllVehicles = $handle1->fetchAll(PDO::FETCH_ASSOC);
 
   $sql2 = "SELECT * from agency";
-  $handle2 = $db->prepare($sql2);
-  $handle2->execute();
-  $getAllAgencies = $handle2->fetchAll(PDO::FETCH_ASSOC);
+    $handle2 = $db->prepare($sql2);
+    $handle2->execute();
+    $getAllAgencies = $handle2->fetchAll(PDO::FETCH_ASSOC);
  
 ?>
 
