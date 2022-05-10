@@ -3,7 +3,7 @@ session_start();
 require_once('config.php');
 
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-  header("location: index.php");
+  header("location: hire.php");
   exit;
 }
 
@@ -75,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   if (!($_POST["password"] === $_POST["repassword"])) {
-
     $valid = false;
     $matchErr = "Passwords must match";
  }
@@ -107,6 +106,75 @@ function test_input($data)  {
   $data = stripslashes($data);
   $data = htmlspecialchars($data);
   return $data;
+}
+
+// LOGIN SECTION
+
+$loginEmail = $loginPassword = "";
+$loginEmailErr = $loginPasswordErr = $loginErr = "";
+$link = mysqli_connect("localhost", "root", "1234", "tkcrs");
+
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+ 
+    // Check if username is empty
+    if(empty(trim($_POST["loginEmail"]))){
+        $loginEmailErr = "Please enter your email.";
+    } else{
+        $loginEmail = trim($_POST["loginEmail"]);
+    }
+
+    // Check if password is empty
+    if(empty(trim($_POST["loginPassword"]))){
+        $loginPasswordErr = "Please enter your password.";
+    } else{
+        $loginPassword = trim($_POST["loginPassword"]);
+    }
+    
+    // Validate credentials
+    if(empty($loginEmailErr) && empty($loginPasswordErr)){
+        // Prepare a select statement
+        $sql = "SELECT email, password FROM customer WHERE email= ?";
+        
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "s", $loginEmail);
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                // Store result
+                mysqli_stmt_store_result($stmt);
+                
+                // Check if username exists, if yes then verify password
+                if(mysqli_stmt_num_rows($stmt) == 1){                    
+                    // Bind result variables
+                    mysqli_stmt_bind_result($stmt,$loginEmail, $loginPassword);
+                    if(mysqli_stmt_fetch($stmt)){
+                        session_start();
+                        $_SESSION["loggedin"] = true;
+                        $_SESSION["email"] = $loginEmail;
+                        header("location: index.php");
+
+                    }
+                    else{
+                        // Password is not valid
+                        $loginErr = "Invalid email or password.";
+                    }
+                } else{
+                    // Email doesn't exist
+                    $loginErr = "Invalid email or password.";
+                }
+            } else{
+                echo "Something went wrong. Please try again later.";
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+    }
+    
+    // Close connection
+    mysqli_close($link);
 }
 ?>
 <!doctype html>
@@ -148,7 +216,7 @@ function test_input($data)  {
           <form class="navbar-form navbar-brand" type="GET">
             <div class="input-group"> 
 <?php
-	  if(!isset($_SESSION['userlogin'])) {
+	  if(!isset($_SESSION['loggedin'])) {
 ?>
         <div class="text-end">
         <button type="button" class="btn btn-outline-light me-2" data-toggle="modal" data-target="#loginmodal">Login</button>
@@ -191,21 +259,29 @@ function test_input($data)  {
       </div>
       <div class="modal-body">
         <main class="form-signin">
-          <form>
+        <?php 
+        if(!empty($loginErr)){
+            echo '<div class="alert alert-danger">' . $loginErr . '</div>';
+        }        
+        ?>
+          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-floating text-black-50">
-              <input type="email" class="form-control" id="email2" placeholder="firstname$firstname@example.com">
               <label for="floatingInput">Email address</label>
+              <input class="form-control" type="text" name="loginEmail" class="form-control <?php echo (!empty($loginEmailErr)) ? 'is-invalid' : ''; ?>" value="<?php echo $loginEmail; ?>">
+              <span class="invalid-feedback"><?php echo $loginEmailErr; ?></span>
             </div>
+            <br>
             <div class="form-floating text-black-50">
-              <input type="password" class="form-control" id="pass" placeholder="Password">
-              <label for="floatingPassword">Password</label>
+            <label for="floatingPassword">Password</label>
+                <input class="form-control" type="password" name="loginPassword" class="form-control <?php echo (!empty($loginPasswordErr)) ? 'is-invalid' : ''; ?>">
+                <span class="invalid-feedback"><?php echo $loginPasswordErr; ?></span>
             </div>
             <div class="checkbox mb-3 text-black-50">
               <label>
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
             </div>
-            <button class="btn btn-primary w-100 btn btn-lg btn-dark" type="button" firstname$firstname="button" id="login">Login</button> 
+            <input class="btn btn-primary w-100 btn btn-lg btn-dark" type="submit" value="Login">
             <br>
             <div class="text-center">
               <br>

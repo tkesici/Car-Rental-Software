@@ -56,7 +56,7 @@ require_once('config.php');
           <form class="navbar-form navbar-brand" type="GET">
             <div class="input-group"> 
 <?php
-	  if(!isset($_SESSION['userlogin'])) {
+	  if(!isset($_SESSION['loggedin'])) {
 ?>
         <div class="text-end">
         <button type="button" class="btn btn-outline-light me-2" data-toggle="modal" data-target="#loginmodal">Login</button>
@@ -197,7 +197,7 @@ require_once('config.php');
       </section>
 
 <?php
-	  if(!isset($_SESSION['userlogin'])) {
+	  if(!isset($_SESSION['loggedin'])) {
       ?>
       <div class="row">
         <?php
