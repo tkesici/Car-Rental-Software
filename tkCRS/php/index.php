@@ -3,180 +3,10 @@ session_start();
 require_once('config.php');
 
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-  header("location: hire.php");
-  exit;
-}
-
-$firstnameErr = $lastnameErr = $emailErr = $passwordErr = $dateErr = $phonenumberErr = $matchErr = "";
-$firstname = $lastname = $email = $phonenumber = $password = $repassword = "";
-$registrationDate = date("d-m-y h:i:s");
-$valid = true;
-$accountActivity = 1;
-
-	if(isset($_GET['logout'])){
-		session_destroy();
-		header("Location: index.php");
-	}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-
-
-  if (empty($_POST["firstname"])) {
-      $firstnameErr = "First name is required";
-      $valid = false;
-  } else {
-      $firstname = test_input($_POST["firstname"]);
-      if (!preg_match("/^[a-zA-Z-' ]*$/", $firstname)) {
-          $firstnameErr = "Invalid name format";
-          $valid = false;
-      }
-  }
-
-  if (empty($_POST["lastname"])) {
-    $lastnameErr = "Last name is required";
-    $valid = false;
-} else {
-    $lastname = test_input($_POST["lastname"]);
-    if (!preg_match("/^[a-zA-Z-' ]*$/", $lastname)) {
-        $lastnameErr = "Invalid name format";
-        $valid = false;
-    }
-}
-
-  if (empty($_POST["email"])) {
-      $emailErr = "Email is required";
-      $valid = false;
-  } else {
-      $email = test_input($_POST["email"]);
-      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-          $emailErr = "Invalid email format";
-          $valid = false;
-      }
-  }
-
-  if (empty($_POST["phonenumber"])) {
-    $phonenumberErr = "Phone number is required";
-    $valid = false;
-} else {
-    $phonenumber = test_input($_POST["phonenumber"]);
-}
-
-  if (empty($_POST["password"])) {
-      $passwordErr = "Password is Required";
-      $valid = false;
-  } else {
-      $password = test_input($_POST["password"]);
-      if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/", $password)) {
-          $passwordErr = "Must contain at least one number and one uppercase and lowercase letter, and at
-           least 8 or more characters";
-          $valid = false;
-      }
-  }
-
-  if (!($_POST["password"] === $_POST["repassword"])) {
-    $valid = false;
-    $matchErr = "Passwords must match";
- }
-
-
-  if ($valid) {
-    $servername = "localhost";
-    $serverusername = "root";
-    $serverpassword = "1234";
-    $databasename = "tkcrs";
-
-    $conn = new mysqli($servername, $serverusername, $serverpassword, $databasename);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    
-    $stmt = $conn->prepare("INSERT INTO customer (`firstname`,`lastname`,`email`,`phonenumber`,`password`,`active`) VALUES(?,?,?,?,?,?)");
-    $stmt->bind_param("ssssss", $firstname, $lastname, $email, $phonenumber, sha1($password), $accountActivity);
-
-    $stmt->execute();
-    $stmt->close();
-    $conn->close();
-    header('Location: index.php');
-}
-}
-function test_input($data)  {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
-
-// LOGIN SECTION
-
-$loginEmail = $loginPassword = "";
-$loginEmailErr = $loginPasswordErr = $loginErr = "";
-$link = mysqli_connect("localhost", "root", "1234", "tkcrs");
-
-// Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Check if username is empty
-    if(empty(trim($_POST["loginEmail"]))){
-        $loginEmailErr = "Please enter your email.";
-    } else{
-        $loginEmail = trim($_POST["loginEmail"]);
-    }
-
-    // Check if password is empty
-    if(empty(trim($_POST["loginPassword"]))){
-        $loginPasswordErr = "Please enter your password.";
-    } else{
-        $loginPassword = trim($_POST["loginPassword"]);
-    }
-    
-    // Validate credentials
-    if(empty($loginEmailErr) && empty($loginPasswordErr)){
-        // Prepare a select statement
-        $sql = "SELECT email, password FROM customer WHERE email= ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $loginEmail);
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-                
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt,$loginEmail, $loginPassword);
-                    if(mysqli_stmt_fetch($stmt)){
-                        session_start();
-                        $_SESSION["loggedin"] = true;
-                        $_SESSION["email"] = $loginEmail;
-                        header("location: index.php");
-
-                    }
-                    else{
-                        // Password is not valid
-                        $loginErr = "Invalid email or password.";
-                    }
-                } else{
-                    // Email doesn't exist
-                    $loginErr = "Invalid email or password.";
-                }
-            } else{
-                echo "Something went wrong. Please try again later.";
-            }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
-        }
-    }
-    
-    // Close connection
-    mysqli_close($link);
+  echo 'giris yapilmistir';
 }
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -219,8 +49,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	  if(!isset($_SESSION['loggedin'])) {
 ?>
         <div class="text-end">
-        <button type="button" class="btn btn-outline-light me-2" data-toggle="modal" data-target="#loginmodal">Login</button>
-        <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#createaccmodal">Create Account</button>
+        <button type="button" class="btn btn-outline-light me-2" onclick="window.location='login.php';">Login</button>
+        <button type="button" class="btn btn-outline-warning" onclick="window.location='register.php';">Create Account</button>
         </div>
 <?php 
     } 
@@ -240,7 +70,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-danger me-2" onclick=" relocate('index.php?logout=true')">Log out</button>
+        <button type="button" class="btn btn-danger me-2" onclick=" relocate('logout.php')">Log out</button>
 <?php
 	}
 ?>
