@@ -54,11 +54,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     }
                     else{
                         // Password is not valid
-                        $login_err = "Invalid email or password.";
+                        $login_err = "invalid pass";
                     }
                 } else{
                     // Email doesn't exist
-                    $login_err = "Invalid email or password.";
+                    $login_err = "User doesn't exist.";
                 }
             } else{
                 echo "Something went wrong. Please try again later.";
