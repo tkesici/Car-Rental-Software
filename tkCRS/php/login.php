@@ -8,11 +8,12 @@ require_once "config.php";
 
 $email = $password = "";
 $email_err = $password_err = $login_err = "";
-$link = mysqli_connect("localhost", "root", "1234", "tkcrs");
+
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
+  $link = new mysqli("localhost", "root", "1234", "tkcrs");
+
     // Check if username is empty
     if(empty(trim($_POST["email"]))){
         $email_err = "Please enter your email.";
@@ -29,49 +30,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Validate credentials
     if(empty($email_err) && empty($password_err)){
-        // Prepare a select statement
-        $sql = "SELECT email, password FROM customer WHERE email= ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $email);
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-                
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    echo sha1($password);
-                    mysqli_stmt_bind_result($stmt,$email, md5($password));
-                    if(mysqli_stmt_fetch($stmt)){
-                        session_start();
+      $sql = "SELECT id,`firstname`,email,`password`,active FROM customer WHERE email='$email'";
+        $result = mysqli_query($link, $sql);
+        $count = mysqli_num_rows($result);
+        if ($count > 0) {
+            while ($row = $result->fetch_assoc()) {
+                if ($row['active'] == 1) {
+                    if ($row['password'] == md5($password)) {
+                        $_SESSION["name"] = $row['firstname'];
+                        $_SESSION["id"] = $row['id'];
+                        $_SESSION["email"] = $row['email'];
                         $_SESSION["loggedin"] = true;
-                        $_SESSION["email"] = $email;
-                       // header("location: index.php");
-
+                    } else {
+                        $err = "Password is wrong";
+                        $link->close();
+                        return;
                     }
-                    else{
-                        // Password is not valid
-                        $login_err = "invalid pass";
-                    }
-                } else{
-                    // Email doesn't exist
-                    $login_err = "User doesn't exist.";
+                } else {
+                    $err = "Your status is false";
+                    $link->close();
+                    return;
                 }
-            } else{
-                echo "Something went wrong. Please try again later.";
             }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
+            $link->close();
+            header("Location:index.php");
+        } else {
+            $err = "Invalid Account";
+            $link->close();
         }
     }
-    
-    // Close connection
-    mysqli_close($link);
+    $link->close();
+  
 }
 ?>
 <!doctype html>
