@@ -44,12 +44,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Check if username exists, if yes then verify password
                 if(mysqli_stmt_num_rows($stmt) == 1){                    
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt,$email, sha1($password));
+                    echo sha1($password);
+                    mysqli_stmt_bind_result($stmt,$email, md5($password));
                     if(mysqli_stmt_fetch($stmt)){
                         session_start();
                         $_SESSION["loggedin"] = true;
                         $_SESSION["email"] = $email;
-                        header("location: index.php");
+                       // header("location: index.php");
 
                     }
                     else{

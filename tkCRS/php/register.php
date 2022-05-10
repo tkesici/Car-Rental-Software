@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     $stmt = $conn->prepare("INSERT INTO customer (`firstname`,`lastname`,`email`,`phonenumber`,`password`,`active`) VALUES(?,?,?,?,?,?)");
-    $stmt->bind_param("ssssss", $firstname, $lastname, $email, $phonenumber, sha1($password), $accountActivity);
+    $stmt->bind_param("ssssss", $firstname, $lastname, $email, $phonenumber, md5($password), $accountActivity);
 
     $stmt->execute();
     $stmt->close();
