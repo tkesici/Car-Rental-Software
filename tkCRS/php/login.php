@@ -23,7 +23,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password = trim($_POST["password"]);
     }
     
-    // Validate credentials
     if(empty($email_err) && empty($password_err)){
       $sql = "SELECT id,`firstname`,email,`password`,active FROM customer WHERE email='$email'";
         $result = mysqli_query($link, $sql);
@@ -37,19 +36,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $_SESSION["email"] = $row['email'];
                         $_SESSION["loggedin"] = true;
                     } else {
-                        $password_err = "Password is wrong.";
+                      $password_err = "Invalid password.";
                         $link->close();
-                        header("Location:login.php");
+                        header("Location:1.php");
                     }
-                } else {
+                } else {                   
                     $login_err = "Inactive account.";
                     $link->close();
-                    return;
                 }
             }
-            $link->close();
-            header("Location:index.php");
-            echo $login_err;
+            if ( is_resource($link)) {
+              $link->close();
+              header("Location:3.php");
+         }
+            
         } else {
             $login_err = "No such user.";
             $link->close();
@@ -92,10 +92,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <div class="modal-body">
         <main class="form-signin">
         <?php 
-        if(!empty($login_err)){
-            echo '<div class="alert alert-danger">' . $login_err . '</div>';
-        }        
+        if (!empty($login_err)){
+          echo '<div class="alert alert-danger">' . $login_err . '</div>';               
+        } 
+        if (!empty($email_err)) {
+          echo '<div class="alert alert-danger">' . $email_err . '</div>';
+        }   
+        if (!empty($password_err)) {
+          echo '<div class="alert alert-danger">' . $password_err . '</div>';
+        }  
         ?>
+        
           <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-floating text-black-50">
               <label for="floatingInput">Email address</label>
