@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $firstnameErr = "First name is required";
       $valid = false;
   } else {
+
       $firstname = test_input($_POST["firstname"]);
       if (!preg_match("/^[a-zA-Z-' ]*$/", $firstname)) {
           $firstnameErr = "Invalid name format";
@@ -36,13 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["lastname"])) {
     $lastnameErr = "Last name is required";
     $valid = false;
-} else {
+  } else {
     $lastname = test_input($_POST["lastname"]);
     if (!preg_match("/^[a-zA-Z-' ]*$/", $lastname)) {
         $lastnameErr = "Invalid name format";
         $valid = false;
     }
-}
+  }
 
   if (empty($_POST["email"])) {
       $emailErr = "Email is required";
@@ -58,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["phonenumber"])) {
     $phonenumberErr = "Phone number is required";
     $valid = false;
-} else {
+  } else {
     $phonenumber = test_input($_POST["phonenumber"]);
-}
+  }
 
   if (empty($_POST["password"])) {
       $passwordErr = "Password is Required";
@@ -81,6 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
   if ($valid) {
+
     $servername = "localhost";
     $serverusername = "root";
     $serverpassword = "1234";
@@ -91,15 +93,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    
-    $stmt = $conn->prepare("INSERT INTO customer (`firstname`,`lastname`,`email`,`phonenumber`,`password`,`active`) VALUES(?,?,?,?,?,?)");
-    $stmt->bind_param("ssssss", $firstname, $lastname, $email, $phonenumber, md5($password), $accountActivity);
 
-    $stmt->execute();
-    $stmt->close();
-    $conn->close();
-    header('Location: index.php');
-}
+
+    $duplicateEmail=mysqli_query($conn,"SELECT * FROM customer where email='$email'");
+    $duplicatePhonenumber=mysqli_query($conn,"SELECT * FROM customer where phonenumber='$phonenumber'");
+
+    if ((mysqli_num_rows($duplicateEmail)>0) && (mysqli_num_rows($duplicatePhonenumber)>0)) {
+      echo 'A user is already exist with an email of <b>' . $_POST["email"] . '</b> and a phone number of <b> ' . $_POST["phonenumber"] . '</b>!';
+    } else {
+      if (mysqli_num_rows($duplicateEmail)>0) {
+        echo 'A user is already exist with an email of <b>' . $_POST["email"] . '</b>!';
+     } 
+     else if (mysqli_num_rows($duplicatePhonenumber)>0) {
+        echo 'A user is already exist with a phone number of <b>' . $_POST["phonenumber"] . '</b>!';
+     } else {
+         $stmt = $conn->prepare("INSERT INTO customer (`firstname`,`lastname`,`email`,`phonenumber`,`password`,`active`) VALUES(?,?,?,?,?,?)");
+         $stmt->bind_param("ssssss", $firstname, $lastname, $email, $phonenumber, md5($password), $accountActivity);
+     
+         $stmt->execute();
+         $stmt->close();
+         $conn->close();
+         header('Location: index.php');
+       }
+    }
+  }
 }
 function test_input($data)  {
   $data = trim($data);
