@@ -9,7 +9,6 @@ require_once "config.php";
 $email = $password = "";
 $email_err = $password_err = $login_err = "";
 
-
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   $link = new mysqli("localhost", "root", "1234", "tkcrs");
 
