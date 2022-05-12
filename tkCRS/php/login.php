@@ -35,10 +35,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $_SESSION["id"] = $row['id'];
                         $_SESSION["email"] = $row['email'];
                         $_SESSION["loggedin"] = true;
+                        header("Location:index.php");
                     } else {
-                      $password_err = "Invalid password.";
+                        $password_err = "Invalid password.";
                         $link->close();
-                        header("Location:1.php");
                     }
                 } else {                   
                     $login_err = "Inactive account.";
@@ -47,13 +47,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
             if ( is_resource($link)) {
               $link->close();
-              header("Location:3.php");
+              header("Location:login.php");
          }
             
         } else {
             $login_err = "No such user.";
             $link->close();
-        }
+        }        
     }
 }
 ?>
