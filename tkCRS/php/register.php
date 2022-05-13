@@ -82,12 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($valid) {
 
-    $servername = "localhost";
-    $serverusername = "root";
-    $serverpassword = "1234";
-    $databasename = "tkcrs";
-
-    $conn = new mysqli($servername, $serverusername, $serverpassword, $databasename);
+    $conn = new mysqli("localhost", "root", "1234", "tkcrs");
 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -184,15 +179,15 @@ function test_input($data)  {
            </div>
            <br>
            <div class="form-floating text-black-50">
-             <input class="form-control" type="password" name="password" value="<?php echo $password;?>"><label>Password</label>
+             <input class="form-control" type="password" id="password" name="password" value="<?php echo $password;?>" onkeyup=check();><label>Password</label>
              <span class="error">* <?php echo $passwordErr; ?></span>
            </div>
            <br>
            <div class="form-floating text-black-50">
-             <input class="form-control" type="password" name="repassword" value="<?php echo $repassword;?>"><label>Confirm Password</label>
+             <input class="form-control" type="password" id="repassword" name="repassword" value="<?php echo $repassword;?>" onkeyup=check();><label>Confirm Password</label>
              <span class="error">* <?php echo $matchErr; ?></span>
            </div>
-           <br>
+           <span id='message'></span>
            <div class="checkbox mb-3 text-black-50">
              <label>
                <input type="checkbox" value="terms" required><a class="text-sm-start"> I have read and accept the 
@@ -205,10 +200,22 @@ function test_input($data)  {
        </main>
      </div>
      <div class="modal-footer">
-       <button type="button" class="btn btn-warning" onclick="window.location='index.php';">Close</button>
+       <button type="button" class="btn btn-warning" onclick="window.location='index.php';">Abandon</button>
          </div>
        </div>
      </div>
    </div>
 </body>
+<script>
+	var check = function() {
+  if (document.getElementById('password').value ==
+    document.getElementById('repassword').value) {
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').innerHTML = 'Passwords match';
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'Passwords do not match';
+  }
+}
+</script>
 </header>

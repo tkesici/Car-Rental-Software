@@ -9,7 +9,7 @@ $email = $password = "";
 $email_err = $password_err = $login_err = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $link = new mysqli("localhost", "root", "1234", "tkcrs");
+  $conn = new mysqli("localhost", "root", "1234", "tkcrs");
 
     if(empty(trim($_POST["email"]))){
         $email_err = "Please enter your email.";
@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     if(empty($email_err) && empty($password_err)){
       $sql = "SELECT id,`firstname`,email,`password`,active FROM customer WHERE email='$email'";
-        $result = mysqli_query($link, $sql);
+        $result = mysqli_query($conn, $sql);
         $count = mysqli_num_rows($result);
         if ($count > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -38,21 +38,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         header("Location:index.php");
                     } else {
                         $password_err = "Invalid password.";
-                        $link->close();
+                        $conn->close();
                     }
                 } else {                   
                     $login_err = "Inactive account.";
-                    $link->close();
+                    $conn->close();
                 }
             }
-            if ( is_resource($link)) {
-              $link->close();
+            if ( is_resource($conn)) {
+              $conn->close();
               header("Location:login.php");
          }
             
         } else {
             $login_err = "No such user.";
-            $link->close();
+            $conn->close();
         }        
     }
 }
@@ -130,7 +130,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </main>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning" onclick="window.location='index.php';">Close</button>
+        <button type="button" class="btn btn-warning" onclick="window.location='index.php';">Abandon</button>
           </div>
         </div>
       </div>
