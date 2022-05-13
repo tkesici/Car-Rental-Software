@@ -1,17 +1,20 @@
 <?php 
 session_start();
-
 	if(isset($_GET['logout'])){
 		session_destroy();
 		header("Location: hire.php");
 	}
-
     $conn = new mysqli("localhost", "root", "1234", "tkcrs");
-    $sql1 = "SELECT * from vehicle";
-    $getAllVehicles = $conn->query($sql1);
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
+  $sql1 = "SELECT * FROM vehicle";
+  $getAllVehicles = $conn->query($sql1);
+  $sql2 = "SELECT * FROM agency";
+  $getAllAgencies = $conn->query($sql2);
+  $today = date_create()->format('Y-m-d');
+  echo 'session id:' . $_SESSION['id'];
 ?>
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,7 +23,6 @@ session_start();
   <meta name="author" content="Tevfik Kesici">
   <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
   <title>Hire / tkCRS</title>
-
   <!--CSS-->
 <style>
   .img-desc {
@@ -48,7 +50,6 @@ session_start();
   opacity: 1;
 }     
 </style>
-
   <!--Bootstrap-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -79,57 +80,45 @@ session_start();
           </ul>
           <form class="navbar-form navbar-brand" type="GET">
             <div class="input-group"> 
-<?php
-	  if(!isset($_SESSION['loggedin'])) {
-?>
-        <div class="text-end">
-        <button type="button" class="btn btn-outline-light me-2" onclick="window.location='login.php';">Login</button>
-        <button type="button" class="btn btn-outline-warning" onclick="window.location='register.php';">Create Account</button>
-        </div>
-<?php 
-    } 
-      else { 
-?>
-        <div class="text-end">
-          <div class="navbar-form navbar-brand">
-            <button class="btn btn-light dropdown-toggle" type="button" id="memberdropdown" data-toggle="dropdown">
-<?php 
-                echo 'Welcome, ' . $_SESSION['email']; 
-?>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Profile</a>
-              <a class="dropdown-item" href="#">My Transactions</a>
-              <a class="dropdown-item" href="#">Settings</a>
-            </div>
-          </div>
-        </div>
-        <button type="button" class="btn btn-danger me-2" onclick=" relocate('hire.php?logout=true')">Log out</button>
-<?php
-	}
-?>
+<?php if(!isset($_SESSION['loggedin'])) { ?>
+ <div class="text-end">
+ <button type="button" class="btn btn-outline-light me-2" onclick="window.location='login.php';">Login</button>
+ <button type="button" class="btn btn-outline-warning" onclick="window.location='register.php';">Create Account</button>
+ </div>
+<?php } else { ?>
+  <div class="text-end">
+    <div class="navbar-form navbar-brand">
+      <button class="btn btn-light dropdown-toggle" type="button" id="memberdropdown" data-toggle="dropdown">
+<?php echo 'Welcome, ' . $_SESSION['email']; ?>
+  </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">Profile</a>
+        <a class="dropdown-item" href="#">My Transactions</a>
+        <a class="dropdown-item" href="#">Settings</a>
+      </div>
+    </div>
+  </div>
+<button type="button" class="btn btn-danger me-2" onclick=" relocate('hire.php?logout=true')">Log out</button>
+<?php } ?>
     </div>
   </form>
 </header>
-
-
 <!--Content-->
-<?php
-	  if(isset($_SESSION['loggedin'])) {
-?>
-<section class="py-5 text-center container">
+<?php if(isset($_SESSION['loggedin'])) { ?>
+<section class="container">
   <div class="row py-lg-12">
     <div class="col-lg-6 col-md- mx-auto">
       <h1 class="fw-light text-warning">Choose the best one for you, <?php echo $_SESSION["name"];?>.</h1>
       <p class="lead text-muted">Running a car rental operation is a complex business and can be stressful when first starting out. Our priority at our website is to simplify this responsibility for you and make it an overall more enjoyable experience. </p>
+      <br>
        <body>
           <section class="container">
-           <form>
+          <form method="POST">
               <div class="row form-group">
                  <div class="col-4 mx-auto">
-                   Pick-up Date
-                  <div class="input-group date" id="datepicker">
-                   <input type="text" class="form-control">
+                  <p>Pick-up Date</p>
+                  <div class="input-group date" id="datepicker" name="datepicker">
+                   <input type="text" name="startdate" class="form-control">
                     <span class="input-group-append">
                      <span class="input-group-text bg-white d-block">
                        <i class="fa fa-calendar"></i>
@@ -137,11 +126,10 @@ session_start();
                  </span>
               </div>  
             </div>
-          <form>
              <div class="col-4 mx-auto">
-               Drop-off Date
-              <div class="input-group date" id="datepicker2">
-                <input type="text" class="form-control">
+               <p>Drop-off Date</p>
+              <div class="input-group date" id="datepicker2" name="datepicker2">
+                <input type="text" name="enddate" class="form-control">
                  <span class="input-group-append">
                   <span class="input-group-text bg-white d-block">
                    <i class="fa fa-calendar"></i>
@@ -149,16 +137,15 @@ session_start();
             </span>
           </div>
         </div>
-      </form>
+        <br>
     </div>
-  </form>    
 </section>
-
 </body>
-              <input type="button" class="btn btn-warning" value="Search" onclick=" relocate('../html/contact.php')">
-              <a href="#cars" class="btn btn-secondary my-2">Continue Manually</a>
-              <input type="button" class="btn btn-light" value="Get Help" onclick=" relocate('../html/contact.php')">
+<br>
+<input class="btn btn-warning" type="submit" name="submit" value="Search">   
+</form>
               
+              <a href="#cars" class="btn btn-secondary my-2">Continue Manually</a>           
             </p>
           </div>
         </div>
@@ -184,16 +171,16 @@ session_start();
         foreach($getAllVehicles as $vehicle)
         {
         ?>
-            <div class="col-md-3 mt-2" id="cars">
+            <div class="col-md-2 mt-2" id="cars">
                 <div class="card">
-                        <img class="card-img-top img-fluid" src="<?php echo $vehicle['image'] ?>">
-                    <div class="card-body">
-                        <h3 class="card-title text-dark">
-                                <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ' . $vehicle['model']; ?>
-                                </h3>
-                                <h5 class="text-dark">€<?php echo $vehicle['price']?>/day</h5>
-                                <br>
-
+                        <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>" alt="Image">
+                        <div class="card-body">
+                        <h4 class="card-title text-dark">
+                          <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
+                      </h4>
+                        <h6 class="card-title text-dark">
+                          <?php echo $vehicle['model']; ?>
+                          <br><br>
                     <div class="btn-group">
                       <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">                    
                       <div class="img-desc" onmousemove="imgHover(this, event)">
@@ -210,6 +197,7 @@ session_start();
         }
         ?>
     </div>
+    <br>
         <?php
       }  
       else {
@@ -220,20 +208,22 @@ session_start();
         foreach($getAllVehicles as $vehicle)
         {
         ?>
-            <div class="col-md-3 mt-2" id="cars">
+            <div class="col-md-2 mt-2" id="cars">
                 <div class="card">
-                        <img class="card-img-top img-fluid" src="<?php echo $vehicle['image'] ?>">
+                        <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>">
                     <div class="card-body">
-                        <h3 class="card-title text-dark">
-                                <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ' . $vehicle['model']; ?>
-                                </h3>
-                                <h5 class="text-dark">€<?php echo $vehicle['price']?>/day</h5>
-                                <br>
-
-                    <div class="btn-group">
+                        <h4 class="card-title text-dark">
+                          <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
+                      </h4>
+                        <h6 class="card-title text-dark">
+                          <?php echo $vehicle['model']; ?>
+                          <br><br>
+                    <div class="btn-group col">          
                       <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">
                       <input type="button" class="btn btn-sm btn-warning" value="Hire" data-toggle="modal" data-target="#hiremodal">
                     </div>
+                    <h6 class="text-sm-center text-dark font-weight-light">€<?php echo $vehicle['price']?>/day</h6>
+
                     </div>
                 </div>
             </div>
@@ -241,8 +231,25 @@ session_start();
         }
         ?>
     </div>
+    <br>
         <?php
       }  
+?>
+
+<?php
+ $startdate = $_POST['startdate'];
+ $startdate = str_replace(' ', '', $startdate);
+ $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
+ $enddate = $_POST['enddate'];
+ $enddate = str_replace(' ', '', $enddate);
+ $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
+ $v = 0;
+
+$stmt = $conn->prepare("INSERT INTO booking (`customerid`, `vehicleid`, `startdate`, `enddate`) VALUES(?,?,?,?)");
+$stmt->bind_param("ssss",$_SESSION['id'],$v,$startdate,$enddate);
+$stmt->execute();
+$stmt->close();
+$conn->close();
 ?>
 <div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
