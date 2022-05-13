@@ -13,7 +13,12 @@ session_start();
   $sql2 = "SELECT * FROM agency";
   $getAllAgencies = $conn->query($sql2);
   $today = date_create()->format('Y-m-d');
-  echo 'session id:' . $_SESSION['id'];
+
+  if(isset($_SESSION['loggedin'])) { 
+    echo 'session id:' . $_SESSION['id'];
+  }
+
+  
 ?>
 <!doctype html>
 <html lang="en">
