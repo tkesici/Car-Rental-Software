@@ -8,17 +8,13 @@ session_start();
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
+  $startdate = $enddate = "";
   $sql1 = "SELECT * FROM vehicle";
   $getAllVehicles = $conn->query($sql1);
   $sql2 = "SELECT * FROM agency";
   $getAllAgencies = $conn->query($sql2);
   $today = date_create()->format('Y-m-d');
 
-  if(isset($_SESSION['loggedin'])) { 
-    echo 'session id:' . $_SESSION['id'];
-  }
-
-  
 ?>
 <!doctype html>
 <html lang="en">
@@ -71,7 +67,7 @@ session_start();
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 </head>
 
-<body class="h-100 text-center text-white bg-dark">
+<body class="h-100 text-center text-white bg-dark" id="top">
   <header class="p-3 bg-dark text-white">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -121,9 +117,8 @@ session_start();
           <form method="POST">
               <div class="row form-group">
                  <div class="col-4 mx-auto">
-                  <p>Pick-up Date</p>
                   <div class="input-group date" id="datepicker" name="datepicker">
-                   <input type="text" name="startdate" class="form-control">
+                   <input type="text" name="startdate" class="form-control" placeholder="Pick-up date">
                     <span class="input-group-append">
                      <span class="input-group-text bg-white d-block">
                        <i class="fa fa-calendar"></i>
@@ -132,9 +127,8 @@ session_start();
               </div>  
             </div>
              <div class="col-4 mx-auto">
-               <p>Drop-off Date</p>
-              <div class="input-group date" id="datepicker2" name="datepicker2">
-                <input type="text" name="enddate" class="form-control">
+              <div class="input-group date" id="datepicker2" name="datepicker2" >
+                <input type="text" name="enddate" class="form-control" placeholder="Drop-off date">
                  <span class="input-group-append">
                   <span class="input-group-text bg-white d-block">
                    <i class="fa fa-calendar"></i>
@@ -147,10 +141,10 @@ session_start();
 </section>
 </body>
 <br>
-<input class="btn btn-warning" type="submit" name="submit" value="Search">   
+<input class="btn btn-warning" type="submit" name="submit" value="Search">
 </form>
               
-              <a href="#cars" class="btn btn-secondary my-2">Continue Manually</a>           
+              <a href="index.php" class="btn btn-secondary my-2">See Cars</a>           
             </p>
           </div>
         </div>
@@ -165,20 +159,31 @@ session_start();
         </div>
 </section>
 <?php } ?>
-
-
-
 <?php
-	  if(!isset($_SESSION['loggedin'])) {
-      ?>
-      <div class="row">
-        <?php
-        foreach($getAllVehicles as $vehicle)
-        {
-        ?>
-            <div class="col-md-2 mt-2" id="cars">
-                <div class="card">
-                        <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>" alt="Image">
+if(isset($_SESSION['loggedin'])) {
+ $startdate = $_POST['startdate'];
+ $startdate = str_replace(' ', '', $startdate);
+ $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
+ $enddate = $_POST['enddate'];
+ $enddate = str_replace(' ', '', $enddate);
+ $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
+  if (!empty($startdate && $enddate)) {
+            $sql = "SELECT *
+            FROM vehicle v 
+                WHERE NOT EXISTS
+                  (SELECT * FROM booking b 
+                    WHERE v.id = b.vehicleid AND ' . $startdate . ' BETWEEN b.startdate AND b.enddate
+                              OR ' . $enddate .  ' BETWEEN b.startdate AND b.enddate)";
+            $cars = $conn->query($sql);
+            if (!$cars) {
+                die($conn->error);
+            } ?>
+                <div class="row"> <?php 
+            while ($vehicle = $cars->fetch_assoc()) { ?>
+
+                <div class="col-md-2 mt-2" id="cars">
+                  <div class="card">
+                  <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>" alt="Image">
                         <div class="card-body">
                         <h4 class="card-title text-dark">
                           <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
@@ -189,73 +194,22 @@ session_start();
                     <div class="btn-group">
                       <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">                    
                       <div class="img-desc" onmousemove="imgHover(this, event)">
-                       <input type="button" class="btn btn-sm btn-warning" value="Hire" disabled>
-                       <span>You need to login first</span>
-                      </div>
-                      
-                    </div>
-                    </div>
-                    
-                </div>
-            </div>
-        <?php 
-        }
-        ?>
-    </div>
-    <br>
-        <?php
-      }  
-      else {
-        ?>
-<div class="row">
-  
-        <?php
-        foreach($getAllVehicles as $vehicle)
-        {
-        ?>
-            <div class="col-md-2 mt-2" id="cars">
-                <div class="card">
-                        <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>">
-                    <div class="card-body">
-                        <h4 class="card-title text-dark">
-                          <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
-                      </h4>
-                        <h6 class="card-title text-dark">
-                          <?php echo $vehicle['model']; ?>
-                          <br><br>
-                    <div class="btn-group col">          
-                      <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">
-                      <input type="button" class="btn btn-sm btn-warning" value="Hire" data-toggle="modal" data-target="#hiremodal">
-                    </div>
+                      <?php echo "<a class='btn btn-sm btn-warning' href=\"payment.php?id=".$vehicle['id']."\">Hire</a>" ?>
+                         </div>
+                       </div>
                     <h6 class="text-sm-center text-dark font-weight-light">€<?php echo $vehicle['price']?>/day</h6>
-
                     </div>
                 </div>
-            </div>
-        <?php 
-        }
-        ?>
+            </div> <?php 
+              } 
+            ?>
+            </tbody>
+        </table>
     </div>
-    <br>
-        <?php
-      }  
-?>
-
-<?php
- $startdate = $_POST['startdate'];
- $startdate = str_replace(' ', '', $startdate);
- $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
- $enddate = $_POST['enddate'];
- $enddate = str_replace(' ', '', $enddate);
- $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
- $v = 0;
-
-$stmt = $conn->prepare("INSERT INTO booking (`customerid`, `vehicleid`, `startdate`, `enddate`) VALUES(?,?,?,?)");
-$stmt->bind_param("ssss",$_SESSION['id'],$v,$startdate,$enddate);
-$stmt->execute();
-$stmt->close();
-$conn->close();
-?>
+  </div>
+</div>
+<?php } 
+}?>
 <div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -271,58 +225,6 @@ $conn->close();
     </div>
   </div>
 </div>
-<!--Datepicker Modal-->
-<div class="modal fade" id="hiremodal" tabindex="-1" role="dialog" aria-labelledby="hire" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-black-50" id="hire">Hire</h5>
-      </div>
-        <div class="modal-body">
-            <form class="col">
-              </form>
-              <form class="container-fluid">
-                <label class="text-black-50">Pick-up location</label>
-              <select class="custom-select">
-                <?php
-                foreach($getAllAgencies as $agency)
-                      {
-                  ?>
-                    <option><?php echo $agency['city'];?></option>
-                    <?php
-                      }
-                      ?>
-              </select>
-            </form>
-
-            <form class="container-fluid">
-                <label class="text-black-50">Drop-off location</label>
-              <select class="custom-select">
-                <?php
-                foreach($getAllAgencies as $agency)
-                      {
-                  ?>
-                    <option><?php echo $agency['city'];?></option>
-                    <?php
-                      }
-                      ?>
-              </select>
-            </form>
-
-            <form class="container-fluid">
-                <label class="text-black-50">Date</label>
-            </form>
-          
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-warning" onclick=" relocate('../html/payment.html')">Payment</button>
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/Datepicker Modal-->
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">

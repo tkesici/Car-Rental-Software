@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $_SESSION["id"] = $row['id'];
                         $_SESSION["email"] = $row['email'];
                         $_SESSION["loggedin"] = true;
-                        header("Location:index.php");
+                        header("Location:hire.php");
                     } else {
                         $password_err = "Invalid password.";
                         $conn->close();
