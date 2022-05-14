@@ -160,14 +160,16 @@ session_start();
 </section>
 <?php } ?>
 <?php
-if(isset($_SESSION['loggedin'])) {
- $startdate = $_POST['startdate'];
- $startdate = str_replace(' ', '', $startdate);
- $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
- $enddate = $_POST['enddate'];
- $enddate = str_replace(' ', '', $enddate);
- $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
-  if (!empty($startdate && $enddate)) {
+  if(!empty($_POST['startdate']) || !empty($_POST['enddate'])) {
+    $startdate = $_POST['startdate'];
+    $startdate = str_replace(' ', '', $startdate);
+    $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
+    $enddate = $_POST['enddate'];
+    $enddate = str_replace(' ', '', $enddate);
+    $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
+  }
+if(!empty($_POST['startdate']) || !empty($_POST['enddate'])) {
+  if (isset($startdate)) {
             $sql = "SELECT *
             FROM vehicle v 
                 WHERE NOT EXISTS
