@@ -24,35 +24,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     if(empty($email_err) && empty($password_err)){
-      $sql = "SELECT id,`firstname`,lastname,email,`password`,active FROM customer WHERE email='$email'";
+      $sql = "SELECT id,`firstname`,lastname,email,`password` FROM manager WHERE email='$email'";
         $result = mysqli_query($conn, $sql);
         $count = mysqli_num_rows($result);
         if ($count > 0) {
             while ($row = $result->fetch_assoc()) {
-                if ($row['active'] == 1) {
                     if ($row['password'] == md5($password)) {
                         $_SESSION["firstname"] = $row['firstname'];
                         $_SESSION["lastname"] = $row['lastname'];
                         $_SESSION["id"] = $row['id'];
                         $_SESSION["email"] = $row['email'];
-                        $_SESSION["loggedin"] = true;
-                        header("Location:hire.php");
+                        $_SESSION["admin"] = true;
+                        header("Location:dashboard.php");
                     } else {
                         $password_err = "Invalid password.";
                         $conn->close();
                     }
-                } else {                   
-                    $login_err = "Inactive account.";
-                    $conn->close();
-                }
             }
             if ( is_resource($conn)) {
               $conn->close();
-              header("Location:login.php");
+              header("Location:adminlogin.php");
          }
             
         } else {
-            $login_err = "No such user.";
+            $login_err = "No such employee.";
             $conn->close();
         }        
     }
@@ -67,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <meta name="author" content="Tevfik Kesici">
   <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
   <style> .error {color: #FF0000;} </style>
-  <title>Login / tkCRS</title>
+  <title>Admin Login / tkCRS</title>
 
   <!--Bootstrap-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
@@ -86,7 +81,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="logintitle">Login</h5>
+        <h5 class="modal-title text-dark" id="logintitle">Employee Login</h5>
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -121,17 +116,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="checkbox" value="remember-me"> Remember me
               </label>
             </div>
-            <input class="btn btn-primary w-100 btn btn-lg btn-dark" type="submit" value="Login">
+            <input class="btn btn-primary w-100 btn btn-lg btn-warning" type="submit" value="Employee Login">
             <br>
             <div class="text-center">
               <br>
-            <a href="adminlogin.php" class="text-justify">Are you an employee?</a>
+            <a href="login.php" class="text-justify">Are you a customer?</a>
           </div>
           </form>
         </main>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning" onclick="window.location='index.php';">Abandon</button>
+        <button type="button" class="btn btn-dark" onclick="window.location='index.php';">Abandon</button>
           </div>
         </div>
       </div>

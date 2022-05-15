@@ -128,7 +128,7 @@ function test_input($data)  {
   <meta name="author" content="Tevfik Kesici">
   <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
   <style> .error {color: #FF0000;} </style>
-  <title>Home / tkCRS</title>
+  <title>Register / tkCRS</title>
 
   <!--Bootstrap-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" 
