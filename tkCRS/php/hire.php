@@ -177,8 +177,12 @@ session_start();
 if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
   if(isset($days) && $days < 1) { ?>
       <h3 class="text-danger">You can't hire a car for <?php echo $days;?> days!</h3> <?php
-  } else if (isset($startdate) && isset($enddate)) { ?>
-    <h3 class="text-success">Results for between <?php echo $_POST['startdate'] . ' and ' . $_POST['enddate'] . ' (' . $days . ' days) '; ?></h3><?php
+  } else if (isset($startdate) && isset($enddate)) { 
+      if ($days ==1) { ?>
+        <h3 class="text-success">Results for between <?php echo $_POST['startdate'] . ' and ' . $_POST['enddate'] . ' (' . $days . ' day) '; ?></h3> <?php
+      } else { ?>
+        <h3 class="text-success">Results for between <?php echo $_POST['startdate'] . ' and ' . $_POST['enddate'] . ' (' . $days . ' days) '; ?></h3> <?php
+      } 
       $sql = "SELECT *
       FROM vehicle v 
           WHERE NOT EXISTS
