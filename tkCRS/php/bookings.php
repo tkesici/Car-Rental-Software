@@ -12,9 +12,8 @@ if(!isset($_SESSION['admin'])) {
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $sql1 = "SELECT * FROM vehicle";
-  $getAllVehicles = $conn->query($sql1);
-  $today = date_create()->format('Y-m-d');
+  $sql1 = "SELECT * FROM booking";
+  $customers = $conn->query($sql1);
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,7 +23,7 @@ if(!isset($_SESSION['admin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-    <title>Dashboard \ tkCRS</title>
+    <title>Bookings \ tkCRS</title>
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -70,11 +69,11 @@ if(!isset($_SESSION['admin'])) {
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="dashboard.php" class="nav-link px-2 text-light">Dashboard</a></li>
+          <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
           <li><a href="cars.php" class="nav-link px-2 text-dark">Cars</a></li>
           <li><a href="customers.php" class="nav-link px-2 text-dark">Customers</a></li>
           <li><a href="#" class="nav-link px-2 text-dark">Employees</a></li>
-          <li><a href="bookings.php" class="nav-link px-2 text-dark">Bookings</a></li>
+          <li><a href="bookings.php" class="nav-link px-2 text-light">Bookings</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
@@ -97,33 +96,27 @@ if(!isset($_SESSION['admin'])) {
   </form>
 </header>
 <!--Content-->
+
 <?php if(isset($_SESSION['admin'])) { ?>
       <div class="row">
         <?php
-        foreach($getAllVehicles as $vehicle)
+        foreach($customers as $booking)
         {
         ?>
             <div class="col-md-2 mt-2" id="cars">
                 <div class="card">
-                        <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>" alt="Image">
                         <div class="card-body">
-                        <h4 class="card-title text-dark">
-                          <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
-                      </h4>
-                        <h6 class="card-title text-dark">
-                          <?php echo $vehicle['model']; ?>
-                          <br><br>
+                      <h2 class="card-title text-dark"><?php echo ' <b>Booking ID: ' . $booking['id']  . '</b>';?></h2>
+                      <h6 class="card-title text-dark"><?php echo ' <b>Customer ID: ' . $booking['customerid'] . '</b>';?></h6>
+                      <h6 class="card-title text-dark"><?php echo ' <b>Vehicle ID: ' . $booking['vehicleid']  . '</b>';?></h6>
+                      <h6 class="card-title text-dark"><?php echo ' <b>Date From: ' . $booking['startdate']  . '</b>';?></h6>
+                      <h6 class="card-title text-dark"><?php echo ' <b>Date To: ' . $booking['enddate']  . '</b>';?></h6>
                     <div class="btn-group">                
                       <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <?php echo "<a class='btn btn-sm btn-info' href=\"cars.php?id=".$vehicle['id']."\">Change Price</a>" ?>
-                      <?php echo "<a class='btn btn-sm btn-success' href=\"cars.php?id=".$vehicle['id']."\">Change Stock</a>" ?>
+                      <?php echo "<a class='btn btn-sm btn-warning' href=\"customers.php\">Manage Booking</a>" ?>
                          </div>
                        </div>
                        <br><br>
-                       <input class="form-control" type="text" name="price"><label>Price</label>
-                       <input class="form-control" type="text" name="stock"><label>Stock</label>
-                    <h6 class="text-sm-center text-danger font-weight-light"> <?php echo 'Stock:  <b>' . $vehicle['stock']  . '</b> ';?>  </h6>
-                    <h6 class="text-sm-center text-danger font-weight-light">Price: <?php echo $vehicle['price'] . '€';?></h6>
                     </div>
                 </div>
             </div>
@@ -147,7 +140,6 @@ if(!isset($_SESSION['admin'])) {
     </div>
   </div>
 </div>
-
 
 
     <!--Footer-->

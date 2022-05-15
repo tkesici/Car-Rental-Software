@@ -73,7 +73,7 @@ if(!isset($_SESSION['admin'])) {
           <li><a href="cars.php" class="nav-link px-2 text-light">Cars</a></li>
           <li><a href="customers.php" class="nav-link px-2 text-dark">Customers</a></li>
           <li><a href="#" class="nav-link px-2 text-dark">Employees</a></li>
-          <li><a href="#" class="nav-link px-2 text-dark">Bookings</a></li>
+          <li><a href="bookings.php" class="nav-link px-2 text-dark">Bookings</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>

@@ -71,9 +71,9 @@ if(!isset($_SESSION['admin'])) {
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
           <li><a href="cars.php" class="nav-link px-2 text-dark">Cars</a></li>
-          <li><a href="#" class="nav-link px-2 text-light">Customers</a></li>
+          <li><a href="customers.php" class="nav-link px-2 text-light">Customers</a></li>
           <li><a href="#" class="nav-link px-2 text-dark">Employees</a></li>
-          <li><a href="#" class="nav-link px-2 text-dark">Bookings</a></li>
+          <li><a href="bookings.php" class="nav-link px-2 text-dark">Bookings</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
