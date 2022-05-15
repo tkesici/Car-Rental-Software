@@ -163,13 +163,13 @@ session_start();
 
   if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
     $startdate = $_POST['startdate'];
-    $_SESSION['startdate'] = $_POST['startdate'];
     $startdate = str_replace(' ', '', $startdate);
     $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
+    $_SESSION['startdate'] = $_POST['startdate'];
     $enddate = $_POST['enddate'];
-    $_SESSION['enddate'] = $_POST['enddate'];
     $enddate = str_replace(' ', '', $enddate);
     $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
+    $_SESSION['enddate'] = $_POST['enddate'];
     $datetime1 = strtotime($_SESSION['startdate']);
     $datetime2 = strtotime($_SESSION['enddate']);
     $secs = $datetime2 - $datetime1;
