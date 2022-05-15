@@ -11,17 +11,52 @@ session_start();
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $sql1 = "SELECT * FROM manufacturer";
-  $getAllVehicles = $conn->query($sql1);
   $today = date_create()->format('Y-m-d');
-?>
-<?php 
-$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-$uri_segments = explode('=', $actual_link);
-$datetime1 = strtotime($_SESSION['startdate']);
-$datetime2 = strtotime($_SESSION['enddate']);
-$secs = $datetime2 - $datetime1;// == <seconds between the two times>
-$days = $secs / 86400;
+  
+  $startdate = $_SESSION['startdate'];
+  $startdate = str_replace(' ', '', $startdate);
+  $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
+  $enddate = $_SESSION['enddate'];
+  $enddate = str_replace(' ', '', $enddate);
+  $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
+  $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+  $uri_segments = explode('=', $actual_link);
+  $datetime1 = strtotime($_SESSION['startdate']);
+  $datetime2 = strtotime($_SESSION['enddate']);
+  $secs = $datetime2 - $datetime1;
+  $days = $secs / 86400;
+
+  $ccnumber = $expiration = $cvv = "";
+  $ccnumberErr = $expirationErr = $cvvErr = "";
+  $valid = false;
+
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (empty($_POST["cc-number"])) {
+        $ccnumberErr = "ERR";
+    } else {
+        $ccnumber = test_input($_POST["cc-number"]);
+        $valid = true;
+    }
+
+    
+    if (empty($_POST["cc-expiration"])) {
+      $expirationErr = "ERR";
+  } else {
+      $expiration = test_input($_POST["cc-expiration"]);
+      $valid = true;
+  }
+
+  
+  if (empty($_POST["cc-cvv"])) {
+    $cvvErr = "ERR";
+} else {
+    $cvv = test_input($_POST["cc-cvv"]);
+    $valid = true;
+}
+
+  }
 ?>
 
 <!doctype html>
@@ -93,7 +128,7 @@ $days = $secs / 86400;
     
     $sql = "SELECT *
     FROM vehicle v 
-        WHERE v.id = $uri_segments[1]";
+        WHERE v.id = ' $uri_segments[1]'";
     $cars = $conn->query($sql);
     if (!$cars) {
         die($conn->error);
@@ -112,27 +147,26 @@ $days = $secs / 86400;
         </div>
         <div class="row g-5">
            <div>
-            <form class="needs-validation" novalidate>
-    
+           <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
               <div class="row gy-3">
                 <div class="col-md-6">
                   <label for="cc-name" class="form-label">Name on card</label>
-                  <input type="text" class="form-control" id="cc-name" placeholder="">
+                  <input type="text" class="form-control" id="cc-name" value="<?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname'];?>">
                 </div>
     
                 <div class="col-md-6">
                   <label for="cc-number" class="form-label">Credit card number</label>
-                  <input type="text" class="form-control" id="cc-number" placeholder="">
+                  <input type="text" class="form-control" id="cc-number" placeholder="0000-0000-0000-0000">
                 </div>
     
                 <div class="col-md-3">
                   <label for="cc-expiration" class="form-label">Expiration</label>
-                  <input type="text" class="form-control" id="cc-expiration" placeholder="">
+                  <input type="text" class="form-control" id="cc-expiration" placeholder="00/00">
                 </div>
     
                 <div class="col-md-3">
                   <label for="cc-cvv" class="form-label">CVV</label>
-                  <input type="text" class="form-control" id="cc-cvv" placeholder="">
+                  <input type="text" class="form-control" id="cc-cvv" placeholder="000">
                 </div>
               </div>
 
@@ -154,10 +188,24 @@ $days = $secs / 86400;
                   <strong>€<?php echo number_format((float)$vehicle['price']*$days, 2, '.', '');?></strong>
                 </li>
               </ul>
-
-              <button type="button" type="submit" class="btn btn-outline-warning container-fluid">Order</button>
+              <input class="w-100 btn btn-outline-warning container-fluid" value="Order" onclick="window.location='success.php';"> 
               <hr>            
               </form>
+              <?php 
+                $stmt = $conn->prepare("INSERT INTO booking (`customerid`,`vehicleid`,`startdate`,`enddate`) VALUES(?,?,?,?)");
+                $stmt->bind_param("ssss",$_SESSION['id'],$uri_segments[1],$startdate,$enddate);
+                $stmt->execute();
+                $stmt->close();
+                $conn->close();
+
+                  function test_input($data)  {
+                    $data = trim($data);
+                    $data = stripslashes($data);
+                    $data = htmlspecialchars($data);
+                    return $data;
+                  }
+                  
+                    ?>
           </div>
         </div>
       </main>

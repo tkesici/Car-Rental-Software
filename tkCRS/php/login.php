@@ -24,14 +24,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     if(empty($email_err) && empty($password_err)){
-      $sql = "SELECT id,`firstname`,email,`password`,active FROM customer WHERE email='$email'";
+      $sql = "SELECT id,`firstname`,lastname,email,`password`,active FROM customer WHERE email='$email'";
         $result = mysqli_query($conn, $sql);
         $count = mysqli_num_rows($result);
         if ($count > 0) {
             while ($row = $result->fetch_assoc()) {
                 if ($row['active'] == 1) {
                     if ($row['password'] == md5($password)) {
-                        $_SESSION["name"] = $row['firstname'];
+                        $_SESSION["firstname"] = $row['firstname'];
+                        $_SESSION["lastname"] = $row['lastname'];
                         $_SESSION["id"] = $row['id'];
                         $_SESSION["email"] = $row['email'];
                         $_SESSION["loggedin"] = true;

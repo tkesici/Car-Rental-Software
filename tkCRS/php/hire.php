@@ -109,7 +109,7 @@ session_start();
 <section class="container">
   <div class="row py-lg-12">
     <div class="col-lg-6 col-md- mx-auto">
-      <h1 class="fw-light text-warning">Choose the best one for you, <?php echo $_SESSION["name"];?>.</h1>
+      <h1 class="fw-light text-warning">Choose the best one for you, <?php echo $_SESSION["firstname"];?>.</h1>
       <p class="lead text-muted">Running a car rental operation is a complex business and can be stressful when first starting out. Our priority at our website is to simplify this responsibility for you and make it an overall more enjoyable experience. </p>
       <br>
        <body>
@@ -160,6 +160,7 @@ session_start();
 </section>
 <?php } ?>
 <?php
+
   if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
     $startdate = $_POST['startdate'];
     $_SESSION['startdate'] = $_POST['startdate'];
@@ -173,9 +174,16 @@ session_start();
     $datetime2 = strtotime($_SESSION['enddate']);
     $secs = $datetime2 - $datetime1;
     $days = $secs / 86400;
+    $datetime3 = strtotime($_SESSION['startdate']);
+    $datetime4 = strtotime($today);
+    $secs2 = $datetime3 - $datetime4;
+    $days2 = $secs2 / 86400;
   }
 if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
-  if(isset($days) && $days < 1) { ?>
+
+  if(isset($days2) && $days2 < 0) { ?>
+    <h3 class="text-danger">You cannot hire a car before today.</h3> <?php
+  } else if(isset($days) && $days < 1) { ?>
       <h3 class="text-danger">You can't hire a car for <?php echo $days;?> days!</h3> <?php
   } else if (isset($startdate) && isset($enddate)) { 
       if ($days ==1) { ?>
