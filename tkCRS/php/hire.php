@@ -160,58 +160,68 @@ session_start();
 </section>
 <?php } ?>
 <?php
-  if(!empty($_POST['startdate']) || !empty($_POST['enddate'])) {
+  if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
     $startdate = $_POST['startdate'];
+    $_SESSION['startdate'] = $_POST['startdate'];
     $startdate = str_replace(' ', '', $startdate);
     $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
     $enddate = $_POST['enddate'];
+    $_SESSION['enddate'] = $_POST['enddate'];
     $enddate = str_replace(' ', '', $enddate);
     $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
+    $datetime1 = strtotime($_SESSION['startdate']);
+    $datetime2 = strtotime($_SESSION['enddate']);
+    $secs = $datetime2 - $datetime1;
+    $days = $secs / 86400;
   }
-if(!empty($_POST['startdate']) || !empty($_POST['enddate'])) {
-  if (isset($startdate)) {
-            $sql = "SELECT *
-            FROM vehicle v 
-                WHERE NOT EXISTS
-                  (SELECT * FROM booking b 
-                    WHERE v.id = b.vehicleid AND ' . $startdate . ' BETWEEN b.startdate AND b.enddate
-                              OR ' . $enddate .  ' BETWEEN b.startdate AND b.enddate)";
-            $cars = $conn->query($sql);
-            if (!$cars) {
-                die($conn->error);
-            } ?>
-                <div class="row"> <?php 
-            while ($vehicle = $cars->fetch_assoc()) { ?>
-
-                <div class="col-md-2 mt-2" id="cars">
-                  <div class="card">
-                  <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>" alt="Image">
-                        <div class="card-body">
-                        <h4 class="card-title text-dark">
-                          <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
-                      </h4>
-                        <h6 class="card-title text-dark">
-                          <?php echo $vehicle['model']; ?>
-                          <br><br>
-                    <div class="btn-group">
-                      <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">                    
-                      <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <?php echo "<a class='btn btn-sm btn-warning' href=\"payment.php?id=".$vehicle['id']."\">Hire</a>" ?>
-                         </div>
-                       </div>
-                    <h6 class="text-sm-center text-dark font-weight-light">€<?php echo $vehicle['price']?>/day</h6>
-                    </div>
-                </div>
-            </div> <?php 
-              } 
-            ?>
-            </tbody>
-        </table>
-    </div>
-  </div>
+if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
+  if(isset($days) && $days < 1) { ?>
+      <h3 class="text-danger">You can't hire a car for <?php echo $days;?> days!</h3> <?php
+  } else if (isset($startdate) && isset($enddate)) { ?>
+    <h3 class="text-success">Results for between <?php echo $_POST['startdate'] . ' and ' . $_POST['enddate'] . ' (' . $days . ' days) '; ?></h3><?php
+      $sql = "SELECT *
+      FROM vehicle v 
+          WHERE NOT EXISTS
+            (SELECT * FROM booking b 
+              WHERE v.id = b.vehicleid AND ' . $startdate . ' BETWEEN b.startdate AND b.enddate
+                        OR ' . $enddate .  ' BETWEEN b.startdate AND b.enddate)";
+      $cars = $conn->query($sql);
+      if (!$cars) {
+          die($conn->error);
+      } ?>
+          <div class="row"> <?php 
+      while ($vehicle = $cars->fetch_assoc()) { ?>
+          <div class="col-md-2 mt-2" id="cars">
+            <div class="card">
+            <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>" alt="Image">
+                  <div class="card-body">
+                  <h4 class="card-title text-dark">
+                    <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
+                </h4>
+                  <h6 class="card-title text-dark">
+                    <?php echo $vehicle['model']; ?>
+                    <br><br>
+              <div class="btn-group">
+                <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">                    
+                <div class="img-desc" onmousemove="imgHover(this, event)">
+                <?php echo "<a class='btn btn-sm btn-warning' href=\"payment.php?id=".$vehicle['id']."\">Hire</a>" ?>
+                   </div>
+                 </div>
+              <h6 class="text-sm-center text-dark font-weight-light">€<?php echo $vehicle['price']?>/day</h6>
+              </div>
+          </div>
+      </div> <?php 
+        } 
+      ?>
+      </tbody>
+  </table>
 </div>
-<?php } 
-}?>
+</div>
+</div> 
+<?php
+  }
+}
+?>
 <div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
