@@ -14,6 +14,8 @@ session_start();
   $sql2 = "SELECT * FROM agency";
   $getAllAgencies = $conn->query($sql2);
   $today = date_create()->format('Y-m-d');
+  $sql3 = "SELECT * FROM cartype";
+  $getVehicleType = $conn->query($sql3);
 
 ?>
 <!doctype html>
@@ -140,11 +142,17 @@ session_start();
     </div>
 </section>
 <select class="form-control" name="city">
-                            <option value="" selected> Location</option>
+                            <option value="" selected>Location</option>
                             <?php while ($row1 = mysqli_fetch_array($getAllAgencies)): ?>
                                 <option value="<?php echo $row1['id']; ?>"><?php echo $row1['city']; ?></option>
                             <?php endwhile; ?>
                         </select>
+<select class="form-control" name="type">
+                          <option value="" selected>Car Type</option>
+                          <?php while ($row1 = mysqli_fetch_array($getVehicleType)): ?>
+                              <option value="<?php echo $row1['id']; ?>"><?php echo $row1['type']; ?></option>
+                          <?php endwhile; ?>
+                       </select>
 
 </body>
 <br>
@@ -186,7 +194,7 @@ session_start();
     $secs2 = $datetime3 - $datetime4;
     $days2 = $secs2 / 86400;
   }
-if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
+if(!empty($_POST['startdate']) && !empty($_POST['enddate']) && !empty($_POST['city']) && !empty($_POST['type'])) {
 
   if(isset($days2) && $days2 < 0) { ?>
     <h3 class="text-danger">You cannot hire a car before today.</h3> <?php
@@ -200,11 +208,16 @@ if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
       } 
       $city = $_POST['city'];
       $start = $_POST['startdate'];
-      $end = $_POST['enddate'];    
-$sql = 'SELECT c.id,c.manufacturer,c.model,c.image,c.price,c.agency_id FROM vehicle c INNER JOIN agency l 
-ON l.id = c.agency_id WHERE c.id NOT IN(SELECT cc.vehicleid FROM booking cc 
-WHERE c.id = cc.vehicleid AND "' . $start . '" BETWEEN cc.startdate AND cc.enddate
-OR ' . $end .  ' BETWEEN cc.startdate AND cc.enddate) AND c.agency_id ='.$city;
+      $start = str_replace(' ', '', $start);
+      $start = DateTime::createFromFormat('m/d/Y', $start)->format('Y-m-d');
+      $end = $_POST['enddate'];
+      $end = str_replace(' ', '', $end);
+      $end = DateTime::createFromFormat('m/d/Y', $end)->format('Y-m-d');    
+      $sql = 'SELECT v.id,v.manufacturer,v.model,v.image,v.price,v.agency_id FROM vehicle v
+      INNER JOIN agency a ON v.agency_id = a.id WHERE v.id NOT IN (SELECT b.vehicleid FROM booking b WHERE v.id = b.vehicleid AND "' . $start . '" BETWEEN b.startdate AND b.enddate
+              OR "' . $end . '" BETWEEN b.startdate AND b.enddate) AND v.agency_id =' . $_POST['city'] . ' AND v.type_id =' . $_POST['type'];
+
+              //  
       $cars = $conn->query($sql);
       if (!$cars) {
           die($conn->error);
