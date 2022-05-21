@@ -193,19 +193,16 @@ session_start();
     $datetime4 = strtotime($today);
     $secs2 = $datetime3 - $datetime4;
     $days2 = $secs2 / 86400;
+    
   }
 if(!empty($_POST['startdate']) && !empty($_POST['enddate']) && !empty($_POST['city']) && !empty($_POST['type'])) {
 
   if(isset($days2) && $days2 < 0) { ?>
     <h3 class="text-danger">You cannot hire a car before today.</h3> <?php
   } else if(isset($days) && $days < 1) { ?>
-      <h3 class="text-danger">You can't hire a car for <?php echo $days;?> days!</h3> <?php
-  } else if (isset($startdate) && isset($enddate)) { 
-      if ($days ==1) { ?>
-        <h3 class="text-success">Results for between <?php echo $_POST['startdate'] . ' and ' . $_POST['enddate'] . ' (' . $days . ' day) '; ?></h3> <?php
-      } else { ?>
-        <h3 class="text-success">Results for between <?php echo $_POST['startdate'] . ' and ' . $_POST['enddate'] . ' (' . $days . ' days) '; ?></h3> <?php
-      } 
+      <h3 class="text-danger">You can't hire a car for <?php echo $days;?> days.</h3> <?php
+  } else if (isset($startdate) && isset($enddate)) { ?>
+      <h3 class="text-success">Results between <?php echo $_POST['startdate'] . ' and ' . $_POST['enddate']; ?></h3> <?php 
       $city = $_POST['city'];
       $start = $_POST['startdate'];
       $start = str_replace(' ', '', $start);
@@ -213,17 +210,23 @@ if(!empty($_POST['startdate']) && !empty($_POST['enddate']) && !empty($_POST['ci
       $end = $_POST['enddate'];
       $end = str_replace(' ', '', $end);
       $end = DateTime::createFromFormat('m/d/Y', $end)->format('Y-m-d');    
-      $sql = 'SELECT v.id,v.manufacturer,v.model,v.image,v.price,v.agency_id FROM vehicle v
-      INNER JOIN agency a ON v.agency_id = a.id WHERE v.id NOT IN (SELECT b.vehicleid FROM booking b WHERE v.id = b.vehicleid AND "' . $start . '" BETWEEN b.startdate AND b.enddate
-              OR "' . $end . '" BETWEEN b.startdate AND b.enddate) AND v.agency_id =' . $_POST['city'] . ' AND v.type_id =' . $_POST['type'];
-
-              //  
+      $active = 1;
+      $sql = 'SELECT v.id,v.manufacturer,v.model,v.image,v.price,v.agency_id 
+      FROM vehicle v
+        INNER JOIN agency a ON v.agency_id = a.id 
+          WHERE v.id NOT IN 
+            (SELECT b.vehicleid FROM booking b 
+                WHERE NOT (b.enddate < "' . $start . '" OR b.startdate > "' . $end . '" ) AND b.enddate) 
+                  AND v.agency_id = "' . $_POST['city'] . '"
+                    AND v.type_id = "' . $_POST['type'] . '" ';
       $cars = $conn->query($sql);
+      $count = mysqli_num_rows($cars);
+      echo $count . ' cars available';
       if (!$cars) {
           die($conn->error);
       } ?>
           <div class="row"> <?php 
-      while ($vehicle = $cars->fetch_assoc()) { 
+      while ($vehicle = $cars->fetch_assoc()) {
       echo "<div class='col-md-2 mt-2' id='cars'>
             <div class='card'>
             <img class='img-fluid img-thumbnail' src=". $vehicle['image'] ." alt='Image'>

@@ -31,12 +31,13 @@ session_start();
   $ccnumber = $expiration = $cvv = "";
   $ccnumberErr = $expirationErr = $cvvErr = "";
   $valid = false;
+  $one = 1;
 
   if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
     function order(){
-      global $conn,$startdate,$enddate,$total;
-      $stmt = $conn->prepare("INSERT INTO booking (`customerid`,`vehicleid`,`startdate`,`enddate`,`price`) VALUES(?,?,?,?,?)");
-      $stmt->bind_param("iissi",$_SESSION['id'],$_GET["car"],$startdate,$enddate,$total);
+      global $conn,$startdate,$enddate,$total,$one;
+      $stmt = $conn->prepare("INSERT INTO booking (`customerid`,`vehicleid`,`startdate`,`enddate`,`price`,`active`) VALUES(?,?,?,?,?,?)");
+      $stmt->bind_param("iissii",$_SESSION['id'],$_GET["car"],$startdate,$enddate,$total,$one);
       $stmt->execute();
       $stmt->close();
       $conn->close();
