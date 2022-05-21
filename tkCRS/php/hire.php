@@ -283,6 +283,7 @@ if(!empty($_POST['startdate']) && !empty($_POST['enddate']) && !empty($_POST['ci
     </div>
   </div>
 </div>
+<br>
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
