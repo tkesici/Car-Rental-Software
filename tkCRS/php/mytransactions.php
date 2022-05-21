@@ -100,40 +100,65 @@ session_start();
     </div>
   </form>
 </header>
-<?php
- $sql1 = 'SELECT *
- FROM booking b
-     WHERE b.customerid = "'.$_SESSION['id'].'" AND b.active = 1';
-$sql2 = 'SELECT *
-FROM booking b
-    WHERE b.customerid = "'.$_SESSION['id'].'" AND b.active = 0';
-$sql3= 'SELECT *
-FROM vehicle v 
-    WHERE v.id = "'.$_SESSION['id'].'" '; 
+<?php if(isset($_SESSION['loggedin'])) { 
+$sql1 = 'SELECT *, b.id as bookingid, c.email AS customermail, c.phonenumber AS customerphone
+FROM booking AS b
+LEFT JOIN customer AS c
+ON b.customerid = c.id 
+LEFT JOIN vehicle AS v 
+ON b.vehicleid = v.id
+LEFT JOIN agency AS a
+ON v.agency_id = a.id
+LEFT JOIN cartype AS ct
+ON v.type_id = ct.id
+WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
+
+$sql2 = 'SELECT *, b.id AS bookingid, c.email AS customermail, c.phonenumber AS customerphone
+FROM booking AS b
+LEFT JOIN customer AS c
+ON b.customerid = c.id 
+LEFT JOIN vehicle AS v 
+ON b.vehicleid = v.id
+LEFT JOIN agency AS a
+ON v.agency_id = a.id
+LEFT JOIN cartype AS ct
+ON v.type_id = ct.id
+WHERE b.active = 0 AND c.id = "' . $_SESSION['id'] . '" ';
 
      $active = $conn->query($sql1);
      $inactive = $conn->query($sql2);
-     $vehicleinfo = $conn->query($sql3);
+
       ?>
-      <div class="row table-success"><h1>Active Reservations</h1> <?php 
-      while ($active = $active->fetch_assoc()) {
-           ?>
-        <div class='row' id='transactions'>
-                  <div class='card-body table-success'>
-                  <h4 class='card-title text-dark'>
-                    <b>car #<?php echo $active['vehicleid']; ?></b> 
-                </h4>
-                  <h6 class='card-title text-dark'>From: <?php echo $active['startdate'];?>
-                  <h6 class='card-title text-dark'>To: <?php echo $active['enddate'];?>
-                  <hr>
-              <div class='btn-group'>
-                <input type='button' class='btn btn-sm btn-danger' value='Cancel Reservation' data-toggle='modal' data-target=''>                    
-                <div class='img-desc' onmousemove='imgHover(this, event)'>
+      <div class="row table-success" id ="transactions"><h1>Active Reservations</h1> <?php 
+      while ($info = $active->fetch_assoc()) {  ?>
+            <div class='card-body table-success'>
+                 <h6 class='card-title text-dark'>
+                 <h1>Booking #<?php echo $info['bookingid']; ?></h1>
+                 <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?>
+                    <h5 class="text-decoration-underline text-primary"><strong>Customer Information</strong></h5>
+                    Name: <b><?php echo $info['firstname'] . ' ' . $info['lastname']; ?><br></b>
+                    E-mail: <b><?php echo $info['customermail']?><br></b>
+                    Phone number: <b><?php echo $info['customerphone']?><br></b>
+                    <h5 class="text-decoration-underline text-primary"><strong>Booking Information</strong></h5>
+                    Start Date: <b><?php echo $info['startdate']; ?><br></b>
+                    End Date: <b><?php echo $info['enddate']; ?><br></b>
+                    Total Price: <b>€<?php echo $info['price']; ?><br></b>
+                    Manufacturer: <b><?php echo $info['manufacturer']; ?><br></b>
+                    Model: <b><?php echo $info['model']; ?><br></b>
+                    Type: <b> <?php echo $info['type']; ?><br></b>
+                    Car plate: <b><?php echo $info['plate']; ?><br></b>
+                    Agency: <b><?php echo $info['city']; ?></b><br>
+                    E-mail: <b><?php echo $info['email']; ?><br></b>
+                    Phone number: <b><?php echo $info['phonenumber']; ?></b>
+                </h6>
+              <div class='row-cols-6'>
+                <input type='button' class='btn btn-sm btn-danger' value='Cancel Reservation' data-toggle='modal' data-target=''>              
                    </div>
-                 </div>
+                   <hr>
           </div>
       </div>
-      </div> <?php } 
+       <?php } 
+}
          ?>
       
     <!--Footer-->
