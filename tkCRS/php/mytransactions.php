@@ -19,7 +19,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Tevfik Kesici">
   <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-  <title>About / tkCRS</title>
+  <title>My Transactions / tkCRS</title>
   <!--CSS-->
 <style>
   .img-desc {
@@ -72,7 +72,7 @@ session_start();
             <li><a href="index.php" class="nav-link px-2 text-white">Home</a></li>
             <li><a href="hire.php" class="nav-link px-2 text-white">Hire</a></li>
             <li><a href="dealers.php" class="nav-link px-2 text-white">Dealers</a></li>
-            <li><a href="about.php" class="nav-link px-2 text-warning">About</a></li>
+            <li><a href="about.php" class="nav-link px-2 text-white">About</a></li>
             <li><a href="contact.php" class="nav-link px-2 text-white">Contact</a></li>
           </ul>
           <form class="navbar-form navbar-brand" type="GET">
@@ -89,9 +89,9 @@ session_start();
 <?php echo 'Welcome, ' . $_SESSION['email']; ?>
   </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">Profile</a>
+        <a class="dropdown-item" href="profile.php">Profile</a>
         <a class="dropdown-item" href="mytransactions.php">My Transactions</a>
-        <a class="dropdown-item" href="#">Settings</a>
+        <a class="dropdown-item" href="settings.php">Settings</a>
       </div>
     </div>
   </div>
@@ -100,49 +100,42 @@ session_start();
     </div>
   </form>
 </header>
-<main>
-    <br>
-      <div class="container-sm">
+<?php
+ $sql1 = 'SELECT *
+ FROM booking b
+     WHERE b.customerid = "'.$_SESSION['id'].'" AND b.active = 1';
+$sql2 = 'SELECT *
+FROM booking b
+    WHERE b.customerid = "'.$_SESSION['id'].'" AND b.active = 0';
+$sql3= 'SELECT *
+FROM vehicle v 
+    WHERE v.id = "'.$_SESSION['id'].'" '; 
 
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">We are working.<span class="text-muted"> With all of them.</span></h2>
-          <p class="lead">The car rental shortage is America's number-one travel problem of 2021. This summer, more people will have to make a difficult choice between car-sharing, relying on mass transportation or paying hundreds of dollars per day for a rental car if they can find one!</p>
-        </div>
-        <div class="col-md-5">
-          <img src="../img/wallpapers/wallpaper7.jpg" width="90%" height="80%" role="img" class="img-fluid" alt="Wallpaper1">
-
-        </div>
+     $active = $conn->query($sql1);
+     $inactive = $conn->query($sql2);
+     $vehicleinfo = $conn->query($sql3);
+      ?>
+      <div class="row table-success"><h1>Active Reservations</h1> <?php 
+      while ($active = $active->fetch_assoc()) {
+           ?>
+        <div class='row' id='transactions'>
+                  <div class='card-body table-success'>
+                  <h4 class='card-title text-dark'>
+                    <b>car #<?php echo $active['vehicleid']; ?></b> 
+                </h4>
+                  <h6 class='card-title text-dark'>From: <?php echo $active['startdate'];?>
+                  <h6 class='card-title text-dark'>To: <?php echo $active['enddate'];?>
+                  <hr>
+              <div class='btn-group'>
+                <input type='button' class='btn btn-sm btn-danger' value='Cancel Reservation' data-toggle='modal' data-target=''>                    
+                <div class='img-desc' onmousemove='imgHover(this, event)'>
+                   </div>
+                 </div>
+          </div>
       </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7 order-md-2">
-          <h2 class="featurette-heading">Need a car right now? <span class="text-muted"> Just worry about choosing one.</span></h2>
-          <p class="lead">You can even leave the booking until (almost) the last minute. If you book by noon, your car can be delivered to your door on the very same day. How much does it all cost? the service is free of charge. Same day delivery is subject to availability and you will be notified if delivery is unavailable.</p>
-        </div>
-        <div class="col-md-5 order-md-1">
-          <img src="../img/wallpapers/wallpaper8.jpg" width="90%" height="90%" role="img" class="img-fluid" alt="Wallpaper2">
-
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">We are all working for you. <span class="text-muted">Checkmate.</span></h2>
-          <p class="lead">The way that people perceive their work can be fluid, but so too is their sense of purpose. In fact, it’s not unlikely that what someone finds purposeful today won’t be entirely different a year down the road—and that’s all right. “When you’re in your 20s, what drives you and gives you purpose may be very different than when you’re in your 40s and 50s,” Jimenez says. </p>
-        </div>
-        <div class="col-md-5">
-          <img src="../img/wallpapers/wallpaper9.jpg" width="800" height="800" role="img" class="img-fluid" alt="Wallpaper4">
-        </div>
-      </div>
-      <br>
-
-    </div>
-  </main>
+      </div> <?php } 
+         ?>
+      
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">

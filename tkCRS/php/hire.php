@@ -96,7 +96,7 @@ session_start();
   </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" href="#">Profile</a>
-        <a class="dropdown-item" href="#">My Transactions</a>
+        <a class="dropdown-item" href="mytransactions.php">My Transactions</a>
         <a class="dropdown-item" href="#">Settings</a>
       </div>
     </div>
@@ -218,7 +218,7 @@ if(!empty($_POST['startdate']) && !empty($_POST['enddate']) && !empty($_POST['ci
         INNER JOIN agency a ON v.agency_id = a.id 
           WHERE v.id NOT IN 
             (SELECT b.vehicleid FROM booking b 
-                WHERE NOT (b.enddate < "' . $start . '" OR b.startdate > "' . $end . '" ) AND b.enddate) 
+                WHERE NOT (b.enddate < "' . $start . '" OR b.startdate > "' . $end . '" ) AND b.enddate  AND b.active = 1) 
                   AND v.agency_id = "' . $_POST['city'] . '"
                     AND v.type_id = "' . $_POST['type'] . '" ';
       $cars = $conn->query($sql);
