@@ -8,7 +8,9 @@ session_start();
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $sql1 = "SELECT * FROM vehicle";
+  $sql1 = "SELECT DISTINCT manufacturer, model, `image`
+  FROM vehicle
+  ORDER BY manufacturer";
   $getAllVehicles = $conn->query($sql1);
   $today = date_create()->format('Y-m-d');
 ?>
@@ -120,10 +122,8 @@ session_start();
                     <div class="btn-group">
                       <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">                    
                       <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <input type="button" class="btn btn-sm btn-warning" value="Hire" onclick= "relocate('hire.php')">
                          </div>
                        </div>
-                    <h6 class="text-sm-center text-dark font-weight-light">€<?php echo $vehicle['price']?>/day</h6>
                     </div>
                 </div>
             </div>
