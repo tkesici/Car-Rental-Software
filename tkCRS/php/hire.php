@@ -139,6 +139,13 @@ session_start();
         <br>
     </div>
 </section>
+<select class="form-control" name="city">
+                            <option value="" selected> Location</option>
+                            <?php while ($row1 = mysqli_fetch_array($getAllAgencies)): ?>
+                                <option value="<?php echo $row1['id']; ?>"><?php echo $row1['city']; ?></option>
+                            <?php endwhile; ?>
+                        </select>
+
 </body>
 <br>
 <input class="btn btn-warning" type="submit" name="submit" value="Search">
@@ -191,38 +198,38 @@ if(!empty($_POST['startdate']) && !empty($_POST['enddate'])) {
       } else { ?>
         <h3 class="text-success">Results for between <?php echo $_POST['startdate'] . ' and ' . $_POST['enddate'] . ' (' . $days . ' days) '; ?></h3> <?php
       } 
-      $sql = "SELECT *
-      FROM vehicle v 
-          WHERE NOT EXISTS
-            (SELECT * FROM booking b 
-              WHERE v.id = b.vehicleid AND ' . $startdate . ' BETWEEN b.startdate AND b.enddate
-                        OR ' . $enddate .  ' BETWEEN b.startdate AND b.enddate)";
+      $city = $_POST['city'];
+      $start = $_POST['startdate'];
+      $end = $_POST['enddate'];    
+$sql = 'SELECT c.id,c.manufacturer,c.model,c.image,c.price,c.agency_id FROM vehicle c INNER JOIN agency l 
+ON l.id = c.agency_id WHERE c.id NOT IN(SELECT cc.vehicleid FROM booking cc 
+WHERE c.id = cc.vehicleid AND "' . $start . '" BETWEEN cc.startdate AND cc.enddate
+OR ' . $end .  ' BETWEEN cc.startdate AND cc.enddate) AND c.agency_id ='.$city;
       $cars = $conn->query($sql);
       if (!$cars) {
           die($conn->error);
       } ?>
           <div class="row"> <?php 
-      while ($vehicle = $cars->fetch_assoc()) { ?>
-          <div class="col-md-2 mt-2" id="cars">
-            <div class="card">
-            <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>" alt="Image">
-                  <div class="card-body">
-                  <h4 class="card-title text-dark">
-                    <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
+      while ($vehicle = $cars->fetch_assoc()) { 
+      echo "<div class='col-md-2 mt-2' id='cars'>
+            <div class='card'>
+            <img class='img-fluid img-thumbnail' src=". $vehicle['image'] ." alt='Image'>
+                  <div class='card-body'>
+                  <h4 class='card-title text-dark'>
+                    <b>" . $vehicle['manufacturer']  . "</b> 
                 </h4>
-                  <h6 class="card-title text-dark">
-                    <?php echo $vehicle['model']; ?>
-                    <br><br>
-              <div class="btn-group">
-                <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">                    
-                <div class="img-desc" onmousemove="imgHover(this, event)">
-                <?php echo "<a class='btn btn-sm btn-warning' href=\"payment.php?id=".$vehicle['id']."\">Hire</a>" ?>
+                  <h6 class='card-title text-dark'>" .$vehicle['model'] .
+                    "<br><br>
+              <div class='btn-group'>
+                <input type='button' class='btn btn-sm btn-secondary' value='Specifications' data-toggle='modal' data-target='#specsmodal'>                    
+                <div class='img-desc' onmousemove='imgHover(this, event)'>
+                <a class='btn btn-sm btn-warning' href=\"payment.php?car=".$vehicle['id']."\">Hire</a>
                    </div>
                  </div>
-              <h6 class="text-sm-center text-dark font-weight-light">€<?php echo $vehicle['price']?>/day</h6>
+              <h6 class='text-sm-center text-dark font-weight-light'>€". $vehicle['price']."/day</h6>
               </div>
           </div>
-      </div> <?php 
+      </div>";
         } 
       ?>
       </tbody>

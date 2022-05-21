@@ -12,51 +12,49 @@ session_start();
       die("Connection failed: " . $conn->connect_error);
   }
   $today = date_create()->format('Y-m-d');
-  
+
   $startdate = $_SESSION['startdate'];
   $startdate = str_replace(' ', '', $startdate);
   $startdate = DateTime::createFromFormat('m/d/Y', $startdate)->format('Y-m-d');
   $enddate = $_SESSION['enddate'];
   $enddate = str_replace(' ', '', $enddate);
   $enddate = DateTime::createFromFormat('m/d/Y', $enddate)->format('Y-m-d');
-  $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-  $uri_segments = explode('=', $actual_link);
   $datetime1 = strtotime($_SESSION['startdate']);
   $datetime2 = strtotime($_SESSION['enddate']);
   $secs = $datetime2 - $datetime1;
   $days = $secs / 86400;
-
+  $pricequery = "SELECT price FROM vehicle v WHERE v.id = '".$_GET['car']."'";
+  $priceresult = mysqli_query($conn,$pricequery);
+  while ($row1 = mysqli_fetch_array($priceresult)):
+  $total = $row1['price']*$days;
+  endwhile;
   $ccnumber = $expiration = $cvv = "";
   $ccnumberErr = $expirationErr = $cvvErr = "";
   $valid = false;
 
-
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if (empty($_POST["cc-number"])) {
-        $ccnumberErr = "ERR";
-    } else {
-        $ccnumber = test_input($_POST["cc-number"]);
-        $valid = true;
+  if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
+    function order(){
+      global $conn,$startdate,$enddate,$total;
+      $stmt = $conn->prepare("INSERT INTO booking (`customerid`,`vehicleid`,`startdate`,`enddate`,`price`) VALUES(?,?,?,?,?)");
+      $stmt->bind_param("iissi",$_SESSION['id'],$_GET["car"],$startdate,$enddate,$total);
+      $stmt->execute();
+      $stmt->close();
+      $conn->close();
+      header('Location:index.php');
     }
 
-    
-    if (empty($_POST["cc-expiration"])) {
-      $expirationErr = "ERR";
-  } else {
-      $expiration = test_input($_POST["cc-expiration"]);
-      $valid = true;
-  }
+    if(isset($_POST['submit'])){
+      order();
+    }
 
-  
-  if (empty($_POST["cc-cvv"])) {
-    $cvvErr = "ERR";
-} else {
-    $cvv = test_input($_POST["cc-cvv"]);
-    $valid = true;
-}
+        function test_input($data)  {
+          $data = trim($data);
+          $data = stripslashes($data);
+          $data = htmlspecialchars($data);
+          return $data;
+        }
+    }
 
-  }
 ?>
 
 <!doctype html>
@@ -125,10 +123,15 @@ session_start();
     <!--/Header-->
     <div class="row mt-0">
     <?php
+
+$conn = new mysqli("localhost", "root", "1234", "tkcrs");
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
     
     $sql = "SELECT *
     FROM vehicle v 
-        WHERE v.id = ' $uri_segments[1]'";
+        WHERE v.id = '".$_GET['car']."'";
     $cars = $conn->query($sql);
     if (!$cars) {
         die($conn->error);
@@ -147,7 +150,7 @@ session_start();
         </div>
         <div class="row g-5">
            <div>
-           <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+           <form method="post">
               <div class="row gy-3">
                 <div class="col-md-6">
                   <label for="cc-name" class="form-label">Name on card</label>
@@ -184,28 +187,14 @@ session_start();
                          <img class="img-fluid" src="<?php echo $vehicle['image'] ?>" alt="Image">
                   </div>
                 </div>
+                <strong>€<?php echo number_format((float)$vehicle['price']*$days, 2, '.', '');?></strong>
                   </div>
-                  <strong>€<?php echo number_format((float)$vehicle['price']*$days, 2, '.', '');?></strong>
                 </li>
               </ul>
-              <input class="w-100 btn btn-outline-warning container-fluid" value="Order" onclick="window.location='success.php';"> 
+              <input class="w-100 btn btn-outline-warning container-fluid" type="submit" name="submit" value="Order"> 
               <hr>            
               </form>
-              <?php 
-                $stmt = $conn->prepare("INSERT INTO booking (`customerid`,`vehicleid`,`startdate`,`enddate`) VALUES(?,?,?,?)");
-                $stmt->bind_param("ssss",$_SESSION['id'],$uri_segments[1],$startdate,$enddate);
-                $stmt->execute();
-                $stmt->close();
-                $conn->close();
-
-                  function test_input($data)  {
-                    $data = trim($data);
-                    $data = stripslashes($data);
-                    $data = htmlspecialchars($data);
-                    return $data;
-                  }
-                  
-                    ?>
+          
           </div>
         </div>
       </main>
