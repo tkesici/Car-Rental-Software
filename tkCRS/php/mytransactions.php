@@ -152,7 +152,7 @@ WHERE b.active = 0 AND c.id = "' . $_SESSION['id'] . '" ';
                     Phone number: <b><?php echo $info['phonenumber']; ?></b>
                 </h6>
               <div class='row-cols-6'>
-                <input type='button' class='btn btn-sm btn-danger' value='Cancel Reservation' data-toggle='modal' data-target=''>              
+          <?php echo "<a class='btn btn-sm btn-danger' href=\"cancel.php?car=".$info['bookingid']."\">Cancel Reservation</a>"; ?>   
                    </div>
                    <hr>
           </div>
