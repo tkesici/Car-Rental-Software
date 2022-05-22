@@ -106,14 +106,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         
           <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-floating text-black-50">
+              <input class="form-control" id ="floatingInput" type="text" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
               <label for="floatingInput">Email address</label>
-              <input class="form-control" type="text" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
               <span class="invalid-feedback"><?php echo $email_err; ?></span>
             </div>
             <br>
             <div class="form-floating text-black-50">
-            <label for="floatingPassword">Password</label>
                 <input class="form-control" type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+                <label for="floatingPassword">Password</label>
                 <span class="invalid-feedback"><?php echo $password_err; ?></span>
             </div>
             <div class="checkbox mb-3 text-black-50">
