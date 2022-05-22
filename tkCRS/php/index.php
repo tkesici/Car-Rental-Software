@@ -91,9 +91,8 @@ session_start();
 <?php echo 'Welcome, ' . $_SESSION['email']; ?>
   </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">Profile</a>
+        <a class="dropdown-item" href="profile.php">Profile</a>
         <a class="dropdown-item" href="mytransactions.php">My Transactions</a>
-        <a class="dropdown-item" href="#">Settings</a>
       </div>
     </div>
   </div>

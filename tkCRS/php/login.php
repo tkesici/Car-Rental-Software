@@ -24,7 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     if(empty($email_err) && empty($password_err)){
-      $sql = "SELECT id,`firstname`,lastname,email,`password`,active FROM customer WHERE email='$email'";
+      $sql = "SELECT id,`firstname`,lastname,email,`password`,active,phonenumber FROM customer WHERE email='$email'";
         $result = mysqli_query($conn, $sql);
         $count = mysqli_num_rows($result);
         if ($count > 0) {
@@ -35,6 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $_SESSION["lastname"] = $row['lastname'];
                         $_SESSION["id"] = $row['id'];
                         $_SESSION["email"] = $row['email'];
+                        $_SESSION["phonenumber"] = $row['phonenumber'];
                         $_SESSION["loggedin"] = true;
                         header("Location:hire.php");
                     } else {

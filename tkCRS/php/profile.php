@@ -8,9 +8,44 @@ session_start();
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $sql1 = "SELECT * FROM manufacturer";
-  $getAllVehicles = $conn->query($sql1);
   $today = date_create()->format('Y-m-d');
+  $password = $oldpass = "";
+  $password_err = $oldpass_err = "";
+?>
+<?php 
+       if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $conn = new mysqli("localhost", "root", "1234", "tkcrs");
+
+    if(empty(trim($_POST["oldpass"]))){
+        $oldpass_err = "Please enter your password.";
+    } else {
+        $oldpass = trim($_POST["oldpass"]);
+    }
+    
+    if(empty(trim($_POST["password"]))){
+        $password_err = "Please enter your password.";
+    } else{
+        $password = trim($_POST["password"]);
+    }
+    $mail = $_SESSION['email'];
+    if(empty($password_err) && empty($oldpass_err)){
+        $sql = "SELECT id,`firstname`,lastname,email,`password`,active,phonenumber FROM customer WHERE email='$mail'";
+        $result = mysqli_query($conn, $sql);
+        $count = mysqli_num_rows($result);
+            while ($row = $result->fetch_assoc()) {
+                    if ($row['password'] == md5($oldpass)) {
+                        $row['password'] == 'test';
+                    } else {
+                        $password_err = "Invalid password.";
+                        $conn->close();
+                }
+            }
+            if (is_resource($conn)) {
+              $conn->close();
+              header("Location:login.php");
+         }   
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -72,7 +107,7 @@ session_start();
             <li><a href="index.php" class="nav-link px-2 text-white">Home</a></li>
             <li><a href="hire.php" class="nav-link px-2 text-white">Hire</a></li>
             <li><a href="dealers.php" class="nav-link px-2 text-white">Dealers</a></li>
-            <li><a href="about.php" class="nav-link px-2 text-warning">About</a></li>
+            <li><a href="about.php" class="nav-link px-2 text-white">About</a></li>
             <li><a href="contact.php" class="nav-link px-2 text-white">Contact</a></li>
           </ul>
           <form class="navbar-form navbar-brand" type="GET">
@@ -98,50 +133,43 @@ session_start();
 <?php } ?>
     </div>
   </form>
-</header>
-<main>
-    <br>
-      <div class="container-sm">
-
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">We are working.<span class="text-muted"> With all of them.</span></h2>
-          <p class="lead">The car rental shortage is America's number-one travel problem of 2021. This summer, more people will have to make a difficult choice between car-sharing, relying on mass transportation or paying hundreds of dollars per day for a rental car if they can find one!</p>
-        </div>
-        <div class="col-md-5">
-          <img src="../img/wallpapers/wallpaper7.jpg" width="90%" height="80%" role="img" class="img-fluid" alt="Wallpaper1">
-
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7 order-md-2">
-          <h2 class="featurette-heading">Need a car right now? <span class="text-muted"> Just worry about choosing one.</span></h2>
-          <p class="lead">You can even leave the booking until (almost) the last minute. If you book by noon, your car can be delivered to your door on the very same day. How much does it all cost? the service is free of charge. Same day delivery is subject to availability and you will be notified if delivery is unavailable.</p>
-        </div>
-        <div class="col-md-5 order-md-1">
-          <img src="../img/wallpapers/wallpaper8.jpg" width="90%" height="90%" role="img" class="img-fluid" alt="Wallpaper2">
-
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">We are all working for you. <span class="text-muted">Checkmate.</span></h2>
-          <p class="lead">The way that people perceive their work can be fluid, but so too is their sense of purpose. In fact, it’s not unlikely that what someone finds purposeful today won’t be entirely different a year down the road—and that’s all right. “When you’re in your 20s, what drives you and gives you purpose may be very different than when you’re in your 40s and 50s,” Jimenez says. </p>
-        </div>
-        <div class="col-md-5">
-          <img src="../img/wallpapers/wallpaper9.jpg" width="800" height="800" role="img" class="img-fluid" alt="Wallpaper4">
-        </div>
-      </div>
-      <br>
-
-    </div>
-  </main>
+</header> <?php
+if(isset($_SESSION['loggedin'])) { ?>
+<main class="d-flex justify-content-center">
+       <form method="post">
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="firstname" value="<?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname'];?>" disabled><label>Name</label>
+          </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="email" value="<?php echo $_SESSION['email'];?>" disabled><label>Email address</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="phonenumber" value="<?php echo $_SESSION['phonenumber'];?>" disabled><label>Phone number</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="password" id="oldpass" name="oldpass"><label>Old password</label>
+             <span class="invalid-feedback"><?php echo $oldpass_err; ?></span>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="password" id="password" name="password" onkeyup=check();><label>New password</label>
+             <span class="invalid-feedback"><?php echo $password_err; ?></span>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="password" id="repassword" name="repassword" onkeyup=check();><label>New password again</label>
+           </div>
+           <span id='message'></span>
+           <div class="checkbox mb-3 text-black-50">
+           </div>
+           <input class="w-100 btn btn-lg btn-light"  type="submit" name="submit" value="Save"> 
+         </form>
+       </main>
+       <br>
+       <?php } ?>
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
@@ -179,6 +207,18 @@ session_start();
   let span = obj.querySelector('span');
   span.style.left = event.offsetX + 'px';
   span.style.top = event.offsetY + 'px';
+}
+</script>
+<script>
+	var check = function() {
+  if (document.getElementById('password').value ==
+    document.getElementById('repassword').value) {
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').innerHTML = 'Passwords match';
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'Passwords do not match';
+  }
 }
 </script>
   </body>
