@@ -160,17 +160,17 @@ if ($conn->connect_error) {
     
                 <div class="col-md-6">
                   <label for="cc-number" class="form-label">Credit card number</label>
-                  <input type="text" class="form-control" id="cc-number" placeholder="0000-0000-0000-0000">
+                  <input type="text" class="form-control" id="cc-number" value="<?php echo '5157-5570-1131-3284';?>">
                 </div>
     
                 <div class="col-md-3">
                   <label for="cc-expiration" class="form-label">Expiration</label>
-                  <input type="text" class="form-control" id="cc-expiration" placeholder="00/00">
+                  <input type="text" class="form-control" id="cc-expiration" value="<?php echo '05/28';?>">
                 </div>
     
                 <div class="col-md-3">
                   <label for="cc-cvv" class="form-label">CVV</label>
-                  <input type="text" class="form-control" id="cc-cvv" placeholder="000">
+                  <input type="text" class="form-control" id="cc-cvv" value="<?php echo '673';?>">
                 </div>
               </div>
 

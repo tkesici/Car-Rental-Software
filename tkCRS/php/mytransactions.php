@@ -152,11 +152,11 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
                  <h6 class='card-title text-dark'>
                  <h1>Booking #<?php echo $info['bookingid']; ?></h1>
                  <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?>
-                    <h5 class="text-decoration-underline text-primary"><strong>Customer Information</strong></h5>
+                    <h5 class="text-decoration-underline"><strong>Customer Information</strong></h5>
                     Name: <b><?php echo $info['firstname'] . ' ' . $info['lastname']; ?><br></b>
                     E-mail: <b><?php echo $info['customermail']?><br></b>
                     Phone number: <b><?php echo $info['customerphone']?><br></b>
-                    <h5 class="text-decoration-underline text-primary"><strong>Booking Information</strong></h5>
+                    <h5 class="text-decoration-underline"><strong>Booking Information</strong></h5>
                     Start Date: <b><?php echo $info['startdate']; ?><br></b>
                     End Date: <b><?php echo $info['enddate']; ?><br></b>
                     Total Price: <b>€<?php echo $info['price']; ?><br></b>
@@ -168,31 +168,27 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
                     E-mail: <b><?php echo $info['email']; ?><br></b>
                     Phone number: <b><?php echo $info['phonenumber']; ?></b>
                 </h6>
-               </div>
-            </div>
-          </div>
-              <div class='row-cols-6'>               
+              <div class='row-cols-6'>          
           <?php if ($start - $now > 0) {
             echo "<a class='btn btn-sm btn-danger' href=\"cancel.php?car=".$info['bookingid']."\">Cancel Reservation</a>";
           } else {
             echo "<a class='btn btn-sm btn-danger disabled' href=''>Cancel Reservation</a>";
           } ?>   
-                   <hr>
-       <?php } 
-      }
-}
-         ?>
+             </div>
+          </div>
+        </div>
+<?php } } ?>
                <div class="row table-light btn-danger" id ="transactions"><h1>Inactive Reservations</h1> <?php 
       while ($info = $inactive->fetch_assoc()) {  ?>
             <div class='card-body table-danger'>
                  <h6 class='card-title text-dark'>
                  <h1>Booking #<?php echo $info['bookingid']; ?></h1>
                  <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?>
-                    <h5 class="text-decoration-underline text-primary"><strong>Customer Information</strong></h5>
+                    <h5 class="text-decoration-underline"><strong>Customer Information</strong></h5>
                     Name: <b><?php echo $info['firstname'] . ' ' . $info['lastname']; ?><br></b>
                     E-mail: <b><?php echo $info['customermail']?><br></b>
                     Phone number: <b><?php echo $info['customerphone']?><br></b>
-                    <h5 class="text-decoration-underline text-primary"><strong>Booking Information</strong></h5>
+                    <h5 class="text-decoration-underline"><strong>Booking Information</strong></h5>
                     Start Date: <b><?php echo $info['startdate']; ?><br></b>
                     End Date: <b><?php echo $info['enddate']; ?><br></b>
                     Total Price: <b>€<?php echo $info['price']; ?><br></b>
@@ -204,7 +200,7 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
                     E-mail: <b><?php echo $info['email']; ?><br></b>
                     Phone number: <b><?php echo $info['phonenumber']; ?></b>
                 </h6>
-              <div class='row-cols-6'>
+                <div class='row-cols-6'>
               <?php
               $datetime1 = strtotime($info['startdate']);
               $datetime2 = strtotime($today);
@@ -214,17 +210,12 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
               } else {
                 echo "<a class='btn btn-sm btn-success disabled' href=#'>Activate Reservation</a>";
               }
-              ?>
-           
-                   </div>
-                   <hr>
-          </div>
-      </div>
-      </div>
-       <?php } 
-         ?>
-         </div>   
-               <div class="row table-light btn-primary" id ="transactions"><h1>Past Reservations</h1> <?php 
+            } ?>  
+    </div>  
+  </div>
+</div>  
+
+      <div class="row table-light btn-primary" id ="transactions"><h1>Past Reservations</h1> <?php 
       while ($info = $past->fetch_assoc()) {  
           $start = strtotime($info['startdate']);
           $end = strtotime($info['enddate']);
@@ -234,11 +225,11 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
           <h6 class='card-title text-dark'>
           <h1>Booking #<?php echo $info['bookingid']; ?></h1>
           <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?>
-             <h5 class="text-decoration-underline text-primary"><strong>Customer Information</strong></h5>
+             <h5 class="text-decoration-underline"><strong>Customer Information</strong></h5>
              Name: <b><?php echo $info['firstname'] . ' ' . $info['lastname']; ?><br></b>
              E-mail: <b><?php echo $info['customermail']?><br></b>
              Phone number: <b><?php echo $info['customerphone']?><br></b>
-             <h5 class="text-decoration-underline text-primary"><strong>Booking Information</strong></h5>
+             <h5 class="text-decoration-underline"><strong>Booking Information</strong></h5>
              Start Date: <b><?php echo $info['startdate']; ?><br></b>
              End Date: <b><?php echo $info['enddate']; ?><br></b>
              Total Price: <b>€<?php echo $info['price']; ?><br></b>
@@ -252,14 +243,10 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
          </h6>
        <div class='row-cols-6'>                
          <?php  echo "<a class='btn btn-sm btn-primary' href='hire.php'>Hire Again</a>";?>
-            </div>
-            <hr>
-   </div>
-</div>
-<?php } 
-} 
-?>
-</div>      
+    </div>
+<?php } } } ?>  
+  </div>
+</div>  
 
 
       
