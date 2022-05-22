@@ -125,13 +125,66 @@ LEFT JOIN cartype AS ct
 ON v.type_id = ct.id
 WHERE b.active = 0 AND c.id = "' . $_SESSION['id'] . '" ';
 
+$sql3 = 'SELECT *, b.id AS bookingid, c.email AS customermail, c.phonenumber AS customerphone
+FROM booking AS b
+LEFT JOIN customer AS c
+ON b.customerid = c.id 
+LEFT JOIN vehicle AS v 
+ON b.vehicleid = v.id
+LEFT JOIN agency AS a
+ON v.agency_id = a.id
+LEFT JOIN cartype AS ct
+ON v.type_id = ct.id
+WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
+
      $active = $conn->query($sql1);
      $inactive = $conn->query($sql2);
+     $past = $conn->query($sql3);
 
       ?>
-      <div class="row table-success" id ="transactions"><h1>Active Reservations</h1> <?php 
-      while ($info = $active->fetch_assoc()) {  ?>
-            <div class='card-body table-success'>
+      <div class="row table-light btn-success" id ="transactions"><h1>Active Reservations</h1> <?php 
+      while ($info = $active->fetch_assoc()) {         
+        $start = strtotime($info['startdate']);
+        $end = strtotime($info['enddate']);
+        $now = strtotime($today);
+        if ($end - $now > 0) { ?>
+            <div class='card-body row-2 table-success'>
+                 <h6 class='card-title text-dark'>
+                 <h1>Booking #<?php echo $info['bookingid']; ?></h1>
+                 <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?>
+                    <h5 class="text-decoration-underline text-primary"><strong>Customer Information</strong></h5>
+                    Name: <b><?php echo $info['firstname'] . ' ' . $info['lastname']; ?><br></b>
+                    E-mail: <b><?php echo $info['customermail']?><br></b>
+                    Phone number: <b><?php echo $info['customerphone']?><br></b>
+                    <h5 class="text-decoration-underline text-primary"><strong>Booking Information</strong></h5>
+                    Start Date: <b><?php echo $info['startdate']; ?><br></b>
+                    End Date: <b><?php echo $info['enddate']; ?><br></b>
+                    Total Price: <b>€<?php echo $info['price']; ?><br></b>
+                    Manufacturer: <b><?php echo $info['manufacturer']; ?><br></b>
+                    Model: <b><?php echo $info['model']; ?><br></b>
+                    Type: <b> <?php echo $info['type']; ?><br></b>
+                    Car plate: <b><?php echo $info['plate']; ?><br></b>
+                    Agency: <b><?php echo $info['city']; ?></b><br>
+                    E-mail: <b><?php echo $info['email']; ?><br></b>
+                    Phone number: <b><?php echo $info['phonenumber']; ?></b>
+                </h6>
+               </div>
+            </div>
+          </div>
+              <div class='row-cols-6'>               
+          <?php if ($start - $now > 0) {
+            echo "<a class='btn btn-sm btn-danger' href=\"cancel.php?car=".$info['bookingid']."\">Cancel Reservation</a>";
+          } else {
+            echo "<a class='btn btn-sm btn-danger disabled' href=''>Cancel Reservation</a>";
+          } ?>   
+                   <hr>
+       <?php } 
+      }
+}
+         ?>
+               <div class="row table-light btn-danger" id ="transactions"><h1>Inactive Reservations</h1> <?php 
+      while ($info = $inactive->fetch_assoc()) {  ?>
+            <div class='card-body table-danger'>
                  <h6 class='card-title text-dark'>
                  <h1>Booking #<?php echo $info['bookingid']; ?></h1>
                  <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?>
@@ -152,14 +205,63 @@ WHERE b.active = 0 AND c.id = "' . $_SESSION['id'] . '" ';
                     Phone number: <b><?php echo $info['phonenumber']; ?></b>
                 </h6>
               <div class='row-cols-6'>
-          <?php echo "<a class='btn btn-sm btn-danger' href=\"cancel.php?car=".$info['bookingid']."\">Cancel Reservation</a>"; ?>   
+              <?php
+              $datetime1 = strtotime($info['startdate']);
+              $datetime2 = strtotime($today);
+              $secs = $datetime1 - $datetime2;
+              if ($secs > 0) {
+                echo "<a class='btn btn-sm btn-success' href=\"activate.php?car=".$info['bookingid']."\">Activate Reservation</a>";
+              } else {
+                echo "<a class='btn btn-sm btn-success disabled' href=#'>Activate Reservation</a>";
+              }
+              ?>
+           
                    </div>
                    <hr>
           </div>
       </div>
+      </div>
        <?php } 
-}
          ?>
+         </div>   
+               <div class="row table-light btn-primary" id ="transactions"><h1>Past Reservations</h1> <?php 
+      while ($info = $past->fetch_assoc()) {  
+          $start = strtotime($info['startdate']);
+          $end = strtotime($info['enddate']);
+          $now = strtotime($today);
+         if ($now - $end > 0) { ?>
+          <div class='card-body row-2 table-primary'>
+          <h6 class='card-title text-dark'>
+          <h1>Booking #<?php echo $info['bookingid']; ?></h1>
+          <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?>
+             <h5 class="text-decoration-underline text-primary"><strong>Customer Information</strong></h5>
+             Name: <b><?php echo $info['firstname'] . ' ' . $info['lastname']; ?><br></b>
+             E-mail: <b><?php echo $info['customermail']?><br></b>
+             Phone number: <b><?php echo $info['customerphone']?><br></b>
+             <h5 class="text-decoration-underline text-primary"><strong>Booking Information</strong></h5>
+             Start Date: <b><?php echo $info['startdate']; ?><br></b>
+             End Date: <b><?php echo $info['enddate']; ?><br></b>
+             Total Price: <b>€<?php echo $info['price']; ?><br></b>
+             Manufacturer: <b><?php echo $info['manufacturer']; ?><br></b>
+             Model: <b><?php echo $info['model']; ?><br></b>
+             Type: <b> <?php echo $info['type']; ?><br></b>
+             Car plate: <b><?php echo $info['plate']; ?><br></b>
+             Agency: <b><?php echo $info['city']; ?></b><br>
+             E-mail: <b><?php echo $info['email']; ?><br></b>
+             Phone number: <b><?php echo $info['phonenumber']; ?></b>
+         </h6>
+       <div class='row-cols-6'>                
+         <?php  echo "<a class='btn btn-sm btn-primary' href='hire.php'>Hire Again</a>";?>
+            </div>
+            <hr>
+   </div>
+</div>
+<?php } 
+} 
+?>
+</div>      
+
+
       
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
