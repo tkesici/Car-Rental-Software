@@ -93,33 +93,71 @@ if(!isset($_SESSION['admin'])) {
 </header>
 <!--Content-->
 
-<?php if(isset($_SESSION['admin'])) { ?>
-      <div class="row">
-        <?php
-        foreach($customers as $booking)
-        {
-        ?>
-            <div class="col-md-2 mt-2" id="cars">
-                <div class="card">
-                        <div class="card-body">
-                      <h2 class="card-title text-dark"><?php echo ' <b>Booking ID: ' . $booking['id']  . '</b>';?></h2>
-                      <h6 class="card-title text-dark"><?php echo ' <b>Customer ID: ' . $booking['customerid'] . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>Vehicle ID: ' . $booking['vehicleid']  . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>Date From: ' . $booking['startdate']  . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>Date To: ' . $booking['enddate']  . '</b>';?></h6>
-                    <div class="btn-group">                
-                      <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <?php echo "<a class='btn btn-sm btn-warning' href=\"customers.php\">Manage Booking</a>" ?>
-                         </div>
-                       </div>
-                       <br><br>
-                    </div>
-                </div>
-            </div>
-            <?php }
-           }
-      ?>
-    </div>
+<?php if(isset($_SESSION['admin'])) {
+$sql = 'SELECT *, b.id as bookingid, c.email AS customermail, c.phonenumber AS customerphone, b.active AS activeres
+FROM booking AS b
+LEFT JOIN customer AS c
+ON b.customerid = c.id 
+LEFT JOIN vehicle AS v 
+ON b.vehicleid = v.id
+LEFT JOIN agency AS a
+ON v.agency_id = a.id
+LEFT JOIN cartype AS ct
+ON v.type_id = ct.id;';
+
+$reservations = $conn->query($sql);
+?>
+<h1 class="text-danger">Inactive Reservations</h1> <?php
+while ($info = $reservations->fetch_assoc()) {       
+  if($info['activeres'] == 0) {
+    echo $info['bookingid']; ?> <br> <?php
+    echo $info['customerid']; ?> <br> <?php
+    echo $info['vehicleid']; ?> <br> <?php
+    echo $info['startdate']; ?> <br> <?php
+    echo $info['enddate']; ?> <br> <?php
+    echo $info['price']; ?> <br> <?php
+    echo $info['firstname']; ?> <br> <?php
+    echo $info['lastname']; ?> <br> <?php
+    echo $info['customermail']; ?> <br> <?php
+    echo $info['customerphone']; ?> <br> <?php
+    echo $info['manufacturer']; ?> <br> <?php
+    echo $info['model']; ?> <br> <?php
+    echo $info['image']; ?> <br> <?php
+    echo $info['plate']; ?> <br> <?php
+    echo $info['type']; ?> <br> <?php
+    echo $info['city']; ?> <br> <?php
+    echo $info['email']; ?> <br> <?php
+    echo $info['phonenumber']; ?> <br> <?php
+    }  
+  } 
+?>
+<?php $reservations = $conn->query($sql); ?>
+<h1 class="text-success">Active Reservations</h1> <?php
+ while ($info = $reservations->fetch_assoc()) {       
+   if($info['activeres'] == 1) {
+     echo 'Active Reservations'; ?> <br> <?php
+     echo $info['bookingid']; ?> <br> <?php
+     echo $info['customerid']; ?> <br> <?php
+     echo $info['vehicleid']; ?> <br> <?php
+     echo $info['startdate']; ?> <br> <?php
+     echo $info['enddate']; ?> <br> <?php
+     echo $info['price']; ?> <br> <?php
+     echo $info['firstname']; ?> <br> <?php
+     echo $info['lastname']; ?> <br> <?php
+     echo $info['customermail']; ?> <br> <?php
+     echo $info['customerphone']; ?> <br> <?php
+     echo $info['manufacturer']; ?> <br> <?php
+     echo $info['model']; ?> <br> <?php
+     echo $info['image']; ?> <br> <?php
+     echo $info['plate']; ?> <br> <?php
+     echo $info['type']; ?> <br> <?php
+     echo $info['city']; ?> <br> <?php
+     echo $info['email']; ?> <br> <?php
+     echo $info['phonenumber']; ?> <br> <?php
+  }
+} 
+} 
+?>
     <br>      
 <div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

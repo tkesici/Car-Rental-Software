@@ -102,10 +102,13 @@ if(!isset($_SESSION['admin'])) {
             <div class="col-md-2 mt-2" id="cars">
                 <div class="card">
                         <div class="card-body">
-                      <h2 class="card-title text-dark"><?php echo ' <b>User #' . $user['id']  . '</b>';?></h2>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['firstname']  . ' ' . $user['lastname'] . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['email']  . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['phonenumber']  . '</b>';?></h6>
+                      <h1 class="card-title text-dark"><?php echo ' <b>User #' . $user['id']  . '</b>';?></h1>
+                      <h4 class="text-primary"><?php echo ' <b>' . $user['firstname']  . ' ' . $user['lastname'] . '</b>';?></h4>
+                      <?php if ($user['active'] == 0) { ?>
+                        <h5 class="card-title text-danger">Inactive User</h5>
+                       <?php } else { ?>
+                         <h5 class="card-title text-success">Active User</h5>
+                      <?php } ?>
                     <div class="btn-group">                
                       <div class="img-desc" onmousemove="imgHover(this, event)">
                       <?php echo "<a class='btn btn-sm btn-primary' href=\"manageuser.php?user=".$user['id']."\">Manage Customer</a>";?>

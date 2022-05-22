@@ -93,31 +93,32 @@ if(!isset($_SESSION['admin'])) {
 </header>
 <!--Content-->
 
-<?php if(isset($_SESSION['admin'])) { ?>
-      <div class="row">
-        <?php
-        foreach($customers as $user)
-        {
-        ?>
-            <div class="col-md-2 mt-2" id="cars">
-                <div class="card">
-                        <div class="card-body">
-                      <h2 class="card-title text-dark"><?php echo ' <b>User #' . $user['id']  . '</b>';?></h2>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['firstname']  . ' ' . $user['lastname'] . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['email']  . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['phonenumber']  . '</b>';?></h6>
-                    <div class="btn-group">                
-                      <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <?php echo "<a class='btn btn-sm btn-primary' href=\"manageuser.php?user=".$user['id']."\">Manage Customer</a>";?>
-                         </div>
-                       </div>
-                       <br><br>
-                    </div>
-                </div>
-            </div>
-            <?php }
-           }
-      ?>
+<?php if(isset($_SESSION['admin'])) {
+$user = $_GET['user'];
+$sql = 'SELECT * FROM customer WHERE customer.id = ' . $user . ' ';
+
+$info = $conn->query($sql);
+
+while ($user = $info->fetch_assoc()) {  ?>
+  <h1><a class="text-warning"><?php echo '#' . $user['id'];?></a></h1>
+  <h4>First Name: <a class="text-warning"><?php echo $user['firstname'];?></a></h4>
+  <h4>Last Name: <a class="text-warning"><?php echo $user['lastname'];?></a></h4>
+  <h4>E-mail: <a class="text-warning"><?php echo $user['email'];?></a></h4>
+  <h4>Phone number: <a class="text-warning"><?php echo $user['phonenumber'];?></a></h4>
+
+  <?php 
+    if ($user['active'] == 1) {
+      echo "<a class='btn btn-sm btn-danger' href=\"deactivateuser.php?user=".$user['id']."\">Deactivate User</a>";
+    } else {
+      echo "<a class='btn btn-sm btn-success' href=\"activateuser.php?user=".$user['id']."\">Activate User</a>";
+    }
+    ?>
+    <hr>
+  
+
+ <?php }
+}
+    ?>
     </div>
     <br>      
 <div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

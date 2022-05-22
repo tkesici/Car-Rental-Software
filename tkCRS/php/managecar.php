@@ -70,8 +70,8 @@ if(!isset($_SESSION['admin'])) {
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
           <li><a href="vehicles.php" class="nav-link px-2 text-dark">Manage Vehicles</a></li>
-          <li><a href="customers.php" class="nav-link px-2 text-dark">Customers</a></li>
-          <li><a href="bookings.php" class="nav-link px-2 text-dark">Bookings</a></li>
+          <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
+          <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
