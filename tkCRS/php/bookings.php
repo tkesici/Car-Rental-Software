@@ -63,17 +63,16 @@ if(!isset($_SESSION['admin'])) {
 <body class="h-100 text-center text-white bg-dark">
 
     <!--Header-->
-<main>
+    <main>
   <header class="p-3 bg-warning text-white">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
-          <li><a href="cars.php" class="nav-link px-2 text-dark">Cars</a></li>
-          <li><a href="customers.php" class="nav-link px-2 text-dark">Customers</a></li>
-          <li><a href="#" class="nav-link px-2 text-dark">Employees</a></li>
-          <li><a href="bookings.php" class="nav-link px-2 text-light">Bookings</a></li>
+        <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
+          <li><a href="vehicles.php" class="nav-link px-2 text-dark">Manage Vehicles</a></li>
+          <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
+          <li><a href="bookings.php" class="nav-link px-2 text-light">Manage Bookings</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
@@ -83,9 +82,6 @@ if(!isset($_SESSION['admin'])) {
               Welcome, <?php echo $_SESSION['email']; ?>
             </button>
             <button type="button" class="btn btn-danger me-2" onclick=" relocate('index.php?logout=true')">Log out</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Settings</a>
-            </div>
           </div>
         </div>
   </header>

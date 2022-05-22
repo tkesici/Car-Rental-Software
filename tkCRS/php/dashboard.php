@@ -12,8 +12,6 @@ if(!isset($_SESSION['admin'])) {
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $sql1 = "SELECT * FROM vehicle";
-  $getAllVehicles = $conn->query($sql1);
   $today = date_create()->format('Y-m-d');
 ?>
 <!doctype html>
@@ -71,10 +69,9 @@ if(!isset($_SESSION['admin'])) {
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="dashboard.php" class="nav-link px-2 text-light">Dashboard</a></li>
-          <li><a href="cars.php" class="nav-link px-2 text-dark">Cars</a></li>
-          <li><a href="customers.php" class="nav-link px-2 text-dark">Customers</a></li>
-          <li><a href="#" class="nav-link px-2 text-dark">Employees</a></li>
-          <li><a href="bookings.php" class="nav-link px-2 text-dark">Bookings</a></li>
+          <li><a href="vehicles.php" class="nav-link px-2 text-dark">Manage Vehicles</a></li>
+          <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
+          <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
@@ -84,9 +81,6 @@ if(!isset($_SESSION['admin'])) {
               Welcome, <?php echo $_SESSION['email']; ?>
             </button>
             <button type="button" class="btn btn-danger me-2" onclick=" relocate('index.php?logout=true')">Log out</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Settings</a>
-            </div>
           </div>
         </div>
   </header>
@@ -97,59 +91,69 @@ if(!isset($_SESSION['admin'])) {
   </form>
 </header>
 <!--Content-->
-<?php if(isset($_SESSION['admin'])) { ?>
-      <div class="row">
-        <?php
-        foreach($getAllVehicles as $vehicle)
-        {
-        ?>
-            <div class="col-md-2 mt-2" id="cars">
-                <div class="card">
-                        <img class="img-fluid img-thumbnail" src="<?php echo $vehicle['image'] ?>" alt="Image">
-                        <div class="card-body">
-                        <h4 class="card-title text-dark">
-                          <?php echo ' <b>' . $vehicle['manufacturer']  . '</b> ';?>
-                      </h4>
-                        <h6 class="card-title text-dark">
-                          <?php echo $vehicle['model']; ?>
-                          <br><br>
-                    <div class="btn-group">                
-                      <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <?php echo "<a class='btn btn-sm btn-info' href=\"cars.php?id=".$vehicle['id']."\">Change Price</a>" ?>
-                      <?php echo "<a class='btn btn-sm btn-success' href=\"cars.php?id=".$vehicle['id']."\">Change Stock</a>" ?>
-                         </div>
-                       </div>
-                       <br><br>
-                       <input class="form-control" type="text" name="price"><label>Price</label>
-                       <input class="form-control" type="text" name="stock"><label>Stock</label>
-                    <h6 class="text-sm-center text-danger font-weight-light"> <?php echo 'Stock:  <b>' . $vehicle['stock']  . '</b> ';?>  </h6>
-                    <h6 class="text-sm-center text-danger font-weight-light">Price: <?php echo $vehicle['price'] . '€';?></h6>
-                    </div>
-                </div>
-            </div>
-            <?php }
-           }
-      ?>
-    </div>
-    <br>      
-<div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-black-50" id="specs">Specifications</h5>
-      </div>
-      <div class="modal-body">
-        <img class="img-fluid" src="../img/specs.png" alt="Specifications">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-      </div>
+<?php if(isset($_SESSION['admin'])) { 
+  $sql1 = 'SELECT SUM(price) AS total FROM booking';
+  $sql2 = 'SELECT COUNT(*) AS totalcustomers FROM customer';
+  $sql3 = 'SELECT COUNT(*) AS activeorders FROM booking b WHERE b.active = 1';
+  $sql4 = 'SELECT COUNT(*) AS inactiveorders FROM booking b WHERE b.active = 0';
+  $sql5 = 'SELECT COUNT(*) AS totalvehicles FROM vehicle';
+
+  $revenue = $conn->query($sql1);
+  $customers = $conn->query($sql2);
+  $activeorders = $conn->query($sql3);
+  $inactiveorders = $conn->query($sql4);
+  $vehicles = $conn->query($sql5); ?>
+  <div class="card-group">
+  <?php while ($info = $revenue->fetch_assoc()) { ?>
+  <div class="card bg-success">
+    <img class="img-thumbnail" src="https://miro.medium.com/max/1400/0*elFqAeuyXXRbbXOC.png">
+    <div class="card-body">
+      <h5 class="card-title">Revenue</h5>
+      <h1 class="card-title">€<?php echo $info['total']; ?></h1>
+      <p class="card-text">Total money earned by the all agencies over all time.</p>
     </div>
   </div>
-</div>
-
-
-
+  <?php } ?>
+  <?php while ($info = $customers->fetch_assoc()) { ?>
+  <div class="card bg-primary">
+    <img class="img-thumbnail" src="https://www.kindpng.com/picc/m/74-743103_listening-to-customers-png-happy-customer-png-transparent.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Our Family</h5>
+      <h1 class="card-title"><?php echo $info['totalcustomers']; ?> Users</h1>
+      <p class="card-text">We are growing up with you.</p>
+    </div>
+  </div>
+  <?php } ?>
+  <?php while ($info = $vehicles->fetch_assoc()) { ?>
+  <div class="card bg-danger">
+    <img class="card-img-top" src="https://t4.ftcdn.net/jpg/01/14/62/49/360_F_114624946_hCCOPyY0CE7Nt48z72d7AIh3ie8Txs5V.jpg" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Our Fleet</h5>
+      <h1 class="card-title"><?php echo $info['totalvehicles']; ?> Vehicles</h1>
+      <p class="card-text">We strive to achieve more every day.</p>
+    </div>
+  </div>
+  </div>
+<?php } ?>
+<?php while ($info = $activeorders->fetch_assoc()) { ?>
+  <div class="card bg-dark">
+    <div class="card-body">
+      <h5 class="card-title">Active Bookings</h5>
+      <h1 class="card-title"><?php echo $info['activeorders']; ?></h1>
+      <p class="card-text"></p>
+    </div>
+  </div>
+  <?php } ?>
+  <?php while ($info = $inactiveorders->fetch_assoc()) { ?>
+  <div class="card bg-dark">
+    <div class="card-body">
+      <h5 class="card-title">Inactive Bookings</h5>
+      <h1 class="card-title"><?php echo $info['inactiveorders']; ?></h1>
+      <p class="card-text"></p>
+    </div>
+  </div>
+  <?php } ?>
+<?php } ?>
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">

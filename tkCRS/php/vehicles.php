@@ -13,7 +13,6 @@ if(!isset($_SESSION['admin'])) {
       die("Connection failed: " . $conn->connect_error);
   }
   $today = date_create()->format('Y-m-d');
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -23,7 +22,7 @@ if(!isset($_SESSION['admin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-    <title>Cars \ tkCRS</title>
+    <title>Vehicles \ tkCRS</title>
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -69,11 +68,10 @@ if(!isset($_SESSION['admin'])) {
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
-          <li><a href="cars.php" class="nav-link px-2 text-light">Cars</a></li>
-          <li><a href="customers.php" class="nav-link px-2 text-dark">Customers</a></li>
-          <li><a href="#" class="nav-link px-2 text-dark">Employees</a></li>
-          <li><a href="bookings.php" class="nav-link px-2 text-dark">Bookings</a></li>
+        <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
+          <li><a href="vehicles.php" class="nav-link px-2 text-light">Manage Vehicles</a></li>
+          <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
+          <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
@@ -83,9 +81,6 @@ if(!isset($_SESSION['admin'])) {
               Welcome, <?php echo $_SESSION['email']; ?>
             </button>
             <button type="button" class="btn btn-danger me-2" onclick=" relocate('index.php?logout=true')">Log out</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Settings</a>
-            </div>
           </div>
         </div>
   </header>
@@ -96,30 +91,42 @@ if(!isset($_SESSION['admin'])) {
   </form>
 </header>
 <!--Content-->
+<?php if(isset($_SESSION['admin'])) { 
+  $sql1 = 'SELECT * FROM vehicle ORDER BY manufacturer';
+  $vehicles = $conn->query($sql1); ?>
 
-<?php 
-        if(isset($price)) {
-            $sql = "UPDATE vehicle SET price= $price WHERE id= $v";
 
-            if ($conn->query($sql) === TRUE) {
-              echo '';
-            } else {
-              echo "Error updating record: " . $conn->error;
-            }
-            
-        }
-        if (isset($stock)) {
-            $sql = "UPDATE vehicle SET stock= $stock WHERE id= $v";
-
-            if ($conn->query($sql) === TRUE) {
-              echo '';
-            } else {
-              echo "Error updating record: " . $conn->error;
-            }
-        }
-            
-          ?>
-
+<div class="row"> <?php 
+      while ($vehicle = $vehicles->fetch_assoc()) {
+      echo "<div class='col-md-2 mt-2' id='cars'>
+            <div class='card'>
+            <img class='img-fluid img-thumbnail' src=". $vehicle['image'] ." alt='Image'>
+                  <div class='card-body'>
+                  <h4 class='card-title text-dark'>
+                    <b>" . $vehicle['manufacturer']  . "</b> 
+                </h4>
+                  <h6 class='card-title text-dark'>" .$vehicle['model'] ."
+                  <h6 class='text-muted'><small>" .$vehicle['plate'] ."</small><br><br>
+              <div class='btn-group'>                    
+                <div class='img-desc' onmousemove='imgHover(this, event)'>
+                <a class='btn btn-sm btn-outline-primary' href=\"managecar.php?car=".$vehicle['id']."\">Manage Properties</a>
+                   </div>
+                 </div>
+              <h6 class='text-sm-center text-dark font-weight-light'>€". $vehicle['price']."/day</h6>
+              </div>
+          </div>
+      </div>";
+        } 
+      ?>
+      </tbody>
+  </table>
+</div>
+</div>
+</div> 
+<?php
+  }
+?>
+<br>
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">

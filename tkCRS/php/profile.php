@@ -54,7 +54,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Tevfik Kesici">
   <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-  <title>About / tkCRS</title>
+  <title>Profile / tkCRS</title>
   <!--CSS-->
 <style>
   .img-desc {

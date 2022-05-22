@@ -12,8 +12,7 @@ if(!isset($_SESSION['admin'])) {
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $sql1 = "SELECT * FROM customer";
-  $customers = $conn->query($sql1);
+  $today = date_create()->format('Y-m-d');
 ?>
 <!doctype html>
 <html lang="en">
@@ -23,7 +22,7 @@ if(!isset($_SESSION['admin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-    <title>Customers \ tkCRS</title>
+    <title>Manage Car \ tkCRS</title>
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -69,10 +68,10 @@ if(!isset($_SESSION['admin'])) {
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
+          <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
           <li><a href="vehicles.php" class="nav-link px-2 text-dark">Manage Vehicles</a></li>
-          <li><a href="customers.php" class="nav-link px-2 text-light">Manage Customers</a></li>
-          <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
+          <li><a href="customers.php" class="nav-link px-2 text-dark">Customers</a></li>
+          <li><a href="bookings.php" class="nav-link px-2 text-dark">Bookings</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
@@ -92,51 +91,59 @@ if(!isset($_SESSION['admin'])) {
   </form>
 </header>
 <!--Content-->
+<?php if(isset($_SESSION['admin'])) {
 
-<?php if(isset($_SESSION['admin'])) { ?>
-      <div class="row">
-        <?php
-        foreach($customers as $user)
-        {
-        ?>
-            <div class="col-md-2 mt-2" id="cars">
-                <div class="card">
-                        <div class="card-body">
-                      <h2 class="card-title text-dark"><?php echo ' <b>User #' . $user['id']  . '</b>';?></h2>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['firstname']  . ' ' . $user['lastname'] . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['email']  . '</b>';?></h6>
-                      <h6 class="card-title text-dark"><?php echo ' <b>' . $user['phonenumber']  . '</b>';?></h6>
-                    <div class="btn-group">                
-                      <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <?php echo "<a class='btn btn-sm btn-primary' href=\"manageuser.php?user=".$user['id']."\">Manage Customer</a>";?>
-                         </div>
-                       </div>
-                       <br><br>
-                    </div>
-                </div>
-            </div>
-            <?php }
-           }
-      ?>
-    </div>
-    <br>      
-<div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-black-50" id="specs">Specifications</h5>
-      </div>
-      <div class="modal-body">
-        <img class="img-fluid" src="../img/specs.png" alt="Specifications">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
+$carid = $_GET['car'];
+$sql = 'SELECT *, v.price AS carprice, ct.type AS ctype
+FROM vehicle AS v
+LEFT JOIN agency AS a
+ON a.id = v.agency_id
+LEFT JOIN booking AS b
+ON v.id = b.vehicleid
+LEFT JOIN cartype AS ct
+ON v.type_id = ct.id
+LEFT JOIN customer AS c
+ON b.customerid = c.id
+WHERE v.id = "' . $carid . '" ';
+$query = $conn->query($sql); ?>
+<br>
+ <?php 
+      while ($vehicle = $query->fetch_assoc()) { ?><?php 
+      echo "<img class='img-thumbnail' src=". $vehicle['image'] ." alt='Image'>"; ?>
+     <hr>
+      <main class="d-flex justify-content-center">
+       <form method="post">
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="manufacturer" value="<?php echo $vehicle['manufacturer'];?>"><label>Manufacturer</label>
+          </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="model" value="<?php echo $vehicle['model'];?>"><label>Model</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="type" value="<?php echo $vehicle['ctype'];?>"><label>Type</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="plate" value="<?php echo $vehicle['plate'];?>"><label>Plate</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="price" value="<?php echo $vehicle['carprice'];?>"><label>Price</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="agency" value="<?php echo $vehicle['city'];?>" disabled><label>Agency</label>
+           </div>
+           <br>
+           <div class="checkbox mb-3 text-black-50">
+           </div>
+           <input class="w-100 btn btn-lg btn-light"  type="submit" name="submit" value="Save"> 
+         </form>
+       </main>
+<?php } }?>
+<br>
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
