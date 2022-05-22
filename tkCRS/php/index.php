@@ -151,11 +151,8 @@ session_start();
                       <input type="button" class="btn btn-sm btn-warning" value="Hire" disabled>
                        <span>You need to login first</span>
                       </div>
- 
                     </div>
-                    <h6 class="text-sm-center text-dark font-weight-light">€<?php echo $vehicle['price']?>/day</h6>
                     </div>
-                    
                 </div>
             </div>
             <?php } } ?>
