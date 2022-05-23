@@ -3,10 +3,13 @@ session_start();
 if(!isset($_SESSION['admin'])) {
     header("Location: index.php");
  }
+ if(isset($_SESSION['loggedin'])) {
+  header("Location: index.php");
+}
 
 	if(isset($_GET['logout'])){
 		session_destroy();
-		header("Location: dashboard.php");
+		header("Location: index.php");
 	}
     $conn = new mysqli("localhost", "root", "1234", "tkcrs");
     if ($conn->connect_error) {
@@ -78,7 +81,7 @@ if(!isset($_SESSION['admin'])) {
         <div class="text-end">
           <div class="navbar-form navbar-brand">
             <button class="btn btn-light dropdown-toggle" type="button" id="admindropdown" data-toggle="dropdown">
-              Welcome, <?php echo $_SESSION['email']; ?>
+              Welcome, <?php echo $_SESSION['adminemail']; ?>
             </button>
             <button type="button" class="btn btn-danger me-2" onclick=" relocate('index.php?logout=true')">Log out</button>
           </div>

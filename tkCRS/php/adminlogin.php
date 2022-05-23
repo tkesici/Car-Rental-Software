@@ -33,7 +33,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $_SESSION["firstname"] = $row['firstname'];
                         $_SESSION["lastname"] = $row['lastname'];
                         $_SESSION["id"] = $row['id'];
-                        $_SESSION["email"] = $row['email'];
+                        $_SESSION["adminemail"] = $row['email'];
                         $_SESSION["admin"] = true;
                         header("Location:dashboard.php");
                     } else {
