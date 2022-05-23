@@ -28,15 +28,22 @@ session_start();
         $password = trim($_POST["password"]);
     }
     $mail = $_SESSION['email'];
+    $id = $_SESSION['id'];
+    $sql = 'UPDATE `customer` SET `password` = "' . md5($password) . '" WHERE `customer`.`id` = "' . $id . '" ';
     if(empty($password_err) && empty($oldpass_err)){
         $sql = "SELECT id,`firstname`,lastname,email,`password`,active,phonenumber FROM customer WHERE email='$mail'";
         $result = mysqli_query($conn, $sql);
         $count = mysqli_num_rows($result);
             while ($row = $result->fetch_assoc()) {
                     if ($row['password'] == md5($oldpass)) {
-                        $row['password'] == 'test';
+                      $stmt = $conn->prepare('UPDATE `customer` SET `password` = "' . md5($password) . '" WHERE `customer`.`id` = "' . $id . '" ');
+                      //$stmt->bind_param("ssssss", $firstname, $lastname, $email, $phonenumber, md5($password), $accountActivity);
+                      $stmt->execute();
+                      $stmt->close();
+                      $conn->close();
+                      ?><h3 class="text-success"><?php echo 'Password updated successfully.'; ?></h3><?php
                     } else {
-                        $password_err = "Invalid password.";
+                      ?><h3 class="text-danger"><?php echo 'Invalid password.'; ?></h3><?php
                         $conn->close();
                 }
             }

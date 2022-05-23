@@ -100,14 +100,14 @@ session_start();
   </form>
 </header>
 <!--Content-->
-      <div class="row">
+      <div class="bg-warning">
         <?php
         foreach($getAllVehicles as $vehicle)
         {
         ?>
-            <div class="col-lg-1 m-4" id="cars">
-                <div class="card">
-                <img class="img-fluid" src="<?php echo $vehicle['logo'] ?>" alt="Image">
+            <div class="justify-content-center" id="cars">
+                <div class="row-col-lg">
+                <img class="img-thumbnail bd-placeholder-img-lg" src="<?php echo $vehicle['logo'] ?>" alt="Image">
                         <div class="card-body">
                         <h4 class="card-title text-dark">
                           <?php echo ' <b>' . $vehicle['id']  . '</b> ';?>
@@ -116,7 +116,7 @@ session_start();
                           <?php echo $vehicle['name']; ?>
                           <br><br>
                     <div class="btn-group">
-                      <input type="button" class="btn btn-sm btn-danger" value="Website" onclick= "relocate('index.php')">
+                      <input type="button" class="btn btn-sm btn-dark" value="Website" onclick= "relocate('index.php')">
                        </div>
                     </div>
                 </div>

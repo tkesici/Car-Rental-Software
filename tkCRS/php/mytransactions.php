@@ -205,11 +205,10 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
               $datetime2 = strtotime($today);
               $secs = $datetime1 - $datetime2;
               if ($secs > 0) {
-                echo "<a class='btn btn-sm btn-success' href=\"activate.php?car=".$info['bookingid']."\">Activate Reservation</a>";
+                echo "<a class='btn btn-sm btn-success' href=\"activate.php?car=".$info['bookingid']."\">Activate Reservation</a>";?></div><?php
               } else {
-                echo "<a class='btn btn-sm btn-success disabled' href=#'>Activate Reservation</a>";
-              } ?> 
-    </div>  
+                echo "<a class='btn btn-sm btn-success disabled' href=#'>Activate Reservation</a>";?></div><?php
+              } ?>    
   </div>
 </div>  
 <?php } ?> 
@@ -245,6 +244,7 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
 <?php } } } ?>  
   </div>
 </div>  
+
 
 
       
