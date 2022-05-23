@@ -100,43 +100,22 @@ session_start();
   </form>
 </header>
 <main>
-    <br>
-      <div class="container-sm">
-
+      <div class="container">
+      <hr>
       <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">We are working.<span class="text-muted"> With all of them.</span></h2>
-          <p class="lead">The car rental shortage is America's number-one travel problem of 2021. This summer, more people will have to make a difficult choice between car-sharing, relying on mass transportation or paying hundreds of dollars per day for a rental car if they can find one!</p>
+          <h2 class="featurette-heading">We are working.<span class="text-warning"> With all of them.</span></h2>
+          <p class="text-muted">The car rental shortage is America's number-one travel problem of 2021. This summer, more people will have to make a difficult choice between car-sharing, relying on mass transportation or paying hundreds of dollars per day for a rental car if they can find one!</p>
         </div>
-        <div class="col-md-5">
-          <img src="../img/wallpapers/wallpaper7.jpg" width="90%" height="80%" role="img" class="img-fluid" alt="Wallpaper1">
-
-        </div>
+        <div class="row-cols-2">
+          <img src="https://www.adorecars.com/user/pages/07.cars/car%20brands.jpg?g-d91a444e" role="img" class="rounded mx-auto d-block img-fluid" alt="Wallpaper1">
       </div>
-
-      <hr class="featurette-divider">
-
+      <hr>
       <div class="row featurette">
-        <div class="col-md-7 order-md-2">
-          <h2 class="featurette-heading">Need a car right now? <span class="text-muted"> Just worry about choosing one.</span></h2>
-          <p class="lead">You can even leave the booking until (almost) the last minute. If you book by noon, your car can be delivered to your door on the very same day. How much does it all cost? the service is free of charge. Same day delivery is subject to availability and you will be notified if delivery is unavailable.</p>
+          <h2 class="featurette-heading">Need a car right now?<span class="text-warning"> Choose one.</span></h2>
+          <p class="text-muted">You can even leave the booking until (almost) the last minute. If you book by noon, your car can be delivered to your door on the very same day. How much does it all cost? the service is free of charge. Same day delivery is subject to availability and you will be notified if delivery is unavailable.</p>
         </div>
-        <div class="col-md-5 order-md-1">
-          <img src="../img/wallpapers/wallpaper8.jpg" width="90%" height="90%" role="img" class="img-fluid" alt="Wallpaper2">
-
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      <div class="row featurette">
-        <div class="col-md-7">
-          <h2 class="featurette-heading">We are all working for you. <span class="text-muted">Checkmate.</span></h2>
-          <p class="lead">The way that people perceive their work can be fluid, but so too is their sense of purpose. In fact, it’s not unlikely that what someone finds purposeful today won’t be entirely different a year down the road—and that’s all right. “When you’re in your 20s, what drives you and gives you purpose may be very different than when you’re in your 40s and 50s,” Jimenez says. </p>
-        </div>
-        <div class="col-md-5">
-          <img src="../img/wallpapers/wallpaper9.jpg" width="800" height="800" role="img" class="img-fluid" alt="Wallpaper4">
-        </div>
+        <div class="row-cols-2">
+          <img src="https://media.istockphoto.com/photos/salesman-giving-new-car-keys-to-customer-picture-id1138560072?k=20&m=1138560072&s=170667a&w=0&h=RFwlNdA8IO_wQoMQWRgxG9iYmheqO6E0NEIOEOk0WSo=" role="img" class="rounded mx-auto d-block img-fluid" alt="Wallpaper1">
       </div>
       <br>
 
