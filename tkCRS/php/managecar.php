@@ -91,6 +91,28 @@ if(!isset($_SESSION['admin'])) {
   </form>
 </header>
 <!--Content-->
+<?php
+$valid = true;
+       if($_SERVER["REQUEST_METHOD"] == "POST") {
+        $car = $_GET['car'];
+        $manufacturer = $_POST['manufacturer'];
+        $model = $_POST['model'];
+        $plate = $_POST['plate'];
+        $price = $_POST['price'];
+        if($valid){
+            $sql= 'UPDATE `vehicle` SET `plate` = "' . $plate . '"  WHERE `vehicle`.`id` = "' . $car . '" ';
+            $updatePlate = $conn->prepare('UPDATE `vehicle` SET `plate` = "' . $plate . '"  WHERE `vehicle`.`id` = "' . $car . '" ');
+            $updateModel = $conn->prepare('UPDATE `vehicle` SET `model` = "' . $model . '" WHERE `vehicle`.`id` = "' . $car . '" ');
+            $updateManufacturer = $conn->prepare('UPDATE `vehicle` SET `manufacturer` = "' . $manufacturer . '" WHERE `vehicle`.`id` = "' . $car . '" ');
+            $updatePrice = $conn->prepare('UPDATE `vehicle` SET `price` = "' . $price . '" WHERE `vehicle`.`id` = "' . $car . '" ');
+            $updatePlate->execute();
+            $updateModel->execute();
+            $updateManufacturer->execute();
+            $updatePrice->execute();
+            ?><h3 class="text-success"><?php echo 'Records updated successfully.'; ?></h3><?php
+        }
+    }
+?>
 <?php if(isset($_SESSION['admin'])) {
 
 $carid = $_GET['car'];
@@ -108,7 +130,7 @@ WHERE v.id = "' . $carid . '" ';
 $query = $conn->query($sql); ?>
 <br>
  <?php 
-      while ($vehicle = $query->fetch_assoc()) { ?><?php 
+      while ($vehicle = $query->fetch_assoc()) { ?><?php
       echo "<img class='img-thumbnail' src=". $vehicle['image'] ." alt='Image'>"; ?>
      <hr>
       <main class="d-flex justify-content-center">
@@ -122,15 +144,15 @@ $query = $conn->query($sql); ?>
            </div>
            <br>
            <div class="form-floating text-black-50">
-             <input class="form-control" type="text" name="type" value="<?php echo $vehicle['ctype'];?>"><label>Type</label>
-           </div>
-           <br>
-           <div class="form-floating text-black-50">
              <input class="form-control" type="text" name="plate" value="<?php echo $vehicle['plate'];?>"><label>Plate</label>
            </div>
            <br>
            <div class="form-floating text-black-50">
              <input class="form-control" type="text" name="price" value="<?php echo $vehicle['carprice'];?>"><label>Price</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="type" value="<?php echo $vehicle['ctype'];?>" disabled><label>Type</label>
            </div>
            <br>
            <div class="form-floating text-black-50">
