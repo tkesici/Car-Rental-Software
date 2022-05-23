@@ -12,8 +12,7 @@ if(!isset($_SESSION['admin'])) {
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $sql1 = "SELECT * FROM booking";
-  $customers = $conn->query($sql1);
+  $today = date_create()->format('Y-m-d');
 ?>
 <!doctype html>
 <html lang="en">
@@ -92,9 +91,8 @@ if(!isset($_SESSION['admin'])) {
   </form>
 </header>
 <!--Content-->
-
-<?php if(isset($_SESSION['admin'])) {
-$sql = 'SELECT *, b.id as bookingid, c.email AS customermail, c.phonenumber AS customerphone, b.active AS activeres
+<?php if(isset($_SESSION['admin'])) { 
+$sql = 'SELECT *, b.id as bookingid, c.email AS customermail, c.phonenumber AS customerphone, b.active AS activebooking
 FROM booking AS b
 LEFT JOIN customer AS c
 ON b.customerid = c.id 
@@ -103,79 +101,40 @@ ON b.vehicleid = v.id
 LEFT JOIN agency AS a
 ON v.agency_id = a.id
 LEFT JOIN cartype AS ct
-ON v.type_id = ct.id;';
-
-$reservations = $conn->query($sql);
-?>
-<h1 class="text-danger">Inactive Reservations</h1> <?php
-while ($info = $reservations->fetch_assoc()) {       
-  if($info['activeres'] == 0) {
-    echo $info['bookingid']; ?> <br> <?php
-    echo $info['customerid']; ?> <br> <?php
-    echo $info['vehicleid']; ?> <br> <?php
-    echo $info['startdate']; ?> <br> <?php
-    echo $info['enddate']; ?> <br> <?php
-    echo $info['price']; ?> <br> <?php
-    echo $info['firstname']; ?> <br> <?php
-    echo $info['lastname']; ?> <br> <?php
-    echo $info['customermail']; ?> <br> <?php
-    echo $info['customerphone']; ?> <br> <?php
-    echo $info['manufacturer']; ?> <br> <?php
-    echo $info['model']; ?> <br> <?php
-    echo $info['image']; ?> <br> <?php
-    echo $info['plate']; ?> <br> <?php
-    echo $info['type']; ?> <br> <?php
-    echo $info['city']; ?> <br> <?php
-    echo $info['email']; ?> <br> <?php
-    echo $info['phonenumber']; ?> <br> <?php
-    }  
-  } 
-?>
-<?php $reservations = $conn->query($sql); ?>
-<h1 class="text-success">Active Reservations</h1> <?php
- while ($info = $reservations->fetch_assoc()) {       
-   if($info['activeres'] == 1) {
-     echo 'Active Reservations'; ?> <br> <?php
-     echo $info['bookingid']; ?> <br> <?php
-     echo $info['customerid']; ?> <br> <?php
-     echo $info['vehicleid']; ?> <br> <?php
-     echo $info['startdate']; ?> <br> <?php
-     echo $info['enddate']; ?> <br> <?php
-     echo $info['price']; ?> <br> <?php
-     echo $info['firstname']; ?> <br> <?php
-     echo $info['lastname']; ?> <br> <?php
-     echo $info['customermail']; ?> <br> <?php
-     echo $info['customerphone']; ?> <br> <?php
-     echo $info['manufacturer']; ?> <br> <?php
-     echo $info['model']; ?> <br> <?php
-     echo $info['image']; ?> <br> <?php
-     echo $info['plate']; ?> <br> <?php
-     echo $info['type']; ?> <br> <?php
-     echo $info['city']; ?> <br> <?php
-     echo $info['email']; ?> <br> <?php
-     echo $info['phonenumber']; ?> <br> <?php
-  }
-} 
-} 
-?>
-    <br>      
-<div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-black-50" id="specs">Specifications</h5>
-      </div>
-      <div class="modal-body">
-        <img class="img-fluid" src="../img/specs.png" alt="Specifications">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-      </div>
-    </div>
+ON v.type_id = ct.id
+ORDER BY b.startdate';
+     $reservations = $conn->query($sql);
+     while ($info = $reservations->fetch_assoc()) { 
+      $start = strtotime($info['startdate']);
+      $end = strtotime($info['enddate']);
+      $now = strtotime($today); ?>
+     <div class="card text-center list-group-item-<?php 
+     if ($info['activebooking']==1) {
+       if ($now - $end > 0) {
+         echo 'primary';
+       } else {
+         echo 'success';
+       }
+     }
+     else { 
+      echo 'danger'; 
+       }?>">
+  <div class="card-header">
+    <?php echo '#' . $info['bookingid'];?>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><b><?php echo $info['manufacturer'] . ' ' . $info['model']; ?><br></b></h5>
+    <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?><br><br>
+    <p class="card-text">Customer: <?php echo $info['firstname'] . ' ' . $info['lastname']; ?><br></p>
+    <?php echo "<a class='btn btn-sm btn-dark' href=\"managebooking.php?booking=".$info['bookingid']."\">Manage Booking</a>";?>
+  </div>
+  <div class="card-footer text-muted">
+  <?php echo 'From ' . $info['startdate'] . ' to ' . $info['enddate']; ?>
   </div>
 </div>
-
-
+<?php } 
+} ?>  
+  
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">

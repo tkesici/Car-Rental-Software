@@ -22,7 +22,7 @@ if(!isset($_SESSION['admin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-    <title>Vehicles \ tkCRS</title>
+    <title>Manage Booking \ tkCRS</title>
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -62,14 +62,14 @@ if(!isset($_SESSION['admin'])) {
 <body class="h-100 text-center text-white bg-dark">
 
     <!--Header-->
-<main>
+    <main>
   <header class="p-3 bg-warning text-white">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
-          <li><a href="vehicles.php" class="nav-link px-2 text-light">Manage Vehicles</a></li>
+          <li><a href="vehicles.php" class="nav-link px-2 text-dark">Manage Vehicles</a></li>
           <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
           <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
           
@@ -91,41 +91,88 @@ if(!isset($_SESSION['admin'])) {
   </form>
 </header>
 <!--Content-->
-<?php if(isset($_SESSION['admin'])) { 
-  $sql1 = 'SELECT * FROM vehicle ORDER BY manufacturer';
-  $vehicles = $conn->query($sql1); ?>
-
-
-<div class="row"> <?php 
-      while ($vehicle = $vehicles->fetch_assoc()) {
-      echo "<div class='col-md-2 mt-2' id='cars'>
-            <div class='card'>
-            <img class='img-fluid img-thumbnail' src=". $vehicle['image'] ." alt='Image'>
-                  <div class='card-body'>
-                  <h4 class='card-title text-dark'>
-                    <b>" . $vehicle['manufacturer']  . "</b> 
-                </h4>
-                  <h6 class='card-title text-dark'>" .$vehicle['model'] ."
-                  <h6 class='text-muted'><small>" .$vehicle['plate'] ."</small><br><br>
-              <div class='btn-group'>                    
-                <div class='img-desc' onmousemove='imgHover(this, event)'>
-                <a class='btn btn-sm btn-primary' href=\"managecar.php?car=".$vehicle['id']."\">Manage Properties</a>
-                   </div>
-                 </div>
-              <h6 class='text-sm-center text-dark font-weight-light'>€". $vehicle['price']."/day</h6>
-              </div>
-          </div>
-      </div>";
-        } 
-      ?>
-      </tbody>
-  </table>
-</div>
-</div>
-</div> 
 <?php
-  }
+$valid = true;
+       if($_SERVER["REQUEST_METHOD"] == "POST") {
+        $car = $_GET['car'];
+        $manufacturer = $_POST['manufacturer'];
+        $model = $_POST['model'];
+        $plate = $_POST['plate'];
+        $price = $_POST['price'];
+        if($valid){
+            $updatePlate = $conn->prepare('UPDATE `vehicle` SET `plate` = "' . $plate . '"  WHERE `vehicle`.`id` = "' . $car . '" ');
+            $updateModel = $conn->prepare('UPDATE `vehicle` SET `model` = "' . $model . '" WHERE `vehicle`.`id` = "' . $car . '" ');
+            $updateManufacturer = $conn->prepare('UPDATE `vehicle` SET `manufacturer` = "' . $manufacturer . '" WHERE `vehicle`.`id` = "' . $car . '" ');
+            $updatePrice = $conn->prepare('UPDATE `vehicle` SET `price` = "' . $price . '" WHERE `vehicle`.`id` = "' . $car . '" ');
+            $updatePlate->execute();
+            $updateModel->execute();
+            $updateManufacturer->execute();
+            $updatePrice->execute();
+            ?><h3 class="text-success"><?php echo 'Records updated successfully.'; ?></h3><?php
+        }
+    }
 ?>
+<?php if(isset($_SESSION['admin'])) {
+
+$bookingid = $_GET['booking'];
+$sql = 'SELECT *, v.id AS vehicleid, c.email AS customermail, c.phonenumber AS customerphone, b.price AS totalprice, b.active AS `status`, ct.type AS cartype
+FROM booking AS b
+LEFT JOIN customer AS c
+ON c.id = b.customerid
+LEFT JOIN vehicle AS v
+ON v.id = b.vehicleid
+LEFT JOIN agency AS a
+ON a.id = v.agency_id
+LEFT JOIN cartype AS ct
+ON v.type_id = ct.id
+WHERE b.id = "' . $bookingid . '" ';
+$query = $conn->query($sql); ?>
+<br>
+ <?php 
+      while ($vehicle = $query->fetch_assoc()) { ?><?php
+      echo "<img class='img-thumbnail' src=". $vehicle['image'] ." alt='Image'>"; ?>
+     <hr>
+      <main class="d-flex justify-content-center">
+       <form method="post">
+           <div class="form-floating text-black-50">
+             <input class="form-control<?php if($vehicle['status']) { echo ' btn-success';} else { echo ' btn-danger';};
+                 ?>" type="text" name="status" value="<?php if($vehicle['status']) { echo 'Active';} else { echo 'Inactive';};
+                 ?>" disabled><label>Status</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="booking" value="<?php echo $_GET['booking'];?>" disabled><label>Booking ID</label>
+          </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="startdate" value="<?php echo $vehicle['startdate'];?>"><label>Start Date</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="enddate" value="<?php echo $vehicle['enddate'];?>"><label>End Date</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="totalprice" value="<?php echo $vehicle['totalprice'];?>" disabled><label>Total Price</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="type" value="<?php echo $vehicle['cartype'];?>" disabled><label>Type</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="agency" value="<?php echo $vehicle['city'];?>" disabled><label>Agency</label>
+           </div>
+           <br>
+           <div class="checkbox mb-3 text-black-50">
+           </div>
+           <input class="w-100 btn btn-lg btn-light"  type="submit" name="submit" value="Save">
+           <br><br>
+           <?php echo "<a class='btn btn-sm btn-success' href=\"activatebooking.php?booking=".$_GET['booking']."\">Activate Booking</a>";?>
+           <?php echo "<a class='btn btn-sm btn-danger' href=\"deactivatebooking.php?booking=".$_GET['booking']."\">Deactivate Booking</a>";?>
+         </form>
+       </main>
+<?php } }?>
 <br>
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">

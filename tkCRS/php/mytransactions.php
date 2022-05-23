@@ -172,11 +172,12 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
             echo "<a class='btn btn-sm btn-danger' href=\"cancel.php?car=".$info['bookingid']."\">Cancel Reservation</a>";
           } else {
             echo "<a class='btn btn-sm btn-danger disabled' href=''>Cancel Reservation</a>";
-          } ?>   
-             </div>
-          </div>
-        </div>
-<?php } } ?>
+          } ?><?php } ?>   
+    </div>
+    <?php } ?>
+  </div>
+</div>
+
                <div class="row table-light btn-danger" id ="transactions"><h1>Inactive Reservations</h1> <?php 
       while ($info = $inactive->fetch_assoc()) {  ?>
             <div class='card-body table-danger'>
@@ -205,13 +206,15 @@ WHERE b.active = 1 AND c.id = "' . $_SESSION['id'] . '" ';
               $datetime2 = strtotime($today);
               $secs = $datetime1 - $datetime2;
               if ($secs > 0) {
-                echo "<a class='btn btn-sm btn-success' href=\"activate.php?car=".$info['bookingid']."\">Activate Reservation</a>";?></div><?php
+                echo "<a class='btn btn-sm btn-success' href=\"activate.php?car=".$info['bookingid']."\">Activate Reservation</a>";
               } else {
-                echo "<a class='btn btn-sm btn-success disabled' href=#'>Activate Reservation</a>";?></div><?php
+                echo "<a class='btn btn-sm btn-success disabled' href=#'>Activate Reservation</a>";
               } ?>    
+      </div>
+    <?php } ?> 
   </div>
 </div>  
-<?php } ?> 
+
       <div class="row table-light btn-primary" id ="transactions"><h1>Past Reservations</h1> <?php 
       while ($info = $past->fetch_assoc()) {  
           $start = strtotime($info['startdate']);
