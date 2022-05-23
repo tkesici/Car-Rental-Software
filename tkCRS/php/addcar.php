@@ -22,7 +22,7 @@ if(!isset($_SESSION['admin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-    <title>Vehicles \ tkCRS</title>
+    <title>Add Car \ tkCRS</title>
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -69,7 +69,7 @@ if(!isset($_SESSION['admin'])) {
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
-          <li><a href="vehicles.php" class="nav-link px-2 text-light">Manage Vehicles</a></li>
+          <li><a href="vehicles.php" class="nav-link px-2 text-dark">Manage Vehicles</a></li>
           <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
           <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
           
@@ -92,56 +92,86 @@ if(!isset($_SESSION['admin'])) {
 </header>
 <!--Content-->
 <?php if(isset($_SESSION['admin'])) { 
-  $sql1 = 'SELECT * FROM vehicle ORDER BY manufacturer';
-  $vehicles = $conn->query($sql1); ?>
+    $valid = true;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(!empty($_POST['manufacturer'])) {
+        $manufacturer = $_POST['manufacturer'];
+    } else { $valid = false; }
+    if(!empty($_POST['model'])) {
+        $model = $_POST['model'];
+    } else { $valid = false; }
+    if(!empty($_POST['plate'])) {
+        $plate = $_POST['plate'];
+    } else { $valid = false; }
+    if(!empty($_POST['price'])) {
+        $price = $_POST['price'];
+    } else { $valid = false; }
+    if(isset($_POST['cartype'])) {
+        $cartype = $_POST['cartype'];
+    } else { $valid = false; }
+    if(isset($_POST['agency'])) {
+        $agency = $_POST['agency'];
+    } else { $valid = false; }
+    if(!empty($_POST['image'])) {
+        $image = $_POST['image'];
+    } else { $valid = false; }
 
-  <div class='col-md-3 rounded mx-auto d-block' id='cars'>
-    <br>
-        <div class='card'>
-        <img class='img-thumbnail' src='https://cdn.pixabay.com/photo/2014/04/02/10/55/plus-304947_1280.png' alt='Image'>
-          <div class='card-body'>
-          <div class='btn-group'>                    
-            <div class='img-desc' onmousemove='imgHover(this, event)'>
-            <a class='btn btn-sm btn-success' href=addcar.php>Add Car</a>
-               </div>
-             </div>
-          </div>
-      </div>
-  </div>
-  <br>
+    if($valid) {
+        $stmt = $conn->prepare("INSERT INTO `vehicle` (`manufacturer`, `model`, `image`, `plate`, `price`, `type_id`, `agency_id`) VALUES (?,?,?,?,?,?,?);");
+        $stmt->bind_param("sssssii",$manufacturer,$model,$image,$plate,$price,$cartype,$agency);
+        $stmt->execute();
+        $stmt->close();
+        $conn->close();
+        ?><?php echo '<h3 class="text-success">Car successfully added.</h3>'?> <?php
+    }
 
-
-<div class="row"> <?php 
-      while ($vehicle = $vehicles->fetch_assoc()) {
-      echo "<div class='col-md-2 mt-2' id='cars'>
-            <div class='card'>
-            <img class='img-fluid img-thumbnail' src=". $vehicle['image'] ." alt='Image'>
-                  <div class='card-body'>
-                  <h4 class='card-title text-dark'>
-                    <b>" . $vehicle['manufacturer']  . "</b> 
-                </h4>
-                  <h6 class='card-title text-dark'>" .$vehicle['model'] ."
-                  <h6 class='text-muted'><small>" .$vehicle['plate'] ."</small><br><br>
-              <div class='btn-group'>                    
-                <div class='img-desc' onmousemove='imgHover(this, event)'>
-                <a class='btn btn-sm btn-primary' href=\"managecar.php?car=".$vehicle['id']."\">Manage Properties</a>
-                <a class='btn btn-sm btn-danger' href=\"deletecar.php?car=".$vehicle['id']."\">Delete Car</a>
-                   </div>
-                 </div>
-              <h6 class='text-sm-center text-dark font-weight-light'>€". $vehicle['price']."/day</h6>
-              </div>
-          </div>
-      </div>";
-        } 
-      ?>
-      </tbody>
-  </table>
-</div>
-</div>
-</div> 
-<?php
-  }
+ }
+}
 ?>
+<br>
+<main class="col-md-4 mx-auto">
+       <form method="post">
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="manufacturer"><label>Manufacturer</label>
+          </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="model"><label>Model</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="plate"><label>Plate</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="price"><label>Price</label>
+           </div>
+           <br>
+           <select class="form-select text-black-50" id="select" name="cartype">
+             <option selected>Car Type</option>
+             <option name ="1" value="1">Family</option>
+             <option name ="2" value="2">Eco</option>
+             <option name ="3" value="3">Sport</option>
+             <option name ="4" value="4">SUV</option>
+           </select>
+           <br>
+           <select class="form-select text-black-50" id="select" name ="agency">
+             <option selected>Agency</option>
+             <option name ="1" value="1">Antalya</option>
+             <option name ="2" value="2">Istanbul</option>
+             <option name ="3" value="3">Izmir</option>
+             <option name ="4" value="4">Ankara</option>
+           </select>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="image"><label>Image Link</label>
+           </div>
+           <br>
+           <div class="checkbox mb-3 text-black-50">
+           </div>
+           <input class="w-100 btn btn-lg btn-success"  type="submit" name="submit" value="Add"> 
+         </form>
+       </main>
 <br>
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
