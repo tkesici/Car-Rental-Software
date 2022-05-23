@@ -91,31 +91,42 @@ if(!isset($_SESSION['admin'])) {
   </form>
 </header>
 <!--Content-->
-<?php
+<?php if(isset($_SESSION['admin'])) { ?>
+ 
+  <?php
 $valid = true;
        if($_SERVER["REQUEST_METHOD"] == "POST") {
-        $car = $_GET['car'];
-        $manufacturer = $_POST['manufacturer'];
-        $model = $_POST['model'];
-        $plate = $_POST['plate'];
-        $price = $_POST['price'];
+        $booking      = $_GET['booking'];
+        $bookingid    = $_POST['bookingid'];
+        $startdate    = $_POST['startdate'];
+        $enddate      = $_POST['enddate'];
+        $price        = $_POST['totalprice'];
+        $vehicleid    = $_POST['vehicleid'];
+        $customerid   = $_POST['customerid'];
+        $agencyid     = $_POST['agencyid'];
         if($valid){
-            $updatePlate = $conn->prepare('UPDATE `vehicle` SET `plate` = "' . $plate . '"  WHERE `vehicle`.`id` = "' . $car . '" ');
-            $updateModel = $conn->prepare('UPDATE `vehicle` SET `model` = "' . $model . '" WHERE `vehicle`.`id` = "' . $car . '" ');
-            $updateManufacturer = $conn->prepare('UPDATE `vehicle` SET `manufacturer` = "' . $manufacturer . '" WHERE `vehicle`.`id` = "' . $car . '" ');
-            $updatePrice = $conn->prepare('UPDATE `vehicle` SET `price` = "' . $price . '" WHERE `vehicle`.`id` = "' . $car . '" ');
-            $updatePlate->execute();
-            $updateModel->execute();
-            $updateManufacturer->execute();
-            $updatePrice->execute();
+            $updatebookingid = $conn->prepare('UPDATE `booking` SET `id` = "' . $bookingid . '" WHERE `booking`.`id` = "' . $booking . '" ;');
+            $updatestart = $conn->prepare('UPDATE `booking` SET `startdate` = "' . $startdate . '" WHERE `booking`.`id` = "' . $booking . '" ;');
+            $updateend = $conn->prepare('UPDATE `booking` SET `enddate` = "' . $enddate . '" WHERE `booking`.`id` = "' . $booking . '" ;');
+            $updateprice = $conn->prepare('UPDATE `booking` SET `price` = "' . $price . '" WHERE `booking`.`id` = "' . $booking . '" ;');
+            $updatevehicle = $conn->prepare('UPDATE `booking` SET `vehicleid` = "' . $vehicleid . '" WHERE `booking`.`id` = "' . $booking . '" ;');
+            $updatecustomer = $conn->prepare('UPDATE `booking` SET `customerid` = "' . $customerid . '" WHERE `booking`.`id` = "' . $booking . '" ;');
+           // $updateagency = $conn->prepare('UPDATE `booking` SET `id` = "' . $agencyid . '" WHERE `booking`.`id` = "' . $booking . '" ;');
+            
+            $updatebookingid->execute();
+            $updatestart->execute();
+            $updateend->execute();
+            $updateprice->execute();
+            $updatevehicle->execute();
+            $updatecustomer->execute();
+           // $updateagency->execute();
+             header( "refresh:0;url=managebooking.php?booking=$bookingid" );
             ?><h3 class="text-success"><?php echo 'Records updated successfully.'; ?></h3><?php
         }
     }
-?>
-<?php if(isset($_SESSION['admin'])) {
 
 $bookingid = $_GET['booking'];
-$sql = 'SELECT *, v.id AS vehicleid, c.email AS customermail, c.phonenumber AS customerphone, b.price AS totalprice, b.active AS `status`, ct.type AS cartype
+$sql = 'SELECT *, v.id AS vehicleid, c.id AS customerid, c.email AS customermail, c.phonenumber AS customerphone, b.price AS totalprice, b.active AS `status`, ct.type AS cartype
 FROM booking AS b
 LEFT JOIN customer AS c
 ON c.id = b.customerid
@@ -141,7 +152,7 @@ $query = $conn->query($sql); ?>
            </div>
            <br>
            <div class="form-floating text-black-50">
-             <input class="form-control" type="text" name="booking" value="<?php echo $_GET['booking'];?>" disabled><label>Booking ID</label>
+             <input class="form-control btn-primary" type="text" name="bookingid" value="<?php echo $_GET['booking'];?>"><label>Booking ID</label>
           </div>
            <br>
            <div class="form-floating text-black-50">
@@ -153,15 +164,59 @@ $query = $conn->query($sql); ?>
            </div>
            <br>
            <div class="form-floating text-black-50">
-             <input class="form-control" type="text" name="totalprice" value="<?php echo $vehicle['totalprice'];?>" disabled><label>Total Price</label>
+             <input class="form-control" type="text" name="totalprice" value="<?php echo $vehicle['totalprice'];?>"><label>Total Price</label>
            </div>
            <br>
            <div class="form-floating text-black-50">
-             <input class="form-control" type="text" name="type" value="<?php echo $vehicle['cartype'];?>" disabled><label>Type</label>
+             <input class="form-control btn-primary" type="text" name="vehicleid" value="<?php echo $vehicle['vehicleid'];?>"><label>Vehicle ID</label>
            </div>
            <br>
            <div class="form-floating text-black-50">
-             <input class="form-control" type="text" name="agency" value="<?php echo $vehicle['city'];?>" disabled><label>Agency</label>
+             <input class="form-control" type="text" name="manufacturer" value="<?php echo $vehicle['manufacturer'];?>" disabled><label>Manufacturer</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="model" value="<?php echo $vehicle['model'];?>" disabled><label>Model</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="cartype" value="<?php echo $vehicle['cartype'];?>" disabled><label>Car Type</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="plate" value="<?php echo $vehicle['plate'];?>" disabled><label>Car Plate</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control btn-primary" type="text" name="customerid" value="<?php echo $vehicle['customerid'];?>"><label>Customer ID</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="name" value="<?php echo $vehicle['firstname'] . ' ' . $vehicle['lastname'];?>" disabled><label>Customer Name</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="customermail" value="<?php echo $vehicle['customermail'];?>" disabled><label>Customer E-mail</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="customerphone" value="<?php echo $vehicle['customerphone'];?>" disabled><label>Customer phone number</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control btn-primary" type="text" name="agencyid" value="<?php echo $vehicle['agency_id'];?>"><label>Agency ID</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="city" value="<?php echo $vehicle['city'];?>" disabled><label>Location</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="agencymail" value="<?php echo $vehicle['email'];?>" disabled><label>Agency E-mail</label>
+           </div>
+           <br>
+           <div class="form-floating text-black-50">
+             <input class="form-control" type="text" name="agencyphone" value="<?php echo $vehicle['phonenumber'];?>" disabled><label>Agency phone number</label>
            </div>
            <br>
            <div class="checkbox mb-3 text-black-50">
