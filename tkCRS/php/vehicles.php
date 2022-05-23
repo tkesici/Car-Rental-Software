@@ -90,18 +90,22 @@ if(!isset($_SESSION['admin'])) {
     </div>
   </form>
 </header>
+<br>
 <!--Content-->
 <?php if(isset($_SESSION['admin'])) { 
   $sql1 = 'SELECT * FROM vehicle ORDER BY manufacturer';
   $vehicles = $conn->query($sql1); ?>
 
-  <div class='col-md-3 rounded mx-auto d-block' id='cars'>
-    <br>
-        <div class='card'>
-        <img class='img-thumbnail' src='https://cdn.pixabay.com/photo/2014/04/02/10/55/plus-304947_1280.png' alt='Image'>
+  <div class='col-md-2 rounded mx-auto d-block' id='cars'>
+    <div class='card'>
+    <div style="width:100%; text-align:center">
+     <br>
+        <img class="img-fluid" width="150px" src='https://cdn.pixabay.com/photo/2014/04/02/10/55/plus-304947_1280.png' alt='Image'>
+        </div>
           <div class='card-body'>
           <div class='btn-group'>                    
             <div class='img-desc' onmousemove='imgHover(this, event)'>
+            <br>
             <a class='btn btn-sm btn-success' href=addcar.php>Add Car</a>
                </div>
              </div>

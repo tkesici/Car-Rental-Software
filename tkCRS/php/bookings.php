@@ -127,6 +127,7 @@ ORDER BY b.startdate';
     <?php echo "<img class='img-fluid img-thumbnail' src=". $info['image'] ." alt='Image'>" ;?><br><br>
     <p class="card-text">Customer: <?php echo $info['firstname'] . ' ' . $info['lastname']; ?><br></p>
     <?php echo "<a class='btn btn-sm btn-dark' href=\"managebooking.php?booking=".$info['bookingid']."\">Manage Booking</a>";?>
+    <?php echo "<a class='btn btn-sm btn-danger' href=\"deletebooking.php?booking=".$info['bookingid']."\">Delete Booking</a>";?>
   </div>
   <div class="card-footer text-muted">
   <?php echo 'From ' . $info['startdate'] . ' to ' . $info['enddate']; ?>

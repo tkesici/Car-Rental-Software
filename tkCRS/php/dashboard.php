@@ -109,7 +109,7 @@ if(!isset($_SESSION['admin'])) {
   <div class="card-group">
   <?php while ($info = $revenue->fetch_assoc()) { ?>
   <div class="card bg-success">
-    <img class="img-thumbnail" src="https://miro.medium.com/max/1400/0*elFqAeuyXXRbbXOC.png">
+    <img class="img-fluid" src="https://miro.medium.com/max/1400/0*elFqAeuyXXRbbXOC.png">
     <div class="card-body">
       <h5 class="card-title">Revenue</h5>
       <h1 class="card-title">€<?php echo $info['total']; ?></h1>
@@ -119,7 +119,7 @@ if(!isset($_SESSION['admin'])) {
   <?php } ?>
   <?php while ($info = $customers->fetch_assoc()) { ?>
   <div class="card bg-primary">
-    <img class="img-thumbnail" src="https://www.kindpng.com/picc/m/74-743103_listening-to-customers-png-happy-customer-png-transparent.png" alt="Card image cap">
+    <img class="img-fluid" src="https://www.kindpng.com/picc/m/74-743103_listening-to-customers-png-happy-customer-png-transparent.png" alt="Card image cap">
     <div class="card-body">
       <h5 class="card-title">Our Family</h5>
       <h1 class="card-title"><?php echo $info['totalcustomers']; ?> Users</h1>
@@ -129,7 +129,7 @@ if(!isset($_SESSION['admin'])) {
   <?php } ?>
   <?php while ($info = $vehicles->fetch_assoc()) { ?>
   <div class="card bg-danger">
-    <img class="card-img-top" src="https://t4.ftcdn.net/jpg/01/14/62/49/360_F_114624946_hCCOPyY0CE7Nt48z72d7AIh3ie8Txs5V.jpg" alt="Card image cap">
+    <img class="imb-fluid" src="https://t4.ftcdn.net/jpg/01/14/62/49/360_F_114624946_hCCOPyY0CE7Nt48z72d7AIh3ie8Txs5V.jpg" alt="Card image cap">
     <div class="card-body">
       <h5 class="card-title">Our Fleet</h5>
       <h1 class="card-title"><?php echo $info['totalvehicles']; ?> Vehicles</h1>
@@ -142,7 +142,7 @@ if(!isset($_SESSION['admin'])) {
   <div class="card bg-dark">
     <div class="card-body">
       <h5 class="card-title">Active Bookings</h5>
-      <h1 class="card-title"><?php echo $info['activeorders']; ?></h1>
+      <h1 class="card-title text-success"><?php echo $info['activeorders']; ?></h1>
       <p class="card-text"></p>
     </div>
   </div>
@@ -151,7 +151,7 @@ if(!isset($_SESSION['admin'])) {
   <div class="card bg-dark">
     <div class="card-body">
       <h5 class="card-title">Inactive Bookings</h5>
-      <h1 class="card-title"><?php echo $info['inactiveorders']; ?></h1>
+      <h1 class="card-title text-danger"><?php echo $info['inactiveorders']; ?></h1>
       <p class="card-text"></p>
     </div>
   </div>

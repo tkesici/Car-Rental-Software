@@ -12,7 +12,7 @@ if(!isset($_SESSION['admin'])) {
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
-  $sql1 = "SELECT * FROM customer";
+  $sql1 = "SELECT * FROM customer ORDER BY customer.id";
   $customers = $conn->query($sql1);
 ?>
 <!doctype html>
@@ -100,18 +100,19 @@ if(!isset($_SESSION['admin'])) {
         {
         ?>
             <div class="col-md-2 mt-2" id="cars">
-                <div class="card">
+                <div class="card bg-dark">
                         <div class="card-body">
-                      <h1 class="card-title text-dark"><?php echo ' <b>User #' . $user['id']  . '</b>';?></h1>
-                      <h4 class="text-primary"><?php echo ' <b>' . $user['firstname']  . ' ' . $user['lastname'] . '</b>';?></h4>
+                      <h1 class="card-title text-warning"><?php echo ' <b>User #' . $user['id']  . '</b>';?></h1>
+                      <h4 class="text-light"><?php echo ' <b>' . $user['firstname']  . ' ' . $user['lastname'] . '</b>';?></h4>
                       <?php if ($user['active'] == 0) { ?>
-                        <h5 class="card-title text-danger">Inactive User</h5>
+                        <h6 class="card-title text-danger">Inactive User</h6>
                        <?php } else { ?>
-                         <h5 class="card-title text-success">Active User</h5>
+                         <h6 class="card-title text-success">Active User</h6>
                       <?php } ?>
                     <div class="btn-group">                
                       <div class="img-desc" onmousemove="imgHover(this, event)">
                       <?php echo "<a class='btn btn-sm btn-primary' href=\"manageuser.php?user=".$user['id']."\">Manage Customer</a>";?>
+                      <?php echo "<a class='btn btn-sm btn-danger' href=\"deleteuser.php?user=".$user['id']."\">Delete Customer</a>";?>
                          </div>
                        </div>
                        <br><br>
