@@ -99,63 +99,75 @@ session_start();
     </div>
   </form>
 </header>
+<?php
+$valid = false;
+if (!empty($_POST['msg'])) {
+  $valid = true;
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if ($valid) {
+    $firstname = $_SESSION['firstname'];
+    $lastname = $_SESSION['lastname'];
+    $email = $_SESSION['email'];
+    $msg = $_POST['msg'];
+
+           $stmt = $conn->prepare("INSERT INTO `contactform` (`firstname`, `lastname`, `email`, `message`) VALUES (?,?,?,?)");
+           $stmt->bind_param("ssss", $firstname, $lastname, $email, $msg);
+           $stmt->execute();
+           $stmt->close();
+           $conn->close();
+  }
+
+
+}
+?>
 <div class="container">
-      <div class="embed-responsive embed-responsive-21by9">
-        <div id="map" class="z-depth-1-half map-container-1">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1194.9051131473077!2d30.65102845725499!3d36.898117804171704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c391db4c3dc15f%3A0x7258add44e8254a5!2zQWtkZW5peiDDnG5pdmVyc2l0ZXNpIEJpbGdpc2F5YXIgTcO8aGVuZGlzbGnEn2kgQsO2bMO8bcO8!5e0!3m2!1sen!2str!4v1649320374195!5m2!1sen!2str"></iframe>
-       </div>
-      </div>
       <hr>
       <div class="">
           <main>  
             <div class="">
               <div class="">
                 <h3 class="">Contact Us</h3>
-                <form class="needs-validation" novalidate>
+                <form method="post">
                   <div class="row g-3">
                     <div class="col-sm-6">
                       <label for="firstName" class="form-label">First name</label>
-                      <input type="text" class="form-control" id="firstName" placeholder="First name" value="" required>
-                      <div class="invalid-feedback">
-                        Valid first name is required.
-                      </div>
+                      <input type="text" class="form-control" id="firstName" placeholder="First name" value="<?php echo $_SESSION['firstname'];?>" required>
                     </div>
         
                     <div class="col-sm-6">
                       <label for="lastName" class="form-label">Last name</label>
-                      <input type="text" class="form-control" id="lastName" placeholder="Last name" value="" required>
-                      <div class="invalid-feedback">
-                        Valid last name is required.
-                      </div>
+                      <input type="text" class="form-control" id="lastName" placeholder="Last name" value="<?php echo $_SESSION['lastname'];?>" required>
                     </div>
       
                     <div class="col-12">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email" placeholder="Email adress">
-                      <div class="invalid-feedback">
-                        Please enter a valid email address for shipping updates.
-                      </div>
+                      <input type="email" class="form-control" id="email" placeholder="Email adress" value="<?php echo $_SESSION['email'];?>">
                     </div>
       
                     <div class="col-12">
                       <label for="email" class="form-label">Message</label>
-                      <textarea class="form-control" id="message" cols="30" rows="3" placeholder="Your message..."></textarea>
-                      <div class="invalid-feedback">
-                        Please enter a valid message.
-                      </div>
+                      <textarea class="form-control" id="msg" name="msg" cols="30" rows="3" placeholder="Your message..."></textarea>
                     </div>
       
                     </div>
                   </div>
                       <br>
-                  <button class="w-10 btn btn-light btn-lg" type="submit">Submit</button>
+                  <input class="w-100 btn btn-lg btn-light"  type="submit" name="submit" value="Submit"> 
+                  <br><hr>
                 </form>
               </div>
             </div>
           </main>
-          <br>
+          <div class="embed-responsive embed-responsive-21by9">
+        <div id="map" class="z-depth-1-half map-container-1">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1194.9051131473077!2d30.65102845725499!3d36.898117804171704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c391db4c3dc15f%3A0x7258add44e8254a5!2zQWtkZW5peiDDnG5pdmVyc2l0ZXNpIEJpbGdpc2F5YXIgTcO8aGVuZGlzbGnEn2kgQsO2bMO8bcO8!5e0!3m2!1sen!2str!4v1649320374195!5m2!1sen!2str"></iframe>
+       </div>
+      </div>
       </div>
     </div>
+
+    <br>
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
