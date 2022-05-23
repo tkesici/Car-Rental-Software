@@ -22,7 +22,7 @@ if(!isset($_SESSION['admin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-    <title>Vehicles \ tkCRS</title>
+    <title>Manage Vehicles \ tkCRS</title>
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -72,6 +72,7 @@ if(!isset($_SESSION['admin'])) {
           <li><a href="vehicles.php" class="nav-link px-2 text-light">Manage Vehicles</a></li>
           <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
           <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
+          <li><a href="createbooking.php" class="nav-link px-2 text-dark">Create Booking</a></li>
           
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
