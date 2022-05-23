@@ -132,17 +132,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <div class="row g-3">
                     <div class="col-sm-6">
                       <label for="firstName" class="form-label">First name</label>
-                      <input type="text" class="form-control" id="firstName" placeholder="First name" value="<?php echo $_SESSION['firstname'];?>" required>
+                      <input type="text" class="form-control" id="firstName" placeholder="First name" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['firstname'];?>" required>
                     </div>
         
                     <div class="col-sm-6">
                       <label for="lastName" class="form-label">Last name</label>
-                      <input type="text" class="form-control" id="lastName" placeholder="Last name" value="<?php echo $_SESSION['lastname'];?>" required>
+                      <input type="text" class="form-control" id="lastName" placeholder="Last name" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['lastname'];?>" required>
                     </div>
       
                     <div class="col-12">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email" placeholder="Email adress" value="<?php echo $_SESSION['email'];?>">
+                      <input type="email" class="form-control" id="email" placeholder="Email adress" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['email'];?>">
                     </div>
       
                     <div class="col-12">
