@@ -276,7 +276,7 @@ if ($conn->connect_error) {
 }
 
 window.onload = function () {
-    var v = 30,
+    var v = 60,
         display = document.querySelector('#time');
     startTimer(v, display);
 };
