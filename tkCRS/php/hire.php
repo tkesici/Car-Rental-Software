@@ -251,10 +251,10 @@ if(!empty($_POST['startdate']) && !empty($_POST['enddate']) && !empty($_POST['ci
                 </h4>
                   <h6 class='card-title text-dark'>" .$vehicle['model'] ."
                   <h6 class='text-muted'><small>" .$vehicle['plate'] ."</small><br><br>
-              <div class='btn-group'>
-                <input type='button' class='btn btn-sm btn-secondary' value='Specifications' data-toggle='modal' data-target='#specsmodal'>                    
-                <div class='img-desc' onmousemove='imgHover(this, event)'>
-                <a class='btn btn-sm btn-warning' href=\"payment.php?car=".$vehicle['id']."\">Hire</a>
+              <div class='btn-group d-grid gap-2 mx-auto'>
+                <input type='button' class='btn btn-sm btn-secondary' value='Specifications' data-toggle='modal' data-target='#specsmodal'>
+                <a class='btn  btn-sm btn-warning' href=\"payment.php?car=".$vehicle['id']."\">Hire</a>                    
+                <div class='img-desc'>
                    </div>
                  </div>
               <h6 class='text-sm-center text-dark font-weight-light'>€". $vehicle['price']."/day</h6>

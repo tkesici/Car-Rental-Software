@@ -130,10 +130,10 @@ $today = date_create()->format('Y-m-d');
                 </h4>
                   <h6 class='card-title text-dark'>" .$vehicle['model'] ."
                   <h6 class='text-muted'><small>" .$vehicle['plate'] ."</small><br><br>
-              <div class='btn-group'>                    
-                <div class='img-desc' onmousemove='imgHover(this, event)'>
+                <div class='btn-group d-grid gap-2 mx-auto'>                
                 <a class='btn btn-sm btn-primary' href=\"managecar.php?car=".$vehicle['id']."\">Manage Properties</a>
-                <a class='btn btn-sm btn-danger' href=\"deletecar.php?car=".$vehicle['id']."\">Delete Car</a>
+                <a class='btn btn-sm btn-danger' href=\"deletecar.php?car=".$vehicle['id']."\">Delete Car</a> 
+                <div class='img-desc' onmousemove='imgHover(this, event)'>
                    </div>
                  </div>
               <h6 class='text-sm-center text-dark font-weight-light'>€". $vehicle['price']."/day</h6>

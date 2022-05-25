@@ -114,10 +114,10 @@ $customers = $conn->query($sql1);
                        <?php } else { ?>
                          <h6 class="card-title text-success">Active User</h6>
                       <?php } ?>
-                    <div class="btn-group">                
+                    <div class="btn-group d-grid gap-2 mx-auto">
+                    <?php echo "<a class='btn btn-sm btn-primary' href=\"manageuser.php?user=".$user['id']."\">Manage Customer</a>";?>
+                      <?php echo "<a class='btn btn-sm btn-danger' href=\"deleteuser.php?user=".$user['id']."\">Delete Customer</a>";?>                
                       <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <?php echo "<a class='btn btn-sm btn-primary' href=\"manageuser.php?user=".$user['id']."\">Manage Customer</a>";?>
-                      <?php echo "<a class='btn btn-sm btn-danger' href=\"deleteuser.php?user=".$user['id']."\">Delete Customer</a>";?>
                          </div>
                        </div>
                        <br><br>
