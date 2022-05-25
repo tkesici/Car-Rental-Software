@@ -206,7 +206,7 @@ if ($conn->connect_error) {
                   </div>
                 </li>
               </ul>
-              <div class="text-dark-50 text-right">You have <span id="time" class="text-danger">03:00</span> minutes to complete the booking.</div><br>
+              <div class="text-dark-50 text-right">You have <span id="time" class="text-danger">01:00</span> minutes to complete the booking.</div><br>
               <input class="w-100 btn btn-outline-warning container-fluid" type="submit" name="submit" value="Order"> 
               <hr>            
               </form>
