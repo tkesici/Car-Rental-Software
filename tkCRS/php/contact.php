@@ -106,9 +106,9 @@ if (!empty($_POST['msg'])) {
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($valid) {
-    $firstname = $_SESSION['firstname'];
-    $lastname = $_SESSION['lastname'];
-    $email = $_SESSION['email'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $email = $_POST['email'];
     $msg = $_POST['msg'];
 
            $stmt = $conn->prepare("INSERT INTO `contactform` (`firstname`, `lastname`, `email`, `message`) VALUES (?,?,?,?)");
@@ -132,17 +132,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <div class="row g-3">
                     <div class="col-sm-6">
                       <label for="firstName" class="form-label">First name</label>
-                      <input type="text" class="form-control" id="firstName" placeholder="First name" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['firstname'];?>" required>
+                      <input type="text" class="form-control" name="firstname" placeholder="First name" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['firstname'];?>" required>
                     </div>
         
                     <div class="col-sm-6">
                       <label for="lastName" class="form-label">Last name</label>
-                      <input type="text" class="form-control" id="lastName" placeholder="Last name" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['lastname'];?>" required>
+                      <input type="text" class="form-control" name="lastname" placeholder="Last name" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['lastname'];?>" required>
                     </div>
       
                     <div class="col-12">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email" placeholder="Email address" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['email'];?>">
+                      <input type="email" class="form-control" name="email" placeholder="Email address" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['email'];?>">
                     </div>
       
                     <div class="col-12">

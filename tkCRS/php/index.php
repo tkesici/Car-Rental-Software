@@ -150,12 +150,12 @@ session_start();
                         <h6 class="card-title text-dark">
                           <?php echo $vehicle['model']; ?>
                           <br><br>
-                    <div class="btn-group">
-                      <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">                    
-                      <div class="img-desc" onmousemove="imgHover(this, event)">
-                      <input type="button" class="btn btn-sm btn-warning" value="Hire" disabled>
-                       <span>You need to login first</span>
-                      </div>
+                    <div class="btn-group d-grid gap-2 mx-auto">   
+                    <input type="button" class="btn btn-sm btn-secondary" value="Specifications" data-toggle="modal" data-target="#specsmodal">    
+                      <div class="img-desc" onmousemove="imgHover(this, event)"> 
+                      <input type="button" class="btn btn-sm btn-warning" value="Hire" disabled> 
+                      <span>You need to login first</span>
+                    </div>
                     </div>
                     </div>
                 </div>
