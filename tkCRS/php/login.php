@@ -1,10 +1,9 @@
 <?php
 session_start();
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: index.php");
+if(isset($_SESSION["loggedin"])){
+    header("location: adminlogin.php");
     exit;
 }
-
 $email = $password = "";
 $email_err = $password_err = $login_err = "";
 

@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       
                     <div class="col-12">
                       <label for="email" class="form-label">Email</label>
-                      <input type="email" class="form-control" id="email" placeholder="Email adress" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['email'];?>">
+                      <input type="email" class="form-control" id="email" placeholder="Email address" value="<?php if(isset($_SESSION['loggedin'])) echo $_SESSION['email'];?>">
                     </div>
       
                     <div class="col-12">

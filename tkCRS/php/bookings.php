@@ -1,18 +1,21 @@
 <?php 
 session_start();
 if(!isset($_SESSION['admin'])) {
-    header("Location: index.php");
+    header("Location: adminlogin.php");
  }
-
-	if(isset($_GET['logout'])){
-		session_destroy();
-		header("Location: index.php");
-	}
-    $conn = new mysqli("localhost", "root", "1234", "tkcrs");
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-  }
-  $today = date_create()->format('Y-m-d');
+if(isset($_GET['adminlogout'])){
+		unset($_SESSION["admin"]);
+    unset($_SESSION["adminfirstname"]);
+    unset($_SESSION["adminlastname"]);
+    unset($_SESSION["adminid"]);
+    unset($_SESSION["adminmeail"]);
+		header("Location: adminlogin.php");
+}
+$conn = new mysqli("localhost", "root", "1234", "tkcrs");
+  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$today = date_create()->format('Y-m-d');
 ?>
 <!doctype html>
 <html lang="en">
@@ -81,7 +84,7 @@ if(!isset($_SESSION['admin'])) {
             <button class="btn btn-light dropdown-toggle" type="button" id="admindropdown" data-toggle="dropdown">
               Welcome, <?php echo $_SESSION['adminemail']; ?>
             </button>
-            <button type="button" class="btn btn-danger me-2" onclick=" relocate('index.php?logout=true')">Log out</button>
+            <button type="button" class="btn btn-danger me-2" onclick=" relocate('dashboard.php?adminlogout=true')">Log out</button>
           </div>
         </div>
   </header>

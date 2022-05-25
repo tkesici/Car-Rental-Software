@@ -1,8 +1,16 @@
 <?php
 session_start();
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: index.php");
+if(isset($_SESSION["admin"])){
+    header("location: dashboard.php");
     exit;
+}
+if(isset($_GET['adminlogout'])){
+  unset($_SESSION["admin"]);
+  unset($_SESSION["firstname"]);
+  unset($_SESSION["lastname"]);
+  unset($_SESSION["id"]);
+  unset($_SESSION["adminmeail"]);
+  header("Location: adminlogin.php");
 }
 
 $email = $password = "";
@@ -30,9 +38,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         if ($count > 0) {
             while ($row = $result->fetch_assoc()) {
                     if ($row['password'] == md5($password)) {
-                        $_SESSION["firstname"] = $row['firstname'];
-                        $_SESSION["lastname"] = $row['lastname'];
-                        $_SESSION["id"] = $row['id'];
+                        $_SESSION["adminfirstname"] = $row['firstname'];
+                        $_SESSION["adminlastname"] = $row['lastname'];
+                        $_SESSION["adminid"] = $row['id'];
                         $_SESSION["adminemail"] = $row['email'];
                         $_SESSION["admin"] = true;
                         header("Location:dashboard.php");

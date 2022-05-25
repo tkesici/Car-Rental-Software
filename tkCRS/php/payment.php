@@ -12,6 +12,8 @@ session_start();
       die("Connection failed: " . $conn->connect_error);
   }
   $today = date_create()->format('Y-m-d');
+  $temp = $_GET["car"];
+  $_SESSION['temporary'] = $_GET["car"];
 
   $startdate = $_SESSION['startdate'];
   $startdate = str_replace(' ', '', $startdate);
@@ -32,7 +34,14 @@ session_start();
   $ccnumberErr = $expirationErr = $cvvErr = "";
   $valid = false;
   $one = 1;
-
+  
+  function temporarybooking() {
+    global $conn,$startdate,$enddate;
+    $stmt = $conn->prepare("INSERT INTO temp(`customerid`,`vehicleid`,`startdate`,`enddate`) VALUES(?,?,?,?)");
+    $stmt->bind_param("iiss",$_SESSION['id'],$_GET["car"],$startdate,$enddate);
+    $stmt->execute();
+    $stmt->close();
+  }
   if (($_SERVER["REQUEST_METHOD"] ?? 'POST') == "POST") {
     function order(){
       global $conn,$startdate,$enddate,$total,$one;
@@ -41,10 +50,13 @@ session_start();
       $stmt->execute();
       $stmt->close();
       $conn->close();
-      header('Location:index.php');
+      header('Location:mytransactions.php');
     }
 
     if(isset($_POST['submit'])){
+      $carId = $_GET["car"];
+      $del = $conn->prepare("DELETE FROM `temp` WHERE temp.vehicleid = $carId");
+      $del->execute();
       order();
     }
 
@@ -54,6 +66,8 @@ session_start();
           $data = htmlspecialchars($data);
           return $data;
         }
+    } else {
+      temporarybooking();
     }
 
 ?>
@@ -192,10 +206,10 @@ if ($conn->connect_error) {
                   </div>
                 </li>
               </ul>
+              <div class="text-dark-50 text-right">You have <span id="time" class="text-danger">03:00</span> minutes to complete the booking.</div><br>
               <input class="w-100 btn btn-outline-warning container-fluid" type="submit" name="submit" value="Order"> 
               <hr>            
               </form>
-          
           </div>
         </div>
       </main>
@@ -242,6 +256,30 @@ if ($conn->connect_error) {
   span.style.left = event.offsetX + 'px';
   span.style.top = event.offsetY + 'px';
 }
+</script>
+<script>
+  function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            window.location.href = "deletetemporarybooking.php";
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var v = 30,
+        display = document.querySelector('#time');
+    startTimer(v, display);
+};
 </script>
   </body>
 </html>

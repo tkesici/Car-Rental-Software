@@ -214,12 +214,17 @@ if(!empty($_POST['startdate']) && !empty($_POST['enddate']) && !empty($_POST['ci
       $active = 1;
       $sql = 'SELECT v.id,v.manufacturer,v.model,v.image,v.price,v.agency_id,v.plate
       FROM vehicle v
-        INNER JOIN agency a ON v.agency_id = a.id 
-          WHERE v.id NOT IN 
-            (SELECT b.vehicleid FROM booking b 
-                WHERE NOT (b.enddate < "' . $start . '" OR b.startdate > "' . $end . '" ) AND b.enddate  AND b.active = 1) 
-                  AND v.agency_id = "' . $_POST['city'] . '"
-                    AND v.type_id = "' . $_POST['type'] . '" ';
+      INNER JOIN agency a ON v.agency_id = a.id 
+      WHERE v.id NOT IN 
+      (SELECT b.vehicleid FROM booking b 
+      WHERE NOT (b.enddate < "' . $start . '" OR b.startdate > "' . $end . '" ) AND b.enddate  AND b.active = 1) 
+      AND v.agency_id = "' . $_POST['city'] . '"
+      AND v.type_id = "' . $_POST['type'] . '" 
+      AND v.id NOT IN (SELECT vehicleid from `temp` t WHERE NOT (t.enddate < "' . $start . '"
+      OR t.startdate > "' . $end . '" ))';
+
+
+                    
       $cars = $conn->query($sql);
       $count = mysqli_num_rows($cars);
       if ($count>0) {

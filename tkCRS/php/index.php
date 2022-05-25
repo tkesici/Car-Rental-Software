@@ -1,8 +1,14 @@
 <?php 
 session_start();
 	if(isset($_GET['logout'])){
-		session_destroy();
-		header("Location: index.php");
+    unset($_SESSION["loggedin"]);
+    unset($_SESSION["firstname"]);
+    unset($_SESSION["lastname"]);
+    unset($_SESSION["id"]);
+    unset($_SESSION["email"]);
+    unset($_SESSION["phonenumber"]);   
+	  header("Location: index.php");
+    die();
 	}
     $conn = new mysqli("localhost", "root", "1234", "tkcrs");
     if ($conn->connect_error) {
