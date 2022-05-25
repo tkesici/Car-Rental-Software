@@ -84,7 +84,7 @@ $today = date_create()->format('Y-m-d');
             <button class="btn btn-light dropdown-toggle" type="button" id="admindropdown" data-toggle="dropdown">
               Welcome, <?php echo $_SESSION['adminemail']; ?>
             </button>
-            <button type="button" class="btn btn-danger me-2" onclick=" relocate('index.php?logout=true')">Log out</button>
+            <button type="button" class="btn btn-danger me-2" onclick=" relocate('dashboard.php?adminlogout=true')">Log out</button>
           </div>
         </div>
   </header>
