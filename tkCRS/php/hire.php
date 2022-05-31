@@ -234,7 +234,8 @@ if(!empty($_POST['startdate']) && !empty($_POST['enddate']) && !empty($_POST['ci
       AND v.agency_id = "' . $_POST['city'] . '"
       AND v.type_id = "' . $_POST['type'] . '" 
       AND v.id NOT IN (SELECT vehicleid from `temp` t WHERE NOT (t.enddate < "' . $start . '"
-      OR t.startdate > "' . $end . '" ))';
+      OR t.startdate > "' . $end . '" ))
+      AND v.id NOT IN (SELECT vehicleid from damaged d)';
 
 
                     
