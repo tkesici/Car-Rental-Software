@@ -16,6 +16,8 @@ $conn = new mysqli("localhost", "root", "1234", "tkcrs");
     die("Connection failed: " . $conn->connect_error);
 }
 $today = date_create()->format('Y-m-d');
+$sql1 = "SELECT * FROM customer ORDER BY customer.id";
+$customers = $conn->query($sql1);
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,7 +27,7 @@ $today = date_create()->format('Y-m-d');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-    <title>Manage Vehicles \ tkCRS</title>
+    <title>Manage agency \ tkCRS</title>
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -72,11 +74,12 @@ $today = date_create()->format('Y-m-d');
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
-          <li><a href="vehicles.php" class="nav-link px-2 text-light">Manage Vehicles</a></li>
-          <li><a href="agencies.php" class="nav-link px-2 text-dark">Manage Agencies</a></li>
+          <li><a href="vehicles.php" class="nav-link px-2 text-dark">Manage Vehicles</a></li>
+          <li><a href="agencies.php" class="nav-link px-2 text-light">Manage agency</a></li>
           <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
           <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
           <li><a href="createbooking.php" class="nav-link px-2 text-dark">Create Booking</a></li>
+          
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
         <div class="text-end">
@@ -94,64 +97,72 @@ $today = date_create()->format('Y-m-d');
     </div>
   </form>
 </header>
-<br>
 <!--Content-->
 <?php if(isset($_SESSION['admin'])) { 
-  $sql1 = 'SELECT * FROM vehicle ORDER BY manufacturer';
-  $vehicles = $conn->query($sql1); ?>
 
-  <div class='col-md-2 rounded mx-auto d-block' id='cars'>
-    <div class='card'>
-    <div style="width:100%; text-align:center">
-     <br>
-        <img class="img-fluid" width="150px" src='https://cdn.pixabay.com/photo/2014/04/02/10/55/plus-304947_1280.png' alt='Image'>
-        </div>
-          <div class='card-body'>
-          <div class='btn-group'>                    
-            <div class='img-desc' onmousemove='imgHover(this, event)'>
-            <br>
-            <a class='btn btn-sm btn-success' href=addcar.php>Add Car</a>
-               </div>
-             </div>
-          </div>
-      </div>
-  </div>
-  <br>
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$id = $_POST['agency'];
+    $sql = "SELECT * FROM agency WHERE agency.id = ' $id ' ";
+$agencies = $conn->query($sql);
 
-
-<div class="row"> <?php 
-      while ($vehicle = $vehicles->fetch_assoc()) {
-      echo "<div class='col-md-2 mt-2' id='cars'>
-            <div class='card'>
-            <img class='img-fluid img-thumbnail' src=". $vehicle['image'] ." alt='Image'>
-                  <div class='card-body'>
-                  <h4 class='card-title text-dark'>
-                    <b>" . $vehicle['manufacturer']  . "</b> 
-                </h4>
-                  <h6 class='card-title text-dark'>" .$vehicle['model'] ."
-                  <h6 class='text-muted'><small>" .$vehicle['plate'] ."</small><br><br>
-                <div class='btn-group d-grid gap-2 mx-auto'>                
-                <a class='btn btn-sm btn-primary' href=\"managecar.php?car=".$vehicle['id']."\">Manage Properties</a>
-                <a class='btn btn-sm btn-danger' href=\"deletecar.php?car=".$vehicle['id']."\">Delete Car</a> 
-                <a class='btn btn-sm btn-warning' href=\"seebookings.php?car=".$vehicle['id']."\">See Bookings</a> 
-                <div class='img-desc' onmousemove='imgHover(this, event)'>
-                   </div>
+foreach($agencies as $agency) { ?>
+    <div class="col-md-2 mt-2" id="cars">
+        <div class="card bg-dark">
+             <div class="card-body">
+              <h1 class="card-title text-info"><?php echo ' <b>Agency ' . $agency['id']  . '</b>';?></h1>
+              <h4 class="text-light"><?php echo ' <b>' . $agency['city'] . '</b>';?></h4>
+              <h4 class="text-light"><?php echo ' <b>' . $agency['email'] . '</b>';?></h4>
+              <h4 class="text-light"><?php echo ' <b>' . $agency['phonenumber'] . '</b>';?></h4>
+            <div class="btn-group d-grid gap-2 mx-auto">
+              <?php echo "<a class='btn btn-sm btn-info' href=''>Contact</a>";?>
+              <div class="img-desc" onmousemove="imgHover(this, event)">
                  </div>
-              <h6 class='text-sm-center text-dark font-weight-light'>€". $vehicle['price']."/day</h6>
-              </div>
-          </div>
-      </div>";
-        } 
-      ?>
-      </tbody>
-  </table>
-</div>
-</div>
-</div> 
-<?php
-  }
+               </div>
+               <br><br>
+            </div>
+        </div>
+    </div>
+    <?php }
+   }
 ?>
-<br>
+</div> <?php
+ } ?>
+
+<main class="col-md-4 mx-auto">
+       <form method="post">
+           <br>
+           <select class="form-select text-black-50" id="select" name ="agency">
+             <option selected>Location</option>
+             <option name ="1" value="1">Antalya</option>
+             <option name ="2" value="2">Istanbul</option>
+             <option name ="3" value="3">Izmir</option>
+             <option name ="4" value="4">Ankara</option>
+           </select>
+           <br>
+           <div class="checkbox mb-3 text-black-50">
+           </div>
+           <input class="w-100 btn btn-lg btn-success"  type="submit" name="submit" value="See agencies"> 
+         </form>
+       </main>
+    </div>
+    <br>      
+<div class="modal fade" id="specsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-black-50" id="specs">Specifications</h5>
+      </div>
+      <div class="modal-body">
+        <img class="img-fluid" src="../img/specs.png" alt="Specifications">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     <!--Footer-->
   <footer class="text-center text-lg-start" style="background-color:#ffc404">
     <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
