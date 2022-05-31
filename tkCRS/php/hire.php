@@ -14,6 +14,13 @@ if(isset($_GET['logout'])){
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
   }
+
+if(!empty($_SESSION['temporary'])) {
+$carId = $_SESSION['temporary'];
+$del = $conn->prepare("DELETE FROM `temp` WHERE temp.vehicleid = $carId");
+$del->execute();
+}
+
   $startdate = $enddate = "";
   $sql1 = "SELECT * FROM vehicle";
   $getAllVehicles = $conn->query($sql1);
