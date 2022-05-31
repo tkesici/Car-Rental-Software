@@ -118,7 +118,7 @@ $today = date_create()->format('Y-m-d');
                 <div class='img-desc' onmousemove='imgHover(this, event)'>
                    </div>
                  </div>
-              <h6 class='text-sm-center text-dark font-weight-light'>€". $vehicle['price']."/day</h6>
+                 <h6 class='card-title text-dark font-weight-light'> Status: " .$vehicle['status'] ."
               </div>
           </div>
       </div>";
