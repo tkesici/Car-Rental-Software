@@ -133,6 +133,7 @@ $today = date_create()->format('Y-m-d');
                 <div class='btn-group d-grid gap-2 mx-auto'>                
                 <a class='btn btn-sm btn-primary' href=\"managecar.php?car=".$vehicle['id']."\">Manage Properties</a>
                 <a class='btn btn-sm btn-danger' href=\"deletecar.php?car=".$vehicle['id']."\">Delete Car</a> 
+                <a class='btn btn-sm btn-warning' href=\"seebookings.php?car=".$vehicle['id']."\">See Bookings</a> 
                 <div class='img-desc' onmousemove='imgHover(this, event)'>
                    </div>
                  </div>

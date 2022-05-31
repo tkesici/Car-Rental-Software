@@ -116,7 +116,8 @@ $customers = $conn->query($sql1);
                       <?php } ?>
                     <div class="btn-group d-grid gap-2 mx-auto">
                     <?php echo "<a class='btn btn-sm btn-primary' href=\"manageuser.php?user=".$user['id']."\">Manage Customer</a>";?>
-                      <?php echo "<a class='btn btn-sm btn-danger' href=\"deleteuser.php?user=".$user['id']."\">Delete Customer</a>";?>                
+                      <?php echo "<a class='btn btn-sm btn-danger' href=\"deleteuser.php?user=".$user['id']."\">Delete Customer</a>";?>
+                      <?php echo "<a class='btn btn-sm btn-light' href=\"seereservations.php?user=".$user['id']."\">See Reservations</a>";?>
                       <div class="img-desc" onmousemove="imgHover(this, event)">
                          </div>
                        </div>
