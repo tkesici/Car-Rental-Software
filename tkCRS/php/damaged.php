@@ -25,7 +25,7 @@ $today = date_create()->format('Y-m-d');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Tevfik Kesici">
      <link rel="icon" type="image/x-icon" href="../img/logo/favicon.ico">
-    <title>Manage Vehicles \ tkCRS</title>
+    <title>Add Car \ tkCRS</title>
 
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -72,11 +72,12 @@ $today = date_create()->format('Y-m-d');
         <img style="display: inline;" src="../img/logo/secondarybanner.png" alt="logo" width="120" height="60"/>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li><a href="dashboard.php" class="nav-link px-2 text-dark">Dashboard</a></li>
-          <li><a href="vehicles.php" class="nav-link px-2 text-light">Manage Vehicles</a></li>
+          <li><a href="vehicles.php" class="nav-link px-2 text-dark">Manage Vehicles</a></li>
           <li><a href="agencies.php" class="nav-link px-2 text-dark">Manage Agencies</a></li>
           <li><a href="customers.php" class="nav-link px-2 text-dark">Manage Customers</a></li>
           <li><a href="bookings.php" class="nav-link px-2 text-dark">Manage Bookings</a></li>
           <li><a href="createbooking.php" class="nav-link px-2 text-dark">Create Booking</a></li>
+          
         </ul>
         <?php if(isset($_SESSION['admin'])) { ?>
         <div class="text-end">
@@ -94,50 +95,14 @@ $today = date_create()->format('Y-m-d');
     </div>
   </form>
 </header>
-<br>
-<!--Content-->
 <?php if(isset($_SESSION['admin'])) { 
-  $sql1 = 'SELECT * FROM vehicle ORDER BY manufacturer';
-  $vehicles = $conn->query($sql1); ?>
-
-  <div class='col-md-2 rounded mx-auto d-block' id='cars'>
-    <div class='card'>
-    <div style="width:100%; text-align:center">
-     <br>
-        <img class="img-fluid" width="150px" src='https://cdn.pixabay.com/photo/2014/04/02/10/55/plus-304947_1280.png' alt='Image'>
-        </div>
-          <div class='card-body'>
-          <div class='btn-group'>                    
-            <div class='img-desc' onmousemove='imgHover(this, event)'>
-            <br>
-            <a class='btn btn-sm btn-success' href=addcar.php>Add Car</a>
-               </div>
-             </div>
-          </div>
-      </div>
-  </div>
-  <br>
-  <div class='col-md-2 rounded mx-auto d-block' id='cars'>
-    <div class='card'>
-    <div style="width:100%; text-align:center">
-     <br>
-        <img class="img-fluid" width="150px" src='https://upload.wikimedia.org/wikipedia/commons/e/e0/Tools_clipart.png' alt='Image'>
-        </div>
-          <div class='card-body'>
-          <div class='btn-group'>                    
-            <div class='img-desc' onmousemove='imgHover(this, event)'>
-            <br>
-            <a class='btn btn-sm btn-warning' href=damaged.php>Damaged Cars</a>
-               </div>
-             </div>
-          </div>
-      </div>
-  </div>
-  <br>
-
+  $sql1 = 'SELECT * FROM damaged d
+  LEFT JOIN vehicle AS v
+  ON d.vehicleid = v.id';
+  $damaged = $conn->query($sql1); ?>
 
 <div class="row"> <?php 
-      while ($vehicle = $vehicles->fetch_assoc()) {
+      while ($vehicle = $damaged->fetch_assoc()) {
       echo "<div class='col-md-2 mt-2' id='cars'>
             <div class='card'>
             <img class='img-fluid img-thumbnail' src=". $vehicle['image'] ." alt='Image'>
@@ -148,8 +113,7 @@ $today = date_create()->format('Y-m-d');
                   <h6 class='card-title text-dark'>" .$vehicle['model'] ."
                   <h6 class='text-muted'><small>" .$vehicle['plate'] ."</small><br><br>
                 <div class='btn-group d-grid gap-2 mx-auto'>                
-                <a class='btn btn-sm btn-primary' href=\"managecar.php?car=".$vehicle['id']."\">Manage Properties</a>
-                <a class='btn btn-sm btn-danger' href=\"deletecar.php?car=".$vehicle['id']."\">Delete Car</a> 
+                <a class='btn btn-sm btn-primary' href=\"agencies.php?car=".$vehicle['id']."\">Contact to Agency</a>
                 <a class='btn btn-sm btn-warning' href=\"seebookings.php?car=".$vehicle['id']."\">See Bookings</a> 
                 <div class='img-desc' onmousemove='imgHover(this, event)'>
                    </div>
