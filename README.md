@@ -9,8 +9,6 @@ You can watch introduction video of the project on YouTube [here](https://www.yo
 ## (v10.00 - Employee View)
 ![chrome_x4KxPvRiai](https://user-images.githubusercontent.com/72649005/171119575-91d48030-3afe-47d2-b80a-1935377211dd.png)
 ## (v10.00 - Employee View)
-![chrome_jabpWoRpuv](https://user-images.githubusercontent.com/72649005/171119557-ef199753-e28d-41e5-93ea-da6d882b8927.png)
-## (v10.00 - Employee View)
 ![chrome_y9Ruoxx82A](https://user-images.githubusercontent.com/72649005/171119564-f6be50ab-bc9a-41ee-94e2-a5673208315c.png)
 ## (v8.10 - Employee View)
 ![chrome_k4QtPSemHT](https://user-images.githubusercontent.com/72649005/162572390-4e740560-2203-46d2-b825-67757b63e29b.png)
